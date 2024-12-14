@@ -4,13 +4,14 @@
 #define GLFW_INCLUDE_VULKAN
 #include <glfw/glfw3.h>
 #include "WindowManager.h"
-
+#include "VulkanInstance.h"
 
 class App {
 public:
 	WindowManager windowManager;
+	VulkanInstance vulkanInstance;
 
-	App(WindowManager WindowManager) : windowManager{ WindowManager } {};
+	App(WindowManager WindowManager, VulkanInstance VulkanInstace) : windowManager{ WindowManager }, vulkanInstance{ VulkanInstace } {};
 		
 
 	void Run() {
@@ -23,7 +24,7 @@ private:
 
 
 	void InitVulkan() {
-
+		vulkanInstance.CreateInstance();
 	}
 
 
@@ -44,7 +45,8 @@ private:
 
 int main() {
 	WindowManager windowManager{};
-	App app(windowManager);
+	VulkanInstance vulkanInstance{};
+	App app(windowManager,vulkanInstance);
 	
 
 	try {
