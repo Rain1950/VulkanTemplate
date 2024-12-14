@@ -1,25 +1,36 @@
 
-
 #include <vulkan/vulkan.h>
 #include <iostream>
+#define GLFW_INCLUDE_VULKAN
+#include <glfw/glfw3.h>
+#include "WindowManager.h"
 
 
 class App {
 public:
+	WindowManager windowManager;
+
+	App(WindowManager WindowManager) : windowManager{ WindowManager } {};
+		
+
 	void Run() {
+		windowManager.InitWindow();
 		InitVulkan();
 		MainLoop();
 		Cleanup();
 	}
 private:
-	void InitVulkan() {
 
+
+	void InitVulkan() {
 
 	}
 
 
 	void MainLoop() {
-		
+		while (!glfwWindowShouldClose(windowManager.window)) {
+			glfwPollEvents();
+		}
 		
 	}
 
@@ -32,7 +43,9 @@ private:
 
 
 int main() {
-	App app;
+	WindowManager windowManager{};
+	App app(windowManager);
+	
 
 	try {
 		app.Run();
