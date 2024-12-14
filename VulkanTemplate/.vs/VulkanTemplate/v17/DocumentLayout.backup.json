@@ -14,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -25,14 +25,18 @@
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.cpp",
               "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\main.cpp",
               "RelativeDocumentMoniker": "main.cpp",
-              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\main.cpp",
-              "RelativeToolTip": "main.cpp",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAIwBsAAAAsAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\main.cpp*",
+              "RelativeToolTip": "main.cpp*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-10T23:05:00.273Z",
               "EditorCaption": ""
