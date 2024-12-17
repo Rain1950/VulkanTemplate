@@ -4,7 +4,7 @@
 class WindowManager {
 	public:
 		~WindowManager();
-		GLFWwindow* window;
+		GLFWwindow* window = {};
 		void InitWindow();
 	private:
 		const uint32_t WIDTH = 800;

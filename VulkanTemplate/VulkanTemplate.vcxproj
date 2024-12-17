@@ -136,9 +136,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PhysicalDeviceManager.cpp" />
+    <ClCompile Include="ValidationLayersManager.cpp" />
+    <ClCompile Include="VulkanInstance.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PhysicalDeviceManager.h" />
+    <ClInclude Include="ValidationLayersManager.h" />
+    <ClInclude Include="VulkanInstance.h" />
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
