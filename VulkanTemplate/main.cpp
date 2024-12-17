@@ -10,6 +10,7 @@ class App {
 public:
 	WindowManager windowManager;
 	VulkanInstance vulkanInstance;
+	ValidationLayersManager validationLayersManager;
 
 	App(WindowManager WindowManager, VulkanInstance VulkanInstace) : windowManager{ WindowManager }, vulkanInstance{ VulkanInstace } {};
 		
@@ -45,7 +46,9 @@ private:
 
 int main() {
 	WindowManager windowManager{};
-	VulkanInstance vulkanInstance{};
+	ValidationLayersManager validationLayersManager{};
+	VulkanInstance vulkanInstance{validationLayersManager};
+
 	App app(windowManager,vulkanInstance);
 	
 

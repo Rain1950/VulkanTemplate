@@ -1,2 +1,4 @@
-﻿  VulkanInstance.cpp
+﻿  ValidationLayersManager.cpp
+  VulkanInstance.cpp
+  Generowanie kodu...
   VulkanTemplate.vcxproj -> D:\rat\cpp\VulkanTemplate\VulkanTemplate\x64\Debug\VulkanTemplate.exe
