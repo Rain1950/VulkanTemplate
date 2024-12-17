@@ -9,7 +9,7 @@
 #include "ValidationLayersManager.h"
 
 
-VulkanInstance::VulkanInstance(ValidationLayersManager ValidationLayersManager) : validationLayersManager{ ValidationLayersManager }, instance{} {};
+VulkanInstance::VulkanInstance(ValidationLayersManager ValidationLayersManager) : validationLayersManager{ ValidationLayersManager }{};
 
 VulkanInstance::~VulkanInstance() {
 	vkDestroyInstance(instance, nullptr);

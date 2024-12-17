@@ -5,14 +5,14 @@
 class PhysicalDeviceManager {
 	
 public:
-	VulkanInstance vulkanInstance;
-	PhysicalDeviceManager(VulkanInstance& VulkanInstance);
+	VulkanInstance* vulkanInstance;
+	PhysicalDeviceManager(VulkanInstance* VulkanInstance);
 
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 	void PickPhysicalDevice();
 
 private:
 	bool IsDeviceSuitable(VkPhysicalDevice device);
-	int RateDeviceSuitability(VkPhysicalDevice device);
+	
 
 };

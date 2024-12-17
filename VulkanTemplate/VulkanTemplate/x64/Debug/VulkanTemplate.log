@@ -1,4 +1,2 @@
-﻿  ValidationLayersManager.cpp
-  VulkanInstance.cpp
-  Generowanie kodu...
+﻿  PhysicalDeviceManager.cpp
   VulkanTemplate.vcxproj -> D:\rat\cpp\VulkanTemplate\VulkanTemplate\x64\Debug\VulkanTemplate.exe

@@ -4,12 +4,12 @@
 class VulkanInstance {
 
 public:
-	VkInstance instance;
+	VkInstance instance{};
 	ValidationLayersManager validationLayersManager;
 
 	void CreateInstance();
 	void CheckExtensions();
 
 	~VulkanInstance();
-	VulkanInstance(ValidationLayersManager& ValidationLayersManager);
+	VulkanInstance(ValidationLayersManager ValidationLayersManager);
 };

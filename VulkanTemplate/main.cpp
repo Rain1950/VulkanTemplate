@@ -5,14 +5,21 @@
 #include <glfw/glfw3.h>
 #include "WindowManager.h"
 #include "VulkanInstance.h"
+#include "PhysicalDeviceManager.h"
+
 
 class App {
 public:
 	WindowManager windowManager;
-	VulkanInstance vulkanInstance;
-	ValidationLayersManager validationLayersManager;
+	VulkanInstance* vulkanInstance;
+	PhysicalDeviceManager physicalDeviceManager;
 
-	App(WindowManager WindowManager, VulkanInstance VulkanInstace) : windowManager{ WindowManager }, vulkanInstance{ VulkanInstace } {};
+
+	App(WindowManager WindowManager, VulkanInstance* VulkanInstace, PhysicalDeviceManager PhysicalDeviceManager) : 
+		windowManager{ WindowManager }, 
+		vulkanInstance{ VulkanInstace }, 
+		physicalDeviceManager{ PhysicalDeviceManager } 
+	{};
 		
 
 	void Run() {
@@ -25,7 +32,8 @@ private:
 
 
 	void InitVulkan() {
-		vulkanInstance.CreateInstance();
+		vulkanInstance->CreateInstance();
+		physicalDeviceManager.PickPhysicalDevice();
 	}
 
 
@@ -47,9 +55,11 @@ private:
 int main() {
 	WindowManager windowManager{};
 	ValidationLayersManager validationLayersManager{};
-	VulkanInstance vulkanInstance{validationLayersManager};
+	VulkanInstance* vulkanInstance = new VulkanInstance(validationLayersManager);
 
-	App app(windowManager,vulkanInstance);
+	PhysicalDeviceManager physicalDeviceManager{vulkanInstance};
+
+	App app(windowManager,vulkanInstance,physicalDeviceManager);
 	
 
 	try {
