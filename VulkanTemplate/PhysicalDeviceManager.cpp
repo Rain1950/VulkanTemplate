@@ -6,7 +6,7 @@
 
 
 
-PhysicalDeviceManager::PhysicalDeviceManager(VulkanInstance* VulkanInstance) :vulkanInstance{ VulkanInstance } {};
+PhysicalDeviceManager::PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance) : vulkanInstance{ VulkanInstance } {};
  
 
 void PhysicalDeviceManager::PickPhysicalDevice() {

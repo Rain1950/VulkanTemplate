@@ -2,11 +2,12 @@
 
 #include <vulkan/vulkan.h>
 #include "VulkanInstance.h"
+#include <memory>
 class PhysicalDeviceManager {
 	
 public:
-	VulkanInstance* vulkanInstance;
-	PhysicalDeviceManager(VulkanInstance* VulkanInstance);
+	std::shared_ptr<VulkanInstance> vulkanInstance;
+	PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance);
 
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 	void PickPhysicalDevice();
