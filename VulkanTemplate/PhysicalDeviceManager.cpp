@@ -3,10 +3,11 @@
 #include <vulkan/vulkan.h>
 #include "VulkanInstance.h"
 #include <stdexcept>
+#include <optional>
+#include <vector>
 
 
-
-PhysicalDeviceManager::PhysicalDeviceManager(VulkanInstance* VulkanInstance) :vulkanInstance{ VulkanInstance } {};
+PhysicalDeviceManager::PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance) : vulkanInstance{ VulkanInstance } {};
  
 
 void PhysicalDeviceManager::PickPhysicalDevice() {
@@ -31,19 +32,36 @@ void PhysicalDeviceManager::PickPhysicalDevice() {
 	}
 
 	
+}
+
+PhysicalDeviceManager::QueueFamilyIndices PhysicalDeviceManager::FindQueueFamilies(VkPhysicalDevice device) {
+	QueueFamilyIndices indices;
+	uint32_t queueFamilyCount = 0;
+	vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+
+	std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+	vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
+
+	int i = 0;
+
+	for (const auto& queueFamily : queueFamilies) {
+		if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+			indices.graphicsFamily = i;
+		}
+
+		if (indices.IsComplete()) break;
+
+		i++;
+	}
 
 
+	return indices;
 }
 
 
 bool PhysicalDeviceManager::IsDeviceSuitable(VkPhysicalDevice device) {
-	//VkPhysicalDeviceProperties deviceProperties;
-	//vkGetPhysicalDeviceProperties(device, &deviceProperties);
+	QueueFamilyIndices indices = FindQueueFamilies(device);
 
-	//VkPhysicalDeviceFeatures deviceFeatures;
-	//vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
-
-	//
-	return true; //anything works
+	return indices.IsComplete();
 }
 

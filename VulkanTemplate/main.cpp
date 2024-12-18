@@ -6,18 +6,19 @@
 #include "WindowManager.h"
 #include "VulkanInstance.h"
 #include "PhysicalDeviceManager.h"
+#include <memory>
 
 
 class App {
 public:
 	WindowManager windowManager;
-	VulkanInstance* vulkanInstance;
+	std::shared_ptr<VulkanInstance> vulkanInstance;
 	PhysicalDeviceManager physicalDeviceManager;
 
 
-	App(WindowManager WindowManager, VulkanInstance* VulkanInstace, PhysicalDeviceManager PhysicalDeviceManager) : 
+	App(WindowManager WindowManager, std::shared_ptr<VulkanInstance> VulkanInstace, PhysicalDeviceManager PhysicalDeviceManager) : 
 		windowManager{ WindowManager }, 
-		vulkanInstance{ VulkanInstace }, 
+		vulkanInstance{ VulkanInstace}, 
 		physicalDeviceManager{ PhysicalDeviceManager } 
 	{};
 		
@@ -55,7 +56,7 @@ private:
 int main() {
 	WindowManager windowManager{};
 	ValidationLayersManager validationLayersManager{};
-	VulkanInstance* vulkanInstance = new VulkanInstance(validationLayersManager);
+	std::shared_ptr<VulkanInstance> vulkanInstance( new VulkanInstance(validationLayersManager));
 
 	PhysicalDeviceManager physicalDeviceManager{vulkanInstance};
 
