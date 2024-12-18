@@ -3,14 +3,24 @@
 #include <vulkan/vulkan.h>
 #include "VulkanInstance.h"
 #include <memory>
+#include <optional>
 class PhysicalDeviceManager {
 	
 public:
-	std::shared_ptr<VulkanInstance> vulkanInstance;
-	PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance);
+	struct QueueFamilyIndices {
+		std::optional<uint32_t> graphicsFamily;
 
+		bool IsComplete() {
+			return graphicsFamily.has_value();
+		}
+	};
+
+	std::shared_ptr<VulkanInstance> vulkanInstance;
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+	PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance);
+	QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
 	void PickPhysicalDevice();
+
 
 private:
 	bool IsDeviceSuitable(VkPhysicalDevice device);
