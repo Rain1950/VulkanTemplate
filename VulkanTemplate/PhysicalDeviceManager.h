@@ -17,6 +17,7 @@ public:
 
 	std::shared_ptr<VulkanInstance> vulkanInstance;
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+	VkPhysicalDeviceFeatures deviceFeatures{};
 	PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance);
 	QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
 	void PickPhysicalDevice();
