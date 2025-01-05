@@ -38,6 +38,7 @@ private:
 
 	void InitVulkan() {
 		vulkanInstance->CreateInstance();
+		windowManager->CreateSurface();
 		physicalDeviceManager.PickPhysicalDevice();
 		logicalDeviceManager.CreateLogicalDevice(&physicalDeviceManager,&validationLayersManager);
 	}

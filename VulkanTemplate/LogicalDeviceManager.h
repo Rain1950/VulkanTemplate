@@ -6,7 +6,7 @@ class LogicalDeviceManager {
 public:
 	VkDevice device;
 	VkQueue graphicsQueue;
-
+	VkQueue presentQueue;
 	void CreateLogicalDevice(PhysicalDeviceManager* physicalDeviceManager, ValidationLayersManager* validationLayersManager);
 	void Cleanup();
 

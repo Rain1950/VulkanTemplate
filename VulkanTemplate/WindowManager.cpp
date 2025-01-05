@@ -8,7 +8,7 @@ void WindowManager::InitWindow() {
 		glfwInit();
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-		WindowManager::window = glfwCreateWindow(WindowManager::WIDTH, WindowManager::HEIGHT, "VulkanTemplate", nullptr, nullptr);
+		window = glfwCreateWindow(WindowManager::WIDTH, WindowManager::HEIGHT, "VulkanTemplate", nullptr, nullptr);
 
 }
 

@@ -7,40 +7,40 @@
       "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\LogicalDeviceManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:LogicalDeviceManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\LogicalDeviceManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:LogicalDeviceManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:VulkanInstance.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:WindowManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:VulkanInstance.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:WindowManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\LogicalDeviceManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:LogicalDeviceManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:WindowManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:PhysicalDeviceManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:PhysicalDeviceManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\ValidationLayersManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:ValidationLayersManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:WindowManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:PhysicalDeviceManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\LogicalDeviceManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:LogicalDeviceManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:VulkanInstance.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\ValidationLayersManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|solutionrelative:ValidationLayersManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5566C098-6221-4425-AB78-6C44FBA8E5D9}|VulkanTemplate.vcxproj|C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\ValidationLayersManager.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -54,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 16,
+          "SelectedChildIndex": 13,
           "Children": [
             {
               "$type": "Bookmark",
@@ -82,54 +82,132 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "LogicalDeviceManager.cpp",
               "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\LogicalDeviceManager.cpp",
               "RelativeDocumentMoniker": "LogicalDeviceManager.cpp",
               "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\LogicalDeviceManager.cpp",
               "RelativeToolTip": "LogicalDeviceManager.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABrAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-01-01T20:03:51.417Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "LogicalDeviceManager.h",
               "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\LogicalDeviceManager.h",
               "RelativeDocumentMoniker": "LogicalDeviceManager.h",
               "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\LogicalDeviceManager.h",
               "RelativeToolTip": "LogicalDeviceManager.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-01-01T20:03:01.462Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 5,
               "Title": "PhysicalDeviceManager.h",
               "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.h",
               "RelativeDocumentMoniker": "PhysicalDeviceManager.h",
               "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.h",
               "RelativeToolTip": "PhysicalDeviceManager.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAnwBcAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-12-17T17:46:52.201Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 4,
               "Title": "PhysicalDeviceManager.cpp",
               "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.cpp",
               "RelativeDocumentMoniker": "PhysicalDeviceManager.cpp",
               "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.cpp",
               "RelativeToolTip": "PhysicalDeviceManager.cpp",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAACQAAAApAAAAAAAAAA==",
+              "ViewState": "AgIAABwAAAAAAAAAAAAAACYAAABNAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-17T17:46:38.275Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "VulkanInstance.h",
+              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.h",
+              "RelativeDocumentMoniker": "VulkanInstance.h",
+              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.h",
+              "RelativeToolTip": "VulkanInstance.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-12-14T18:18:07.243Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "VulkanInstance.cpp",
+              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.cpp",
+              "RelativeDocumentMoniker": "VulkanInstance.cpp",
+              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.cpp",
+              "RelativeToolTip": "VulkanInstance.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-14T17:54:26.83Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WindowManager.cpp",
+              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.cpp",
+              "RelativeDocumentMoniker": "WindowManager.cpp",
+              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.cpp*",
+              "RelativeToolTip": "WindowManager.cpp*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-14T15:18:28.989Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\main.cpp",
+              "RelativeDocumentMoniker": "main.cpp",
+              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\main.cpp",
+              "RelativeToolTip": "main.cpp",
+              "ViewState": "AgIAABcAAAAAAAAAAAAAwCgAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-10T23:05:00.273Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "WindowManager.h",
+              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.h",
+              "RelativeDocumentMoniker": "WindowManager.h",
+              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.h",
+              "RelativeToolTip": "WindowManager.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-12-14T15:21:43.496Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ValidationLayersManager.cpp",
+              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\ValidationLayersManager.cpp",
+              "RelativeDocumentMoniker": "ValidationLayersManager.cpp",
+              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\ValidationLayersManager.cpp",
+              "RelativeToolTip": "ValidationLayersManager.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-17T16:37:17.363Z",
               "EditorCaption": ""
             },
             {
@@ -143,84 +221,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-12-17T16:38:01.555Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ValidationLayersManager.cpp",
-              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\ValidationLayersManager.cpp",
-              "RelativeDocumentMoniker": "ValidationLayersManager.cpp",
-              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\ValidationLayersManager.cpp",
-              "RelativeToolTip": "ValidationLayersManager.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-17T16:37:17.363Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "VulkanInstance.h",
-              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.h",
-              "RelativeDocumentMoniker": "VulkanInstance.h",
-              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.h",
-              "RelativeToolTip": "VulkanInstance.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-14T18:18:07.243Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "VulkanInstance.cpp",
-              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.cpp",
-              "RelativeDocumentMoniker": "VulkanInstance.cpp",
-              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\VulkanInstance.cpp",
-              "RelativeToolTip": "VulkanInstance.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-14T17:54:26.83Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "WindowManager.h",
-              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.h",
-              "RelativeDocumentMoniker": "WindowManager.h",
-              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.h",
-              "RelativeToolTip": "WindowManager.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-14T15:21:43.496Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "WindowManager.cpp",
-              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.cpp",
-              "RelativeDocumentMoniker": "WindowManager.cpp",
-              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\WindowManager.cpp",
-              "RelativeToolTip": "WindowManager.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAABBAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-14T15:18:28.989Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\main.cpp",
-              "RelativeDocumentMoniker": "main.cpp",
-              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\main.cpp",
-              "RelativeToolTip": "main.cpp",
-              "ViewState": "AgIAABcAAAAAAAAAAAAswDAAAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-10T23:05:00.273Z",
               "EditorCaption": ""
             }
           ]

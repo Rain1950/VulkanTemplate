@@ -51,7 +51,7 @@ PhysicalDeviceManager::QueueFamilyIndices PhysicalDeviceManager::FindQueueFamili
 			indices.graphicsFamily = i;
 		}
 		VkBool32 presentSupport = false;
-		vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, windowManager->surface, &presentSupport);
+		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, windowManager->surface, &presentSupport);
 		if (presentSupport) {
 			indices.presentFamily = i;
 		}
