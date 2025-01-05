@@ -37,7 +37,7 @@ void LogicalDeviceManager::CreateLogicalDevice(PhysicalDeviceManager* physicalDe
 	
 }
 
-LogicalDeviceManager::~LogicalDeviceManager()
+void LogicalDeviceManager::Cleanup()
 {
 	vkDestroyDevice(device, nullptr);
 }

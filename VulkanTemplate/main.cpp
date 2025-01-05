@@ -51,7 +51,9 @@ private:
 	}
 
 	void Cleanup() {
-		
+		logicalDeviceManager.Cleanup();
+		windowManager.Cleanup();
+		vulkanInstance->Cleanup();
 	}
 
 };
@@ -59,9 +61,9 @@ private:
 
 
 int main() {
-	WindowManager windowManager{};
 	ValidationLayersManager validationLayersManager{};
 	std::shared_ptr<VulkanInstance> vulkanInstance( new VulkanInstance(validationLayersManager));
+	WindowManager windowManager{vulkanInstance};
 
 	PhysicalDeviceManager physicalDeviceManager{vulkanInstance};
 	LogicalDeviceManager logicalDeviceManager{};
