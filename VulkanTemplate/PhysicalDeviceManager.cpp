@@ -5,9 +5,11 @@
 #include <stdexcept>
 #include <optional>
 #include <vector>
+#include "WindowManager.h"
 
-
-PhysicalDeviceManager::PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance) : vulkanInstance{ VulkanInstance } {};
+PhysicalDeviceManager::PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance, std::shared_ptr<WindowManager> WindowManager) : 
+	vulkanInstance{ VulkanInstance }, 
+	windowManager{WindowManager} {};
  
 
 void PhysicalDeviceManager::PickPhysicalDevice() {
@@ -48,7 +50,11 @@ PhysicalDeviceManager::QueueFamilyIndices PhysicalDeviceManager::FindQueueFamili
 		if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
 			indices.graphicsFamily = i;
 		}
-
+		VkBool32 presentSupport = false;
+		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, windowManager->surface, &presentSupport);
+		if (presentSupport) {
+			indices.presentFamily = i;
+		}
 		if (indices.IsComplete()) break;
 
 		i++;

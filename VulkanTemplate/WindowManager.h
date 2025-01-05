@@ -1,11 +1,18 @@
 #pragma once
 #include <GLFW/glfw3.h>
-
+#include <vulkan/vulkan.h>
+#include "VulkanInstance.h"
+#include <memory>
 class WindowManager {
 	public:
-		~WindowManager();
+		std::shared_ptr<VulkanInstance> vulkanInstance;
 		GLFWwindow* window = {};
+		VkSurfaceKHR surface;
+		~WindowManager();
+		WindowManager(std::shared_ptr<VulkanInstance> VulkanInstance);
+		void CreateSurface();
 		void InitWindow();
+		void Cleanup();
 	private:
 		const uint32_t WIDTH = 800;
 		const uint32_t HEIGHT = 600;

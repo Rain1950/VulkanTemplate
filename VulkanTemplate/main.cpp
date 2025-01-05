@@ -12,13 +12,13 @@
 
 class App {
 public:
-	WindowManager windowManager;
+	std::shared_ptr<WindowManager> windowManager;
 	std::shared_ptr<VulkanInstance> vulkanInstance;
 	PhysicalDeviceManager physicalDeviceManager;
 	LogicalDeviceManager logicalDeviceManager;
 	ValidationLayersManager validationLayersManager;
 
-	App(WindowManager WindowManager, std::shared_ptr<VulkanInstance> VulkanInstace, PhysicalDeviceManager PhysicalDeviceManager, LogicalDeviceManager LogicalDeviceManager, ValidationLayersManager ValidationLayersManager) :
+	App(std::shared_ptr<WindowManager> WindowManager, std::shared_ptr<VulkanInstance> VulkanInstace, PhysicalDeviceManager PhysicalDeviceManager, LogicalDeviceManager LogicalDeviceManager, ValidationLayersManager ValidationLayersManager) :
 		windowManager{ WindowManager },
 		vulkanInstance{ VulkanInstace },
 		physicalDeviceManager{ PhysicalDeviceManager },
@@ -28,7 +28,7 @@ public:
 		
 
 	void Run() {
-		windowManager.InitWindow();
+		windowManager->InitWindow();
 		InitVulkan();
 		MainLoop();
 		Cleanup();
@@ -38,20 +38,23 @@ private:
 
 	void InitVulkan() {
 		vulkanInstance->CreateInstance();
+		windowManager->CreateSurface();
 		physicalDeviceManager.PickPhysicalDevice();
 		logicalDeviceManager.CreateLogicalDevice(&physicalDeviceManager,&validationLayersManager);
 	}
 
 
 	void MainLoop() {
-		while (!glfwWindowShouldClose(windowManager.window)) {
+		while (!glfwWindowShouldClose(windowManager->window)) {
 			glfwPollEvents();
 		}
 		
 	}
 
 	void Cleanup() {
-		
+		logicalDeviceManager.Cleanup();
+		windowManager->Cleanup();
+		vulkanInstance->Cleanup();
 	}
 
 };
@@ -59,11 +62,11 @@ private:
 
 
 int main() {
-	WindowManager windowManager{};
 	ValidationLayersManager validationLayersManager{};
 	std::shared_ptr<VulkanInstance> vulkanInstance( new VulkanInstance(validationLayersManager));
+	std::shared_ptr<WindowManager> windowManager(new WindowManager{vulkanInstance});
 
-	PhysicalDeviceManager physicalDeviceManager{vulkanInstance};
+	PhysicalDeviceManager physicalDeviceManager{vulkanInstance,windowManager};
 	LogicalDeviceManager logicalDeviceManager{};
 
 	App app(windowManager,vulkanInstance,physicalDeviceManager,logicalDeviceManager,validationLayersManager);

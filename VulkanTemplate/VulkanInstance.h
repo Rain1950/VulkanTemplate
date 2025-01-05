@@ -9,7 +9,6 @@ public:
 
 	void CreateInstance();
 	void CheckExtensions();
-
-	~VulkanInstance();
+	void Cleanup();
 	VulkanInstance(ValidationLayersManager ValidationLayersManager);
 };

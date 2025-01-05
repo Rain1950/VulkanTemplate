@@ -11,10 +11,10 @@
 
 VulkanInstance::VulkanInstance(ValidationLayersManager ValidationLayersManager) : validationLayersManager{ ValidationLayersManager }{};
 
-VulkanInstance::~VulkanInstance() {
-	vkDestroyInstance(instance, nullptr);
-}
 
+	void VulkanInstance::Cleanup() {
+		vkDestroyInstance(instance, nullptr);
+	}
 
 	void  VulkanInstance::CreateInstance() {
 
