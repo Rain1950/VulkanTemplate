@@ -6,6 +6,7 @@
 #include <optional>
 #include <vector>
 #include "WindowManager.h"
+#include <set>
 
 PhysicalDeviceManager::PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance, std::shared_ptr<WindowManager> WindowManager) : 
 	vulkanInstance{ VulkanInstance }, 
@@ -69,5 +70,20 @@ bool PhysicalDeviceManager::IsDeviceSuitable(VkPhysicalDevice device) {
 	QueueFamilyIndices indices = FindQueueFamilies(device);
 
 	return indices.IsComplete();
+}
+
+bool PhysicalDeviceManager::CheckDeviceExtensionSupport(VkPhysicalDevice device) {
+	uint32_t extensionCount;
+	vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
+
+	std::vector<VkExtensionProperties> availableExtensions(extensionCount);
+	vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data());
+
+	std::set<std::string>  requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
+
+	for (const auto& extension : availableExtensions) {
+		requiredExtensions.erase(extension.extensionName);
+	}
+	return requiredExtensions.empty();
 }
 

@@ -15,7 +15,9 @@ public:
 			return graphicsFamily.has_value() && presentFamily.has_value();
 		}
 	};
-
+	const std::vector<const char*> deviceExtensions = {
+			VK_KHR_SWAPCHAIN_EXTENSION_NAME
+	};
 	std::shared_ptr<VulkanInstance> vulkanInstance;
 	std::shared_ptr<WindowManager> windowManager;
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
@@ -23,10 +25,10 @@ public:
 	PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance,std::shared_ptr<WindowManager> WindowManager);
 	QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
 	void PickPhysicalDevice();
-
+	
 
 private:
 	bool IsDeviceSuitable(VkPhysicalDevice device);
-	
+	bool CheckDeviceExtensionSupport(VkPhysicalDevice device);
 
 };
