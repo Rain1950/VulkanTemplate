@@ -27,10 +27,12 @@ void LogicalDeviceManager::CreateLogicalDevice(PhysicalDeviceManager* physicalDe
 	createInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
 	createInfo.pQueueCreateInfos= queueCreateInfos.data();
 	createInfo.pEnabledFeatures = &physicalDeviceManager->deviceFeatures;
-	createInfo.enabledExtensionCount = 0;
+	createInfo.enabledExtensionCount = static_cast<uint32_t>(physicalDeviceManager->deviceExtensions.size());
+	createInfo.ppEnabledExtensionNames = physicalDeviceManager->deviceExtensions.data();
+
 	if (validationLayersManager->enableValidationLayers) {
 		createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayersManager->validationLayers.size());
-		createInfo.ppEnabledExtensionNames = validationLayersManager->validationLayers.data();
+		createInfo.ppEnabledLayerNames = validationLayersManager->validationLayers.data();
 	}
 	else {
 		createInfo.enabledLayerCount = 0;
