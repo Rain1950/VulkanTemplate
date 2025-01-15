@@ -8,6 +8,7 @@
 #include "WindowManager.h"
 #include <set>
 
+
 PhysicalDeviceManager::PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance, std::shared_ptr<WindowManager> WindowManager) : 
 	vulkanInstance{ VulkanInstance }, 
 	windowManager{WindowManager} {};
@@ -35,6 +36,28 @@ void PhysicalDeviceManager::PickPhysicalDevice() {
 	}
 
 	
+}
+
+PhysicalDeviceManager::SwapChainSupportDetails PhysicalDeviceManager::QuerySwapChainSupport(VkPhysicalDevice device)
+{
+	SwapChainSupportDetails details;
+
+	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, windowManager->surface, &details.capabilities);
+	uint32_t formatCount;
+	vkGetPhysicalDeviceSurfaceFormatsKHR(device, windowManager->surface, &formatCount,nullptr); // query number
+
+	if (formatCount != 0) {
+		details.formats.resize(formatCount);
+		vkGetPhysicalDeviceSurfaceFormatsKHR(device, windowManager->surface, &formatCount, details.formats.data());
+	}
+
+	uint32_t presentModeCount;
+	vkGetPhysicalDeviceSurfacePresentModesKHR(device, windowManager->surface, &presentModeCount, nullptr);
+	if (presentModeCount != 0) {
+		details.presentModes.resize(presentModeCount);
+		vkGetPhysicalDeviceSurfacePresentModesKHR(device, windowManager->surface, &presentModeCount, details.presentModes.data());
+	}
+	return details;
 }
 
 PhysicalDeviceManager::QueueFamilyIndices PhysicalDeviceManager::FindQueueFamilies(VkPhysicalDevice device) {
@@ -68,8 +91,15 @@ PhysicalDeviceManager::QueueFamilyIndices PhysicalDeviceManager::FindQueueFamili
 
 bool PhysicalDeviceManager::IsDeviceSuitable(VkPhysicalDevice device) {
 	QueueFamilyIndices indices = FindQueueFamilies(device);
+	bool swapChainAdequate = false;
+	bool extensionsSupported = CheckDeviceExtensionSupport(device);
+	
+	if (extensionsSupported) {
+		SwapChainSupportDetails swapChainSupport = QuerySwapChainSupport(device);
+		swapChainAdequate = !swapChainSupport.formats.empty() && !swapChainSupport.presentModes.empty();
+	}
 
-	return indices.IsComplete();
+	return indices.IsComplete() && extensionsSupported && swapChainAdequate;
 }
 
 bool PhysicalDeviceManager::CheckDeviceExtensionSupport(VkPhysicalDevice device) {
