@@ -90,8 +90,7 @@
               "RelativeToolTip": "LogicalDeviceManager.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-01-01T20:03:51.417Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-01T20:03:51.417Z"
             },
             {
               "$type": "Document",
@@ -111,9 +110,9 @@
               "Title": "PhysicalDeviceManager.h",
               "DocumentMoniker": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.h",
               "RelativeDocumentMoniker": "PhysicalDeviceManager.h",
-              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.h",
-              "RelativeToolTip": "PhysicalDeviceManager.h",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAjwCUAAAABAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.h*",
+              "RelativeToolTip": "PhysicalDeviceManager.h*",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAqwCcAAABdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-12-17T17:46:52.201Z",
               "EditorCaption": ""
@@ -126,7 +125,7 @@
               "RelativeDocumentMoniker": "PhysicalDeviceManager.cpp",
               "ToolTip": "C:\\Users\\maxet\\Desktop\\rat\\cpp\\VulkanTemplate\\VulkanTemplate\\PhysicalDeviceManager.cpp",
               "RelativeToolTip": "PhysicalDeviceManager.cpp",
-              "ViewState": "AgIAAEMAAAAAAAAAAAAAAGUAAABIAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAawC4AAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-17T17:46:38.275Z",
               "EditorCaption": ""
@@ -141,8 +140,7 @@
               "RelativeToolTip": "VulkanInstance.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-14T18:18:07.243Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-14T18:18:07.243Z"
             },
             {
               "$type": "Document",
@@ -154,8 +152,7 @@
               "RelativeToolTip": "VulkanInstance.cpp",
               "ViewState": "AgIAAAIAAAAAAAAAAAAAABAAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-14T17:54:26.83Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-14T17:54:26.83Z"
             },
             {
               "$type": "Document",
@@ -167,8 +164,7 @@
               "RelativeToolTip": "WindowManager.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-14T15:18:28.989Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-14T15:18:28.989Z"
             },
             {
               "$type": "Document",
@@ -192,8 +188,7 @@
               "RelativeToolTip": "WindowManager.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-14T15:21:43.496Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-14T15:21:43.496Z"
             },
             {
               "$type": "Document",
@@ -205,8 +200,7 @@
               "RelativeToolTip": "ValidationLayersManager.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-17T16:37:17.363Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-17T16:37:17.363Z"
             },
             {
               "$type": "Document",

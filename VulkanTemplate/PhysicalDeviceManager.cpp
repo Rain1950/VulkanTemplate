@@ -38,6 +38,15 @@ void PhysicalDeviceManager::PickPhysicalDevice() {
 	
 }
 
+VkSurfaceFormatKHR PhysicalDeviceManager::ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
+{
+	for (const auto& format : availableFormats) {
+		if (format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR && format.format == VK_FORMAT_B8G8R8A8_SRGB) return format;
+	}
+
+	return availableFormats[0];
+}
+
 PhysicalDeviceManager::SwapChainSupportDetails PhysicalDeviceManager::QuerySwapChainSupport(VkPhysicalDevice device)
 {
 	SwapChainSupportDetails details;
@@ -116,4 +125,6 @@ bool PhysicalDeviceManager::CheckDeviceExtensionSupport(VkPhysicalDevice device)
 	}
 	return requiredExtensions.empty();
 }
+
+
 
