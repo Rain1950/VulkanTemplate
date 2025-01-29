@@ -41,6 +41,7 @@ private:
 		windowManager->CreateSurface();
 		physicalDeviceManager.PickPhysicalDevice();
 		logicalDeviceManager.CreateLogicalDevice(&physicalDeviceManager,&validationLayersManager);
+		physicalDeviceManager.CreateSwapChain(&logicalDeviceManager.device);
 	}
 
 
@@ -52,6 +53,7 @@ private:
 	}
 
 	void Cleanup() {
+		physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
 		logicalDeviceManager.Cleanup();
 		windowManager->Cleanup();
 		vulkanInstance->Cleanup();

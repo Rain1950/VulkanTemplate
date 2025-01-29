@@ -32,12 +32,17 @@ public:
 	std::shared_ptr<WindowManager> windowManager;
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 	VkPhysicalDeviceFeatures deviceFeatures{};
+	VkSwapchainKHR swapChain;
 
 	PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance,std::shared_ptr<WindowManager> WindowManager);
 	QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
 	SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device);
 	void PickPhysicalDevice();
 	VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+	VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+	VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+	void CreateSwapChain(VkDevice* device);
+	void CleanupSwapChain(VkDevice device, VkSwapchainKHR swapChain);
 
 private:
 	bool IsDeviceSuitable(VkPhysicalDevice device);
