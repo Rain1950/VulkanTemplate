@@ -274,3 +274,8 @@ _Pvt_Extensions
 .fake/
 *.vsidx
 *.opendb
+
+
+
+VulkanTemplate/VulkanTemplate/
+VulkanTemplate/x64/
