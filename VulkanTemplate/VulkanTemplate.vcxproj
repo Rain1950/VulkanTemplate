@@ -135,6 +135,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FileLoader.cpp" />
+    <ClCompile Include="GraphicsPipelineManager.cpp" />
     <ClCompile Include="LogicalDeviceManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicalDeviceManager.cpp" />
@@ -143,6 +145,8 @@
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FileLoader.h" />
+    <ClInclude Include="GraphicsPipelineManager.h" />
     <ClInclude Include="LogicalDeviceManager.h" />
     <ClInclude Include="PhysicalDeviceManager.h" />
     <ClInclude Include="ValidationLayersManager.h" />
