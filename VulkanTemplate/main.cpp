@@ -57,6 +57,7 @@ private:
 	}
 
 	void Cleanup() {
+		graphicsPipelineManager.CleanPipelineLayout(&logicalDeviceManager.device);
 		physicalDeviceManager.CleanupImageViews(&logicalDeviceManager.device);
 		physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
 		logicalDeviceManager.Cleanup();
@@ -75,7 +76,7 @@ int main() {
 
 	PhysicalDeviceManager physicalDeviceManager{vulkanInstance,windowManager};
 	LogicalDeviceManager logicalDeviceManager{};
-	GraphicsPipelineManager graphicsPipelineManager{};
+	GraphicsPipelineManager graphicsPipelineManager{physicalDeviceManager.swapChainExtent};
 
 
 	App app(windowManager,vulkanInstance,physicalDeviceManager,logicalDeviceManager,validationLayersManager,graphicsPipelineManager);
