@@ -34,6 +34,8 @@ public:
 	VkPhysicalDeviceFeatures deviceFeatures{};
 	VkSwapchainKHR swapChain;
 	std::vector<VkImage> swapChainImages;
+	std::vector<VkImageView> swapChainImageViews;
+
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
 
@@ -48,6 +50,9 @@ public:
 	VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 	void CreateSwapChain(VkDevice* device);
 	void CleanupSwapChain(VkDevice device, VkSwapchainKHR swapChain);
+
+	void CreateImageViews(VkDevice* device);
+	void CleanupImageViews(VkDevice* device);
 
 private:
 	bool IsDeviceSuitable(VkPhysicalDevice device);

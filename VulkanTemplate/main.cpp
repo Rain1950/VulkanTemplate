@@ -42,6 +42,7 @@ private:
 		physicalDeviceManager.PickPhysicalDevice();
 		logicalDeviceManager.CreateLogicalDevice(&physicalDeviceManager,&validationLayersManager);
 		physicalDeviceManager.CreateSwapChain(&logicalDeviceManager.device);
+		physicalDeviceManager.CreateImageViews(&logicalDeviceManager.device);
 	}
 
 
@@ -53,6 +54,7 @@ private:
 	}
 
 	void Cleanup() {
+		physicalDeviceManager.CleanupImageViews(&logicalDeviceManager.device);
 		physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
 		logicalDeviceManager.Cleanup();
 		windowManager->Cleanup();
