@@ -49,7 +49,6 @@ VulkanInstance::VulkanInstance(ValidationLayersManager ValidationLayersManager) 
 		glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 		createInfo.enabledExtensionCount = glfwExtensionCount;
 		createInfo.ppEnabledExtensionNames = glfwExtensions;		
-		createInfo.enabledLayerCount = 0;
 
 		if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
 			throw std::runtime_error("Instace creation failed");

@@ -8,7 +8,7 @@
 #include "PhysicalDeviceManager.h"
 #include "LogicalDeviceManager.h"
 #include <memory>
-
+#include "GraphicsPipelineManager.h"
 
 class App {
 public:
@@ -17,13 +17,15 @@ public:
 	PhysicalDeviceManager physicalDeviceManager;
 	LogicalDeviceManager logicalDeviceManager;
 	ValidationLayersManager validationLayersManager;
+	GraphicsPipelineManager graphicsPipelineManager;
 
-	App(std::shared_ptr<WindowManager> WindowManager, std::shared_ptr<VulkanInstance> VulkanInstace, PhysicalDeviceManager PhysicalDeviceManager, LogicalDeviceManager LogicalDeviceManager, ValidationLayersManager ValidationLayersManager) :
+	App(std::shared_ptr<WindowManager> WindowManager, std::shared_ptr<VulkanInstance> VulkanInstace, PhysicalDeviceManager PhysicalDeviceManager, LogicalDeviceManager LogicalDeviceManager, ValidationLayersManager ValidationLayersManager, GraphicsPipelineManager GraphicsPipelineManager) :
 		windowManager{ WindowManager },
 		vulkanInstance{ VulkanInstace },
 		physicalDeviceManager{ PhysicalDeviceManager },
 		logicalDeviceManager{ LogicalDeviceManager },
-		validationLayersManager{ ValidationLayersManager }
+		validationLayersManager{ ValidationLayersManager },
+		graphicsPipelineManager {GraphicsPipelineManager}
 	{};
 		
 
@@ -42,6 +44,8 @@ private:
 		physicalDeviceManager.PickPhysicalDevice();
 		logicalDeviceManager.CreateLogicalDevice(&physicalDeviceManager,&validationLayersManager);
 		physicalDeviceManager.CreateSwapChain(&logicalDeviceManager.device);
+		physicalDeviceManager.CreateImageViews(&logicalDeviceManager.device);
+		graphicsPipelineManager.CreateGraphicsPipeline(&logicalDeviceManager.device);
 	}
 
 
@@ -53,6 +57,7 @@ private:
 	}
 
 	void Cleanup() {
+		physicalDeviceManager.CleanupImageViews(&logicalDeviceManager.device);
 		physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
 		logicalDeviceManager.Cleanup();
 		windowManager->Cleanup();
@@ -70,8 +75,10 @@ int main() {
 
 	PhysicalDeviceManager physicalDeviceManager{vulkanInstance,windowManager};
 	LogicalDeviceManager logicalDeviceManager{};
+	GraphicsPipelineManager graphicsPipelineManager{};
 
-	App app(windowManager,vulkanInstance,physicalDeviceManager,logicalDeviceManager,validationLayersManager);
+
+	App app(windowManager,vulkanInstance,physicalDeviceManager,logicalDeviceManager,validationLayersManager,graphicsPipelineManager);
 	
 
 	try {
