@@ -45,6 +45,7 @@ private:
 		logicalDeviceManager.CreateLogicalDevice(&physicalDeviceManager,&validationLayersManager);
 		physicalDeviceManager.CreateSwapChain(&logicalDeviceManager.device);
 		physicalDeviceManager.CreateImageViews(&logicalDeviceManager.device);
+		graphicsPipelineManager.CreateRenderPass(physicalDeviceManager.swapChainImageFormat,&logicalDeviceManager.device);
 		graphicsPipelineManager.CreateGraphicsPipeline(&logicalDeviceManager.device);
 	}
 
@@ -58,6 +59,7 @@ private:
 
 	void Cleanup() {
 		graphicsPipelineManager.CleanPipelineLayout(&logicalDeviceManager.device);
+		graphicsPipelineManager.CleanRenderPass(&logicalDeviceManager.device);
 		physicalDeviceManager.CleanupImageViews(&logicalDeviceManager.device);
 		physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
 		logicalDeviceManager.Cleanup();
