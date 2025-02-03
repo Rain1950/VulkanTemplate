@@ -58,6 +58,7 @@ private:
 	}
 
 	void Cleanup() {
+		graphicsPipelineManager.CleanGraphicsPipeline(&logicalDeviceManager.device);
 		graphicsPipelineManager.CleanPipelineLayout(&logicalDeviceManager.device);
 		graphicsPipelineManager.CleanRenderPass(&logicalDeviceManager.device);
 		physicalDeviceManager.CleanupImageViews(&logicalDeviceManager.device);
