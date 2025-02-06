@@ -66,9 +66,9 @@ VulkanInstance::VulkanInstance(ValidationLayersManager ValidationLayersManager) 
 		std::vector<VkExtensionProperties> extensions(extensionCount);
 		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 		/*std::cout << "Available extensions \n";
-		std::cout << "Extension Count: " << extensionCount;*/
+		std::cout << "Extension Count: " << extensionCount;
 	
-		/*for (const auto& extension : extensions) {
+		for (const auto& extension : extensions) {
 			std::cout << '\t' << extension.extensionName << '\n';
 		}*/
 
