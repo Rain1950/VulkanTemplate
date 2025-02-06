@@ -79,7 +79,7 @@ VkExtent2D PhysicalDeviceManager::ChooseSwapExtent(const VkSurfaceCapabilitiesKH
 
 }
 
-void PhysicalDeviceManager::CreateSwapChain(VkDevice* device)
+void PhysicalDeviceManager::CreateSwapChain(VkDevice& device)
 {
 	SwapChainSupportDetails swapChainSupport = QuerySwapChainSupport(physicalDevice);
 
@@ -121,24 +121,24 @@ void PhysicalDeviceManager::CreateSwapChain(VkDevice* device)
 	createInfo.clipped = VK_TRUE;
 	createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-	if (vkCreateSwapchainKHR(*device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
+	if (vkCreateSwapchainKHR(device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create swap chain!");
 	}
 
-	vkGetSwapchainImagesKHR(*device, swapChain, &imageCount, nullptr);
+	vkGetSwapchainImagesKHR(device, swapChain, &imageCount, nullptr);
 	swapChainImages.resize(imageCount);
-	vkGetSwapchainImagesKHR(*device, swapChain, &imageCount, swapChainImages.data());
+	vkGetSwapchainImagesKHR(device, swapChain, &imageCount, swapChainImages.data());
 
 	swapChainImageFormat = surfaceFormat.format;
 	swapChainExtent = extent;
 }
 
-void PhysicalDeviceManager::CleanupSwapChain(VkDevice device, VkSwapchainKHR swapChain)
+void PhysicalDeviceManager::CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain)
 {
 	vkDestroySwapchainKHR(device, swapChain, nullptr);
 }
 
-void PhysicalDeviceManager::CreateImageViews(VkDevice* device)
+void PhysicalDeviceManager::CreateImageViews(VkDevice& device)
 {
 	swapChainImageViews.resize(swapChainImages.size());
 	for(int i = 0; i < swapChainImages.size();i++){
@@ -157,15 +157,45 @@ void PhysicalDeviceManager::CreateImageViews(VkDevice* device)
 		createInfo.subresourceRange.baseArrayLayer = 0;
 		createInfo.subresourceRange.layerCount = 1;
 
-		if (vkCreateImageView(*device, &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS) {
+		if (vkCreateImageView(device, &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS) {
 			throw std::runtime_error("Failed to create image views");
 		}
 	}
 }
 
-void PhysicalDeviceManager::CleanupImageViews(VkDevice* device) {
+void PhysicalDeviceManager::CleanupImageViews(VkDevice& device) {
 	for (auto imageView : swapChainImageViews) {
-		vkDestroyImageView(*device, imageView, nullptr);
+		vkDestroyImageView(device, imageView, nullptr);
+	}
+}
+
+void PhysicalDeviceManager::CreateFrameBuffers(VkDevice& device, VkRenderPass& renderPass)
+{ 
+	swapChainFrameBuffers.resize(swapChainImageViews.size());
+	for (size_t i = 0; i < swapChainImageViews.size(); i++) {
+		VkImageView attachments[] = {
+			swapChainImageViews[i]
+		};
+
+		VkFramebufferCreateInfo frameBufferInfo{};
+		frameBufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+		frameBufferInfo.renderPass = renderPass;
+		frameBufferInfo.attachmentCount = 1;
+		frameBufferInfo.pAttachments = attachments;
+		frameBufferInfo.width = swapChainExtent.width;
+		frameBufferInfo.height = swapChainExtent.height;
+		frameBufferInfo.layers = 1;
+
+		if (vkCreateFramebuffer(device, &frameBufferInfo, nullptr, &swapChainFrameBuffers[i]) != VK_SUCCESS) {
+			throw std::runtime_error("Failed to create framebuffer!");
+		}
+	}
+}
+
+void PhysicalDeviceManager::CleanupFrameBuffers(VkDevice& device)
+{
+	for (auto framebuffer : swapChainFrameBuffers) {
+		vkDestroyFramebuffer(device, framebuffer, nullptr);
 	}
 }
 

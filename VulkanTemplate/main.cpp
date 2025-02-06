@@ -43,10 +43,11 @@ private:
 		windowManager->CreateSurface();
 		physicalDeviceManager.PickPhysicalDevice();
 		logicalDeviceManager.CreateLogicalDevice(&physicalDeviceManager,&validationLayersManager);
-		physicalDeviceManager.CreateSwapChain(&logicalDeviceManager.device);
-		physicalDeviceManager.CreateImageViews(&logicalDeviceManager.device);
-		graphicsPipelineManager.CreateRenderPass(physicalDeviceManager.swapChainImageFormat,&logicalDeviceManager.device);
-		graphicsPipelineManager.CreateGraphicsPipeline(&logicalDeviceManager.device);
+		physicalDeviceManager.CreateSwapChain(logicalDeviceManager.device);
+		physicalDeviceManager.CreateImageViews(logicalDeviceManager.device);
+		graphicsPipelineManager.CreateRenderPass(physicalDeviceManager.swapChainImageFormat,logicalDeviceManager.device);
+		graphicsPipelineManager.CreateGraphicsPipeline(logicalDeviceManager.device);
+		physicalDeviceManager.CreateFrameBuffers(logicalDeviceManager.device,graphicsPipelineManager.renderPass);
 	}
 
 
@@ -58,10 +59,11 @@ private:
 	}
 
 	void Cleanup() {
-		graphicsPipelineManager.CleanGraphicsPipeline(&logicalDeviceManager.device);
-		graphicsPipelineManager.CleanPipelineLayout(&logicalDeviceManager.device);
-		graphicsPipelineManager.CleanRenderPass(&logicalDeviceManager.device);
-		physicalDeviceManager.CleanupImageViews(&logicalDeviceManager.device);
+		physicalDeviceManager.CleanupFrameBuffers(logicalDeviceManager.device);
+		graphicsPipelineManager.CleanGraphicsPipeline(logicalDeviceManager.device);
+		graphicsPipelineManager.CleanPipelineLayout(logicalDeviceManager.device);
+		graphicsPipelineManager.CleanRenderPass(logicalDeviceManager.device);
+		physicalDeviceManager.CleanupImageViews(logicalDeviceManager.device);
 		physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
 		logicalDeviceManager.Cleanup();
 		windowManager->Cleanup();

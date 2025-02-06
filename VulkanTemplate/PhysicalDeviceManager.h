@@ -37,6 +37,7 @@ public:
 	VkSwapchainKHR swapChain;
 	std::vector<VkImage> swapChainImages;
 	std::vector<VkImageView> swapChainImageViews;
+	std::vector<VkFramebuffer> swapChainFrameBuffers;
 
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
@@ -50,12 +51,13 @@ public:
 	VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 	VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 	VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
-	void CreateSwapChain(VkDevice* device);
-	void CleanupSwapChain(VkDevice device, VkSwapchainKHR swapChain);
+	void CreateSwapChain(VkDevice& device);
+	void CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain);
 
-	void CreateImageViews(VkDevice* device);
-	void CleanupImageViews(VkDevice* device);
-
+	void CreateImageViews(VkDevice& device);
+	void CleanupImageViews(VkDevice& device);
+	void CreateFrameBuffers(VkDevice& device, VkRenderPass& renderPass);
+	void CleanupFrameBuffers(VkDevice& device);
 private:
 	bool IsDeviceSuitable(VkPhysicalDevice device);
 	bool CheckDeviceExtensionSupport(VkPhysicalDevice device);

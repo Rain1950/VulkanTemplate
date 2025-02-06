@@ -5,20 +5,20 @@
 #include "FileLoader.h"
 
 
-VkShaderModule GraphicsPipelineManager::CreateShaderModule(const std::vector<char>& code,VkDevice* device) {
+VkShaderModule GraphicsPipelineManager::CreateShaderModule(const std::vector<char>& code,VkDevice& device) {
 	VkShaderModuleCreateInfo createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 	createInfo.codeSize = code.size();
 	createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
 	VkShaderModule shaderModule;
-	if (vkCreateShaderModule(*device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {
+	if (vkCreateShaderModule(device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create Shader module");
 	}
 	return shaderModule;
 }
 
-void GraphicsPipelineManager::CreateRenderPass(VkFormat swapChainImageFormat, VkDevice* device)
+void GraphicsPipelineManager::CreateRenderPass(VkFormat swapChainImageFormat, VkDevice& device)
 {
 	VkAttachmentDescription colorAttachment{};
 	colorAttachment.format = swapChainImageFormat;
@@ -47,7 +47,7 @@ void GraphicsPipelineManager::CreateRenderPass(VkFormat swapChainImageFormat, Vk
 	renderPassInfo.subpassCount = 1;
 	renderPassInfo.pSubpasses = &subpass;
 
-	if (vkCreateRenderPass(*device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
+	if (vkCreateRenderPass(device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create render pass!");
 	}
 }
@@ -56,7 +56,7 @@ void GraphicsPipelineManager::CreateRenderPass(VkFormat swapChainImageFormat, Vk
 GraphicsPipelineManager::GraphicsPipelineManager(VkExtent2D SwapChainExtent) : swapChainExtent{ SwapChainExtent } {};
 
 
-void GraphicsPipelineManager::CreateGraphicsPipeline(VkDevice* device)
+void GraphicsPipelineManager::CreateGraphicsPipeline(VkDevice& device)
 {
 	auto vertShaderCode = ReadFile("shaders/vert.spv");
 	auto fragShaderCode = ReadFile("shaders/frag.spv");
@@ -147,7 +147,7 @@ void GraphicsPipelineManager::CreateGraphicsPipeline(VkDevice* device)
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 	
-	if (vkCreatePipelineLayout(*device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
+	if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create pipeline layout!");
 	}
 
@@ -169,23 +169,23 @@ void GraphicsPipelineManager::CreateGraphicsPipeline(VkDevice* device)
 	pipelineInfo.renderPass = renderPass;
 	pipelineInfo.subpass = 0;
 
-	if (vkCreateGraphicsPipelines(*device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS) {
+	if (vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create graphics pipeline!");
 	}
-	vkDestroyShaderModule(*device, fragShaderModule, nullptr);
-	vkDestroyShaderModule(*device, vertShaderModule, nullptr);
+	vkDestroyShaderModule(device, fragShaderModule, nullptr);
+	vkDestroyShaderModule(device, vertShaderModule, nullptr);
 }
 
-void GraphicsPipelineManager::CleanGraphicsPipeline(VkDevice* device)
+void GraphicsPipelineManager::CleanGraphicsPipeline(VkDevice& device)
 {
-	vkDestroyPipeline(*device, graphicsPipeline, nullptr);
+	vkDestroyPipeline(device, graphicsPipeline, nullptr);
 }
 
-void GraphicsPipelineManager::CleanPipelineLayout(VkDevice* device) {
-	vkDestroyPipelineLayout(*device, pipelineLayout, nullptr);
+void GraphicsPipelineManager::CleanPipelineLayout(VkDevice& device) {
+	vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
 }
 
-void GraphicsPipelineManager::CleanRenderPass(VkDevice* device) {
-	vkDestroyRenderPass(*device, renderPass, nullptr);
+void GraphicsPipelineManager::CleanRenderPass(VkDevice& device) {
+	vkDestroyRenderPass(device, renderPass, nullptr);
 }
 
