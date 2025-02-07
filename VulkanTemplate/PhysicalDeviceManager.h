@@ -6,6 +6,7 @@
 #include <optional>
 #include "WindowManager.h"
 #include <vector>
+#include "GraphicsPipelineManager.h"
 
 class PhysicalDeviceManager {
 	
@@ -41,8 +42,8 @@ public:
 
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
-
-
+	VkCommandPool commandPool;
+	VkCommandBuffer commandBuffer;
 
 	PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance,std::shared_ptr<WindowManager> WindowManager);
 	QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
@@ -52,11 +53,17 @@ public:
 	VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 	VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 	void CreateSwapChain(VkDevice& device);
-	void CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain);
 
 	void CreateImageViews(VkDevice& device);
-	void CleanupImageViews(VkDevice& device);
 	void CreateFrameBuffers(VkDevice& device, VkRenderPass& renderPass);
+	void CreateCommandPool(VkDevice& device);
+	void CreateCommandBuffer(VkDevice& device);
+	void CreateCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, GraphicsPipelineManager& graphicsPipelineManager);
+
+
+	void CleanupCommandPool(VkDevice& device);
+	void CleanupImageViews(VkDevice& device);
+	void CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain);
 	void CleanupFrameBuffers(VkDevice& device);
 private:
 	bool IsDeviceSuitable(VkPhysicalDevice device);
