@@ -48,17 +48,68 @@ private:
 		graphicsPipelineManager.CreateRenderPass(physicalDeviceManager.swapChainImageFormat,logicalDeviceManager.device);
 		graphicsPipelineManager.CreateGraphicsPipeline(logicalDeviceManager.device);
 		physicalDeviceManager.CreateFrameBuffers(logicalDeviceManager.device,graphicsPipelineManager.renderPass);
+		physicalDeviceManager.CreateCommandPool(logicalDeviceManager.device);
+		physicalDeviceManager.CreateCommandBuffer(logicalDeviceManager.device);
+		physicalDeviceManager.CreateSyncObjects(logicalDeviceManager.device);
+
 	}
 
+	void DrawFrame() {
+		vkWaitForFences(logicalDeviceManager.device, 1, &physicalDeviceManager.inFlightFence, VK_TRUE, UINT64_MAX);
+		vkResetFences(logicalDeviceManager.device, 1, &physicalDeviceManager.inFlightFence);
+		
+		uint32_t imageIndex;
+		vkAcquireNextImageKHR(logicalDeviceManager.device, physicalDeviceManager.swapChain, UINT64_MAX, physicalDeviceManager.imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
+
+		vkResetCommandBuffer(physicalDeviceManager.commandBuffer, 0);
+		physicalDeviceManager.RecordCommandBuffer(physicalDeviceManager.commandBuffer, imageIndex, graphicsPipelineManager);
+
+		VkSubmitInfo submitInfo{};
+		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+		VkSemaphore waitSemaphores[] = { physicalDeviceManager.imageAvailableSemaphore };
+		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+		submitInfo.waitSemaphoreCount = 1;
+		submitInfo.pWaitSemaphores = waitSemaphores;
+		submitInfo.pWaitDstStageMask = waitStages;
+		submitInfo.commandBufferCount = 1;
+		submitInfo.pCommandBuffers = &physicalDeviceManager.commandBuffer;
+
+		VkSemaphore signalSemaphores[] = { physicalDeviceManager.renderFinishedSemaphore };
+		submitInfo.signalSemaphoreCount = 1;
+		submitInfo.pSignalSemaphores = signalSemaphores;
+
+		if (vkQueueSubmit(logicalDeviceManager.graphicsQueue, 1, &submitInfo, physicalDeviceManager.inFlightFence) != VK_SUCCESS) {
+			throw std::runtime_error("Failed to submit draw command buffer!");
+		}
+
+		VkPresentInfoKHR presentInfo{};
+		presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+		presentInfo.waitSemaphoreCount = 1;
+		presentInfo.pWaitSemaphores = signalSemaphores;
+		VkSwapchainKHR swapChains[] = { physicalDeviceManager.swapChain };
+		presentInfo.swapchainCount = 1;
+		presentInfo.pSwapchains = swapChains;
+		presentInfo.pImageIndices = &imageIndex;
+
+		vkQueuePresentKHR(logicalDeviceManager.presentQueue, &presentInfo);
+
+
+
+
+	}
 
 	void MainLoop() {
 		while (!glfwWindowShouldClose(windowManager->window)) {
 			glfwPollEvents();
+			DrawFrame();
 		}
+		vkDeviceWaitIdle(logicalDeviceManager.device);
 		
 	}
 
 	void Cleanup() {
+		physicalDeviceManager.CleanupSyncObjects(logicalDeviceManager.device);
+		physicalDeviceManager.CleanupCommandPool(logicalDeviceManager.device);
 		physicalDeviceManager.CleanupFrameBuffers(logicalDeviceManager.device);
 		graphicsPipelineManager.CleanGraphicsPipeline(logicalDeviceManager.device);
 		graphicsPipelineManager.CleanPipelineLayout(logicalDeviceManager.device);
