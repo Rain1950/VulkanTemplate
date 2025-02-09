@@ -9,6 +9,7 @@ public:
 	VkRenderPass renderPass{};
 	VkPipelineLayout pipelineLayout{};
 	VkPipeline graphicsPipeline{};
+	
 
 
 	GraphicsPipelineManager(VkExtent2D SwapChainExtent);

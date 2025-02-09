@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\VulkanTemplate",
+    "\\VulkanTemplate\\shaders"
   ],
-  "SelectedNode": "\\VulkanTemplate.sln",
+  "SelectedNode": "\\VulkanTemplate\\VulkanTemplate.sln",
   "PreviewInSolutionExplorer": false
 }
