@@ -3,12 +3,14 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <stdexcept>
+#include "App.h"
+#include "PhysicalDeviceManager.h"
 
 void WindowManager::InitWindow() {
 		glfwInit();
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 		window = glfwCreateWindow(WindowManager::WIDTH, WindowManager::HEIGHT, "VulkanTemplate", nullptr, nullptr);
+		glfwSetFramebufferSizeCallback(window, FrameBufferResizeCallback);
 
 }
 
@@ -19,7 +21,12 @@ void WindowManager::CreateSurface() {
 	
 }
 
-WindowManager::WindowManager(std::shared_ptr<VulkanInstance> VulkanInstance) : vulkanInstance{ VulkanInstance } {};
+  void WindowManager::FrameBufferResizeCallback(GLFWwindow* window, int width, int height){
+	 auto physicalDeviceManager = reinterpret_cast<PhysicalDeviceManager*>(glfwGetWindowUserPointer(window));
+	 physicalDeviceManager->frameBufferResized = true;
+}
+
+ WindowManager::WindowManager(std::shared_ptr<VulkanInstance> VulkanInstance) : vulkanInstance{ VulkanInstance } {};
 
 void WindowManager::Cleanup() {
 	vkDestroySurfaceKHR(vulkanInstance->instance, surface, nullptr);
