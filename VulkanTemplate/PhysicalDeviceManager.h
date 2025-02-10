@@ -49,6 +49,7 @@ public:
 	std::vector<VkSemaphore> imageAvailableSemaphores;
 	std::vector<VkSemaphore> renderFinishedSemaphores;
 	std::vector<VkFence> inFlightFences;
+	bool frameBufferResized = false;
 
 	PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance,std::shared_ptr<WindowManager> WindowManager);
 	QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
@@ -65,6 +66,8 @@ public:
 	void CreateCommandBuffers(VkDevice& device);
 	void RecordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, GraphicsPipelineManager& graphicsPipelineManager);
 	void CreateSyncObjects(VkDevice& device);
+	void RecreateSwapChain(VkDevice& device, VkRenderPass& renderPass);
+
 
 
 	void CleanupSyncObjects(VkDevice& device);

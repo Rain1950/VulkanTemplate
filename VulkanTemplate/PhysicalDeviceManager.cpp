@@ -290,6 +290,28 @@ void PhysicalDeviceManager::CreateSyncObjects(VkDevice& device)
 	}
 }
 
+void PhysicalDeviceManager::RecreateSwapChain(VkDevice& device,VkRenderPass& renderPass)
+{
+
+	int width = 0, height = 0;
+	glfwGetFramebufferSize(windowManager->window, &width, &height);
+	while (width == 0 || height == 0) {
+		glfwGetFramebufferSize(windowManager->window, &width, &height);
+		glfwWaitEvents();
+	}
+
+	vkDeviceWaitIdle(device);
+	
+	CleanupFrameBuffers(device);
+	CleanupImageViews(device);
+	CleanupSwapChain(device, swapChain);
+
+	CreateSwapChain(device);
+	CreateImageViews(device);
+	CreateFrameBuffers(device, renderPass);
+
+}
+
 void PhysicalDeviceManager::CleanupSyncObjects(VkDevice& device){
 	for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
 		vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);

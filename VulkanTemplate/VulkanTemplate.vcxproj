@@ -145,6 +145,7 @@
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="App.h" />
     <ClInclude Include="FileLoader.h" />
     <ClInclude Include="GraphicsPipelineManager.h" />
     <ClInclude Include="LogicalDeviceManager.h" />
