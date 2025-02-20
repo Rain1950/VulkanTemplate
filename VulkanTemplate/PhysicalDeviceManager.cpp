@@ -242,6 +242,10 @@ void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, u
 	vkCmdBeginRenderPass(commandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
 	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,graphicsPipelineManager.graphicsPipeline);
+	VkBuffer vertexBuffers[] = { graphicsPipelineManager.vertexBuffer };
+	VkDeviceSize offsets[] = { 0 };
+	vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
+
 
 	VkViewport viewport{};
 	viewport.x = 0.0f;
@@ -257,7 +261,7 @@ void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, u
 	scissor.extent = swapChainExtent;
 	vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
-	vkCmdDraw(commandBuffer, 3, 1, 0, 0);
+	vkCmdDraw(commandBuffer, static_cast<uint32_t>(graphicsPipelineManager.vertices.size()), 1, 0, 0);
 
 	vkCmdEndRenderPass(commandBuffer);
 
