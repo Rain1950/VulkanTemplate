@@ -4,6 +4,6 @@
     "\\VulkanTemplate",
     "\\VulkanTemplate\\shaders"
   ],
-  "SelectedNode": "\\VulkanTemplate\\VulkanTemplate.sln",
+  "SelectedNode": "\\VulkanTemplate\\shaders\\shader.vert",
   "PreviewInSolutionExplorer": false
 }

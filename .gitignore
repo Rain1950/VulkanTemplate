@@ -279,3 +279,6 @@ _Pvt_Extensions
 
 VulkanTemplate/VulkanTemplate/
 VulkanTemplate/x64/
+VulkanTemplate/VulkanTemplate.vcxproj
+.vs/VSWorkspaceState.json
+.vs/slnx.sqlite
