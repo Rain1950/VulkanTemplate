@@ -21,9 +21,9 @@ void LogicalDeviceManager::CreateLogicalDevice(PhysicalDeviceManager* physicalDe
 		queueCreateInfo.pQueuePriorities = &queuePriority;
 		queueCreateInfos.push_back(queueCreateInfo);
 	}
-	VkPhysicalDeviceSynchronization2Features sync2Features{};
+	/*VkPhysicalDeviceSynchronization2Features sync2Features{};
 	sync2Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SYNCHRONIZATION_2_FEATURES;
-	sync2Features.synchronization2 = VK_TRUE;
+	sync2Features.synchronization2 = VK_TRUE;*/
 
 	VkDeviceCreateInfo createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
@@ -32,7 +32,7 @@ void LogicalDeviceManager::CreateLogicalDevice(PhysicalDeviceManager* physicalDe
 	createInfo.pEnabledFeatures = &physicalDeviceManager->deviceFeatures;
 	createInfo.enabledExtensionCount = static_cast<uint32_t>(physicalDeviceManager->deviceExtensions.size());
 	createInfo.ppEnabledExtensionNames = physicalDeviceManager->deviceExtensions.data();
-	createInfo.pNext = &sync2Features;
+	//createInfo.pNext = &sync2Features;
 
 
 

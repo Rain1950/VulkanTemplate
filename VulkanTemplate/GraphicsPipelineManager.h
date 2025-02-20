@@ -40,10 +40,14 @@ public:
 		}
 	};
 
-	const std::vector<Vertex> vertices = {
+	const  std::vector<Vertex> vertices = {
 	{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
 	{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-	{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+	{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
+	{{0.7f, -0.1f}, {1.0f, 0.0f, 0.0f}},
+	{{0.2f, 0.2f}, {0.0f, 1.0f, 0.0f}},
+	{{-0.2f, 0.2f}, {0.0f, 0.0f, 1.0f}},
+
 	};
 
 	VkExtent2D swapChainExtent{};
