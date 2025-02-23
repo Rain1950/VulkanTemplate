@@ -59,6 +59,7 @@ public:
 	void CreateRenderPass(VkFormat swapChainImageFormat, VkDevice& device);
 	uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, VkPhysicalDevice& physicalDevice);
 	void CreateVertexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice);
+	void CreateBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice,VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 
 	void CleanGraphicsPipeline(VkDevice& device);
 	void CleanPipelineLayout(VkDevice& device);
