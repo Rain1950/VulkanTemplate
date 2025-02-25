@@ -77,18 +77,34 @@ uint32_t GraphicsPipelineManager::FindMemoryType(uint32_t typeFilter, VkMemoryPr
 void GraphicsPipelineManager::CreateVertexBuffer(VkDevice& device,VkPhysicalDevice& physicalDevice)
 {
 	VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
+
+	VkBuffer stagingBuffer;
+	VkDeviceMemory stagingBufferMemory;
+
 	CreateBuffer(device, physicalDevice, bufferSize,
-		VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+		VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
 		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-		vertexBuffer,
-		vertexBufferMemory
+		stagingBuffer,
+		stagingBufferMemory
 		);
 
 	void* data;
-	vkMapMemory(device, vertexBufferMemory, 0, bufferSize, 0, &data);
+	vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
 	memcpy(data, vertices.data(), (size_t)bufferSize);
-	vkUnmapMemory(device, vertexBufferMemory);
+	vkUnmapMemory(device, stagingBufferMemory);
 
+
+
+	CreateBuffer(device, physicalDevice, bufferSize,
+		VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+		vertexBuffer,
+		vertexBufferMemory
+	);
+
+	CopyBuffer(device, stagingBuffer, vertexBuffer, bufferSize);
+	vkDestroyBuffer(device, stagingBuffer, nullptr);
+	vkFreeMemory(device, stagingBufferMemory, nullptr);
 
 }
 
@@ -118,6 +134,40 @@ void GraphicsPipelineManager::CreateBuffer(VkDevice& device, VkPhysicalDevice& p
 	vkBindBufferMemory(device, buffer,bufferMemory, 0);
 }
 
+void GraphicsPipelineManager::CopyBuffer(VkDevice& device , VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size)
+{
+	VkCommandBufferAllocateInfo allocInfo{};
+	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	allocInfo.commandPool = **commandPool;
+	
+	allocInfo.commandBufferCount = 1;
+
+	VkCommandBuffer commandBuffer;
+	vkAllocateCommandBuffers(device, &allocInfo, &commandBuffer);
+	
+	VkCommandBufferBeginInfo beginInfo{};
+	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+	vkBeginCommandBuffer(commandBuffer, &beginInfo);
+
+	VkBufferCopy copyRegion{};
+	copyRegion.size = size;
+	vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
+	vkEndCommandBuffer(commandBuffer);
+
+	VkSubmitInfo submitInfo{};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &commandBuffer;
+	vkQueueSubmit(**graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
+	vkQueueWaitIdle(**graphicsQueue);
+
+	vkFreeCommandBuffers(device,**commandPool, 1, &commandBuffer);
+	
+
+}
+
 void GraphicsPipelineManager::CleanupVertexBuffer(VkDevice& device) {
 	vkDestroyBuffer(device, vertexBuffer, nullptr);
 	vkFreeMemory(device, vertexBufferMemory, nullptr);
@@ -125,8 +175,16 @@ void GraphicsPipelineManager::CleanupVertexBuffer(VkDevice& device) {
 }
 
 
-GraphicsPipelineManager::GraphicsPipelineManager(VkExtent2D SwapChainExtent) : swapChainExtent{ SwapChainExtent } {};
+//GraphicsPipelineManager::GraphicsPipelineManager( PhysicalDeviceManager* PhysicalDeviceManager, LogicalDeviceManager* LogicalDeviceManager) :  physicalDeviceManager{ PhysicalDeviceManager }, logicalDeviceManager{LogicalDeviceManager} {};
 
+
+
+
+GraphicsPipelineManager::GraphicsPipelineManager(VkCommandPool** CommandPool, VkExtent2D& SwapChainExtent, VkQueue** GraphicsQueue) :
+	commandPool{CommandPool},
+	swapChainExtent{SwapChainExtent},
+	graphicsQueue{GraphicsQueue}
+{};
 
 void GraphicsPipelineManager::CreateGraphicsPipeline(VkDevice& device)
 {

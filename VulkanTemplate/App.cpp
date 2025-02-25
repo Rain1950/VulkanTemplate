@@ -59,7 +59,7 @@ void App::DrawFrame()
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = signalSemaphores;
 
-	if (vkQueueSubmit(logicalDeviceManager.graphicsQueue, 1, &submitInfo, physicalDeviceManager.inFlightFences[physicalDeviceManager.currentFrame]) != VK_SUCCESS) {
+	if (vkQueueSubmit(**logicalDeviceManager.graphicsQueue, 1, &submitInfo, physicalDeviceManager.inFlightFences[physicalDeviceManager.currentFrame]) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to submit draw command buffer!");
 	}
 

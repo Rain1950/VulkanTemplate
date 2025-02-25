@@ -4,6 +4,7 @@
 #include <vulkan/vulkan.h>
 #include <glm.hpp>
 #include <array>
+#include "GraphicsPipelineManager.h"
 
 class GraphicsPipelineManager {
 public:
@@ -46,20 +47,29 @@ public:
 	{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
 	};
 
-	VkExtent2D swapChainExtent{};
+	
 	VkRenderPass renderPass{};
 	VkPipelineLayout pipelineLayout{};
 	VkPipeline graphicsPipeline{};
 	VkBuffer vertexBuffer;
 	VkDeviceMemory vertexBufferMemory;
 
-	GraphicsPipelineManager(VkExtent2D SwapChainExtent);
+	VkCommandPool** commandPool;
+	VkExtent2D swapChainExtent;
+	VkQueue** graphicsQueue;
+
+
+
+	GraphicsPipelineManager(VkCommandPool** CommandPool, VkExtent2D& SwapChainExtent, VkQueue** GraphicsQueue);
+	
 	void CreateGraphicsPipeline(VkDevice& device);
 	VkShaderModule CreateShaderModule(const std::vector<char>& code, VkDevice& device);
 	void CreateRenderPass(VkFormat swapChainImageFormat, VkDevice& device);
 	uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, VkPhysicalDevice& physicalDevice);
 	void CreateVertexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	void CreateBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice,VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,VkBuffer& buffer, VkDeviceMemory& bufferMemory);
+	void CopyBuffer(VkDevice& device, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
+	
 
 	void CleanGraphicsPipeline(VkDevice& device);
 	void CleanPipelineLayout(VkDevice& device);

@@ -11,10 +11,15 @@
 #include <cstdint>
 #include <algorithm>
 #include <limits>
+#include <iostream>
+
 
 PhysicalDeviceManager::PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance, std::shared_ptr<WindowManager> WindowManager) : 
 	vulkanInstance{ VulkanInstance }, 
-	windowManager{WindowManager} {};
+	windowManager{ WindowManager } {
+	commandPool = new VkCommandPool*;
+	*commandPool = new VkCommandPool{};
+};
  
 
 void PhysicalDeviceManager::PickPhysicalDevice() {
@@ -200,9 +205,12 @@ void PhysicalDeviceManager::CreateCommandPool(VkDevice& device)
 	poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 	poolInfo.queueFamilyIndex = indices.graphicsFamily.value();
 
-	if (vkCreateCommandPool(device, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
+	if (vkCreateCommandPool(device, &poolInfo, nullptr, *commandPool) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create command pool");
 	}
+
+	
+	
 }
 
 void PhysicalDeviceManager::CreateCommandBuffers(VkDevice& device)
@@ -211,7 +219,7 @@ void PhysicalDeviceManager::CreateCommandBuffers(VkDevice& device)
 
 	VkCommandBufferAllocateInfo allocInfo{};
 	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-	allocInfo.commandPool = commandPool;
+	allocInfo.commandPool = **commandPool;
 	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	allocInfo.commandBufferCount = MAX_FRAMES_IN_FLIGHT;
 
@@ -326,7 +334,7 @@ void PhysicalDeviceManager::CleanupSyncObjects(VkDevice& device){
 
 
 void PhysicalDeviceManager::CleanupCommandPool(VkDevice& device) {
-	vkDestroyCommandPool(device, commandPool, nullptr);
+	vkDestroyCommandPool(device, **commandPool, nullptr);
 }
 
 

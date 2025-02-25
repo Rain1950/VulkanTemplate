@@ -44,7 +44,8 @@ public:
 	uint32_t currentFrame = 0;
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
-	VkCommandPool commandPool;
+	VkCommandPool** commandPool;
+	
 	std::vector<VkCommandBuffer> commandBuffers;
 	std::vector<VkSemaphore> imageAvailableSemaphores;
 	std::vector<VkSemaphore> renderFinishedSemaphores;
