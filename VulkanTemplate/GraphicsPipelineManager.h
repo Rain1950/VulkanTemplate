@@ -5,6 +5,9 @@
 #include <glm.hpp>
 #include <array>
 #include "GraphicsPipelineManager.h"
+#define GLM_FORCE_RADIANS
+#include <chrono>
+#include <gtc/matrix_transform.hpp>
 
 class GraphicsPipelineManager {
 public:
@@ -12,7 +15,7 @@ public:
 	struct Vertex {
 		glm::vec2 pos;
 		glm::vec3 color;
-
+		
 		static VkVertexInputBindingDescription GetBindingDescription() {
 			VkVertexInputBindingDescription bindingDescription{};
 			bindingDescription.binding = 0;
@@ -52,6 +55,13 @@ public:
 		0,1,2,2,3,0
 	};
 
+	struct UniformBufferObject {
+		glm::mat4 model;
+		glm::mat4 view;
+		glm::mat4 proj;
+
+	};
+
 	
 	VkRenderPass renderPass{};
 	VkPipelineLayout pipelineLayout{};
@@ -60,12 +70,17 @@ public:
 	VkDeviceMemory vertexBufferMemory;
 	VkBuffer indexBuffer;
 	VkDeviceMemory indexBufferMemory;
-
+	std::vector<VkBuffer> uniformBuffers;
+	std::vector<VkDeviceMemory> uniformBuffersMemory;
+	std::vector<void*> uniformBuffersMapped;
 
 
 	VkCommandPool** commandPool;
 	VkExtent2D swapChainExtent;
 	VkQueue** graphicsQueue;
+	VkDescriptorSetLayout descriptorSetLayout;
+	VkPipelineLayout pipelineLayout;
+
 
 
 
@@ -79,14 +94,19 @@ public:
 	void CreateIndexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	void CreateBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice,VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 	void CopyBuffer(VkDevice& device, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
+	void CreateDescriptorSetLayout(VkDevice& device);
+	void CreateUniformBuffers(VkDevice& device, VkPhysicalDevice& physicalDevice, int MAX_FRAMES_IN_FLIGHT);
+
+
 	
 
+	void CleanupUniformBuffers(VkDevice& device, int MAX_FRAMES_IN_FLIGHT);
 	void CleanGraphicsPipeline(VkDevice& device);
 	void CleanPipelineLayout(VkDevice& device);
 	void CleanRenderPass(VkDevice& device);
 	void CleanupVertexBuffer(VkDevice& device);
 	void CleanupIndexBuffer(VkDevice& device);
-
+	void CleanupDescriptorSetLayout(VkDevice& device);
 
 
 };

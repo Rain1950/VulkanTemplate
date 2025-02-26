@@ -17,11 +17,13 @@ void App::InitVulkan() {
 	physicalDeviceManager.CreateSwapChain(logicalDeviceManager.device);
 	physicalDeviceManager.CreateImageViews(logicalDeviceManager.device);
 	graphicsPipelineManager.CreateRenderPass(physicalDeviceManager.swapChainImageFormat, logicalDeviceManager.device);
+	graphicsPipelineManager.CreateDescriptorSetLayout(logicalDeviceManager.device);
 	graphicsPipelineManager.CreateGraphicsPipeline(logicalDeviceManager.device);
 	physicalDeviceManager.CreateFrameBuffers(logicalDeviceManager.device, graphicsPipelineManager.renderPass);
 	physicalDeviceManager.CreateCommandPool(logicalDeviceManager.device);
 	graphicsPipelineManager.CreateVertexBuffer(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateIndexBuffer(logicalDeviceManager.device, physicalDeviceManager.physicalDevice);
+	graphicsPipelineManager.CreateUniformBuffers(logicalDeviceManager.device, physicalDeviceManager.physicalDevice, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
 	physicalDeviceManager.CreateCommandBuffers(logicalDeviceManager.device);
 	physicalDeviceManager.CreateSyncObjects(logicalDeviceManager.device);
 
@@ -109,8 +111,12 @@ void App::Cleanup()
 	graphicsPipelineManager.CleanRenderPass(logicalDeviceManager.device);
 	physicalDeviceManager.CleanupImageViews(logicalDeviceManager.device);
 	physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
+	graphicsPipelineManager.CleanupUniformBuffers(logicalDeviceManager.device, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
+	graphicsPipelineManager.CleanupDescriptorSetLayout(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupIndexBuffer(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupVertexBuffer(logicalDeviceManager.device);
+	
+
 	logicalDeviceManager.Cleanup();
 	windowManager->Cleanup();
 	vulkanInstance->Cleanup();
