@@ -3,7 +3,8 @@
 #include <vulkan/vulkan.h>
 #include "GraphicsPipelineManager.h"
 #include "FileLoader.h"
-
+#include <stdexcept>
+#include <limits>
 
 VkShaderModule GraphicsPipelineManager::CreateShaderModule(const std::vector<char>& code,VkDevice& device) {
 	VkShaderModuleCreateInfo createInfo{};
@@ -244,11 +245,66 @@ void GraphicsPipelineManager::UpdateUniformBuffers(uint32_t currentImage)
 	UniformBufferObject ubo{};
 	ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float)swapChainExtent.height, 0.1f, 10.0f);
+	ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent->width / (float)swapChainExtent->height, 0.1f, 10.0f);
 	ubo.proj[1][1] *= -1;
 
 	memcpy(uniformBuffersMapped[currentImage], &ubo, sizeof(ubo));
-}	
+
+}
+void GraphicsPipelineManager::CreateDescriptorPool(VkDevice& device,int count)
+{
+	VkDescriptorPoolSize poolSize{};
+	poolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	poolSize.descriptorCount = static_cast<uint32_t>(count);
+	
+	VkDescriptorPoolCreateInfo poolInfo{};
+	poolInfo.sType  = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+	poolInfo.poolSizeCount = 1;
+	poolInfo.pPoolSizes = &poolSize;
+	poolInfo.maxSets = static_cast<uint32_t>(count);
+
+	if (vkCreateDescriptorPool(device, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
+		throw  std::runtime_error("Failed to create descriptor pool");
+	}
+}
+
+void GraphicsPipelineManager::CreateDescriptorSets(VkDevice& device,int count)
+{
+	std::vector<VkDescriptorSetLayout> layouts(count, descriptorSetLayout);
+	VkDescriptorSetAllocateInfo allocInfo{};
+	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	allocInfo.descriptorPool = descriptorPool;
+	allocInfo.descriptorSetCount = static_cast<uint32_t>(count);
+	allocInfo.pSetLayouts = layouts.data();
+	
+	descriptorSets.resize(count);
+
+	if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets.data()) != VK_SUCCESS) {
+		throw std::runtime_error("Failed to allocate descriptor sets!");
+	}
+
+	for (size_t i = 0; i < count; i++) {
+		VkDescriptorBufferInfo bufferInfo{};
+		bufferInfo.buffer = uniformBuffers[i];
+		bufferInfo.offset = 0;
+		bufferInfo.range = sizeof(UniformBufferObject);
+
+		VkWriteDescriptorSet descriptorWrite{};
+		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWrite.dstSet = descriptorSets[i];
+		descriptorWrite.dstBinding = 0;
+		descriptorWrite.dstArrayElement = 0;
+		descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+		descriptorWrite.descriptorCount = 1;
+		descriptorWrite.pBufferInfo = &bufferInfo;
+
+		vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
+
+	}
+
+
+}
+
 
 void GraphicsPipelineManager::CleanupUniformBuffers(VkDevice& device, int MAX_FRAMES_IN_FLIGHT) {
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
@@ -272,6 +328,7 @@ void GraphicsPipelineManager::CleanupIndexBuffer(VkDevice& device) {
 
 void GraphicsPipelineManager::CleanupDescriptorSetLayout(VkDevice& device)
 {
+	vkDestroyDescriptorPool(device, descriptorPool, nullptr);
 	vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
 }
 
@@ -281,7 +338,7 @@ void GraphicsPipelineManager::CleanupDescriptorSetLayout(VkDevice& device)
 
 
 
-GraphicsPipelineManager::GraphicsPipelineManager(VkCommandPool** CommandPool, VkExtent2D& SwapChainExtent, VkQueue** GraphicsQueue) :
+GraphicsPipelineManager::GraphicsPipelineManager(VkCommandPool** CommandPool, VkExtent2D* SwapChainExtent, VkQueue** GraphicsQueue) :
 	commandPool{CommandPool},
 	swapChainExtent{SwapChainExtent},
 	graphicsQueue{GraphicsQueue}
@@ -338,14 +395,14 @@ void GraphicsPipelineManager::CreateGraphicsPipeline(VkDevice& device)
 	VkViewport viewport{};
 	viewport.x = 0.0f;
 	viewport.y = 0.0f;
-	viewport.width = (float)swapChainExtent.width;
-	viewport.height = (float)swapChainExtent.height;
+	viewport.width = (float)swapChainExtent->width;
+	viewport.height = (float)swapChainExtent->height;
 	viewport.minDepth = 0.0f;
 	viewport.maxDepth = 1.0f;
 
 	VkRect2D scissor{};
 	scissor.offset = { 0,0 };
-	scissor.extent = swapChainExtent;
+	scissor.extent = *swapChainExtent;
 
 	VkPipelineViewportStateCreateInfo viewportState{};
 	viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
@@ -361,7 +418,7 @@ void GraphicsPipelineManager::CreateGraphicsPipeline(VkDevice& device)
 	rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
 	rasterizer.lineWidth = 1.0f;
 	rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-	rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
+	rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
 	rasterizer.depthBiasEnable = VK_FALSE;
 
 

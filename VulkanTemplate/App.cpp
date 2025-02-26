@@ -24,6 +24,8 @@ void App::InitVulkan() {
 	graphicsPipelineManager.CreateVertexBuffer(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateIndexBuffer(logicalDeviceManager.device, physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateUniformBuffers(logicalDeviceManager.device, physicalDeviceManager.physicalDevice, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
+	graphicsPipelineManager.CreateDescriptorPool(logicalDeviceManager.device, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
+	graphicsPipelineManager.CreateDescriptorSets(logicalDeviceManager.device,physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
 	physicalDeviceManager.CreateCommandBuffers(logicalDeviceManager.device);
 	physicalDeviceManager.CreateSyncObjects(logicalDeviceManager.device);
 
@@ -47,6 +49,8 @@ void App::DrawFrame()
 
 	vkResetCommandBuffer(physicalDeviceManager.commandBuffers[physicalDeviceManager.currentFrame], 0);
 	physicalDeviceManager.RecordCommandBuffer(physicalDeviceManager.commandBuffers[physicalDeviceManager.currentFrame], imageIndex, graphicsPipelineManager);
+
+	graphicsPipelineManager.UpdateUniformBuffers(physicalDeviceManager.currentFrame);
 
 	VkSubmitInfo submitInfo{};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;

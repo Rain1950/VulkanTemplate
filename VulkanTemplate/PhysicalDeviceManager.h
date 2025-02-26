@@ -44,7 +44,7 @@ public:
 	const int MAX_FRAMES_IN_FLIGHT = 2;
 	uint32_t currentFrame = 0;
 	VkFormat swapChainImageFormat;
-	VkExtent2D swapChainExtent;
+	VkExtent2D* swapChainExtent;
 	VkCommandPool** commandPool;
 	
 	std::vector<VkCommandBuffer> commandBuffers;

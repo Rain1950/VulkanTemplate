@@ -76,15 +76,16 @@ public:
 
 
 	VkCommandPool** commandPool;
-	VkExtent2D swapChainExtent;
+	VkExtent2D* swapChainExtent;
 	VkQueue** graphicsQueue;
 	VkDescriptorSetLayout descriptorSetLayout;
-	VkPipelineLayout pipelineLayout;
+	VkDescriptorPool descriptorPool;
+	std::vector<VkDescriptorSet> descriptorSets;
 
 
 
 
-	GraphicsPipelineManager(VkCommandPool** CommandPool, VkExtent2D& SwapChainExtent, VkQueue** GraphicsQueue);
+	GraphicsPipelineManager(VkCommandPool** CommandPool, VkExtent2D* SwapChainExtent, VkQueue** GraphicsQueue);
 	
 	void CreateGraphicsPipeline(VkDevice& device);
 	VkShaderModule CreateShaderModule(const std::vector<char>& code, VkDevice& device);
@@ -96,7 +97,10 @@ public:
 	void CopyBuffer(VkDevice& device, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 	void CreateDescriptorSetLayout(VkDevice& device);
 	void CreateUniformBuffers(VkDevice& device, VkPhysicalDevice& physicalDevice, int MAX_FRAMES_IN_FLIGHT);
-
+	void UpdateUniformBuffers(uint32_t currentImage);
+	void CreateDescriptorPool(VkDevice& device,int count);
+	void CreateDescriptorSets(VkDevice& device, int count);
+	
 
 	
 
