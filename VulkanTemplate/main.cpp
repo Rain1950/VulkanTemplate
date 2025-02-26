@@ -21,7 +21,11 @@ int main() {
 	std::shared_ptr<WindowManager> windowManager(new WindowManager{vulkanInstance});
 	PhysicalDeviceManager physicalDeviceManager{vulkanInstance,windowManager};
 	LogicalDeviceManager logicalDeviceManager{};
-	GraphicsPipelineManager graphicsPipelineManager{physicalDeviceManager.swapChainExtent};
+	GraphicsPipelineManager graphicsPipelineManager{ 
+		physicalDeviceManager.commandPool,
+		physicalDeviceManager.swapChainExtent,
+		logicalDeviceManager.graphicsQueue
+	};
 
 
 	App app(windowManager,vulkanInstance,physicalDeviceManager,logicalDeviceManager,validationLayersManager,graphicsPipelineManager);

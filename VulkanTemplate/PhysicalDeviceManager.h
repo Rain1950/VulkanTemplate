@@ -31,6 +31,7 @@ public:
 			//VK_KHR_SYNCHRONIZATION_2_EXTENSION_NAME
 	};
 
+
 	std::shared_ptr<VulkanInstance> vulkanInstance;
 	std::shared_ptr<WindowManager> windowManager;
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
@@ -43,8 +44,9 @@ public:
 	const int MAX_FRAMES_IN_FLIGHT = 2;
 	uint32_t currentFrame = 0;
 	VkFormat swapChainImageFormat;
-	VkExtent2D swapChainExtent;
-	VkCommandPool commandPool;
+	VkExtent2D* swapChainExtent;
+	VkCommandPool** commandPool;
+	
 	std::vector<VkCommandBuffer> commandBuffers;
 	std::vector<VkSemaphore> imageAvailableSemaphores;
 	std::vector<VkSemaphore> renderFinishedSemaphores;

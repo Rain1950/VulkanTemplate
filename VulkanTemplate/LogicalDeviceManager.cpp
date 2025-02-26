@@ -4,6 +4,12 @@
 #include <stdexcept>
 #include <set>
 
+LogicalDeviceManager::LogicalDeviceManager()
+{
+	graphicsQueue = new VkQueue*;
+	*graphicsQueue = new VkQueue;
+}
+
 void LogicalDeviceManager::CreateLogicalDevice(PhysicalDeviceManager* physicalDeviceManager, ValidationLayersManager* validationLayersManager) {
 	PhysicalDeviceManager::QueueFamilyIndices indices = physicalDeviceManager->FindQueueFamilies(physicalDeviceManager->physicalDevice);
 
@@ -48,7 +54,7 @@ void LogicalDeviceManager::CreateLogicalDevice(PhysicalDeviceManager* physicalDe
 		throw std::runtime_error("Failed to create logical device");
 	}
 
-	vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
+	vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, *graphicsQueue);
 	vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
 
 	

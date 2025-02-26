@@ -11,10 +11,16 @@
 #include <cstdint>
 #include <algorithm>
 #include <limits>
+#include <iostream>
+
 
 PhysicalDeviceManager::PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance, std::shared_ptr<WindowManager> WindowManager) : 
 	vulkanInstance{ VulkanInstance }, 
-	windowManager{WindowManager} {};
+	windowManager{ WindowManager } {
+	commandPool = new VkCommandPool*;
+	*commandPool = new VkCommandPool{};
+	swapChainExtent = new VkExtent2D;
+};
  
 
 void PhysicalDeviceManager::PickPhysicalDevice() {
@@ -130,7 +136,7 @@ void PhysicalDeviceManager::CreateSwapChain(VkDevice& device)
 	vkGetSwapchainImagesKHR(device, swapChain, &imageCount, swapChainImages.data());
 
 	swapChainImageFormat = surfaceFormat.format;
-	swapChainExtent = extent;
+	*swapChainExtent = extent;
 }
 
 void PhysicalDeviceManager::CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain)
@@ -182,8 +188,8 @@ void PhysicalDeviceManager::CreateFrameBuffers(VkDevice& device, VkRenderPass& r
 		frameBufferInfo.renderPass = renderPass;
 		frameBufferInfo.attachmentCount = 1;
 		frameBufferInfo.pAttachments = attachments;
-		frameBufferInfo.width = swapChainExtent.width;
-		frameBufferInfo.height = swapChainExtent.height;
+		frameBufferInfo.width = swapChainExtent->width;
+		frameBufferInfo.height = swapChainExtent->height;
 		frameBufferInfo.layers = 1;
 
 		if (vkCreateFramebuffer(device, &frameBufferInfo, nullptr, &swapChainFrameBuffers[i]) != VK_SUCCESS) {
@@ -200,9 +206,12 @@ void PhysicalDeviceManager::CreateCommandPool(VkDevice& device)
 	poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 	poolInfo.queueFamilyIndex = indices.graphicsFamily.value();
 
-	if (vkCreateCommandPool(device, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
+	if (vkCreateCommandPool(device, &poolInfo, nullptr, *commandPool) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create command pool");
 	}
+
+	
+	
 }
 
 void PhysicalDeviceManager::CreateCommandBuffers(VkDevice& device)
@@ -211,7 +220,7 @@ void PhysicalDeviceManager::CreateCommandBuffers(VkDevice& device)
 
 	VkCommandBufferAllocateInfo allocInfo{};
 	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-	allocInfo.commandPool = commandPool;
+	allocInfo.commandPool = **commandPool;
 	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	allocInfo.commandBufferCount = MAX_FRAMES_IN_FLIGHT;
 
@@ -233,7 +242,7 @@ void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, u
 	renderPassInfo.renderPass = graphicsPipelineManager.renderPass;
 	renderPassInfo.framebuffer = swapChainFrameBuffers[imageIndex];
 	renderPassInfo.renderArea.offset = { 0, 0 };
-	renderPassInfo.renderArea.extent = swapChainExtent;
+	renderPassInfo.renderArea.extent = *swapChainExtent;
 
 	VkClearValue clearColor = { {{0.0f, 0.0f, 0.0f, 1.0f}} };
 	renderPassInfo.clearValueCount = 1;
@@ -245,23 +254,31 @@ void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, u
 	VkBuffer vertexBuffers[] = { graphicsPipelineManager.vertexBuffer };
 	VkDeviceSize offsets[] = { 0 };
 	vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
-
+	vkCmdBindIndexBuffer(commandBuffer, graphicsPipelineManager.indexBuffer, 0, VK_INDEX_TYPE_UINT16);
 
 	VkViewport viewport{};
 	viewport.x = 0.0f;
 	viewport.y = 0.0f;
-	viewport.width = (float)swapChainExtent.width;
-	viewport.height = (float)swapChainExtent.height;
+	viewport.width = (float)swapChainExtent->width;
+	viewport.height = (float)swapChainExtent->height;
 	viewport.minDepth = 0.0f;
 	viewport.maxDepth = 1.0f;
 	vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
 
 	VkRect2D scissor{};
 	scissor.offset = { 0, 0 };
-	scissor.extent = swapChainExtent;
+	scissor.extent = *swapChainExtent;
 	vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
-	vkCmdDraw(commandBuffer, static_cast<uint32_t>(graphicsPipelineManager.vertices.size()), 1, 0, 0);
+	vkCmdBindDescriptorSets(commandBuffer,
+		VK_PIPELINE_BIND_POINT_GRAPHICS,graphicsPipelineManager.pipelineLayout,
+		0,
+		1,
+		&graphicsPipelineManager.descriptorSets[currentFrame],
+		0,
+		nullptr);
+
+	vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(graphicsPipelineManager.indices.size()), 1, 0, 0, 0);
 
 	vkCmdEndRenderPass(commandBuffer);
 
@@ -326,7 +343,7 @@ void PhysicalDeviceManager::CleanupSyncObjects(VkDevice& device){
 
 
 void PhysicalDeviceManager::CleanupCommandPool(VkDevice& device) {
-	vkDestroyCommandPool(device, commandPool, nullptr);
+	vkDestroyCommandPool(device, **commandPool, nullptr);
 }
 
 

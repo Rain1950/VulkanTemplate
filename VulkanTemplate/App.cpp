@@ -17,10 +17,15 @@ void App::InitVulkan() {
 	physicalDeviceManager.CreateSwapChain(logicalDeviceManager.device);
 	physicalDeviceManager.CreateImageViews(logicalDeviceManager.device);
 	graphicsPipelineManager.CreateRenderPass(physicalDeviceManager.swapChainImageFormat, logicalDeviceManager.device);
+	graphicsPipelineManager.CreateDescriptorSetLayout(logicalDeviceManager.device);
 	graphicsPipelineManager.CreateGraphicsPipeline(logicalDeviceManager.device);
 	physicalDeviceManager.CreateFrameBuffers(logicalDeviceManager.device, graphicsPipelineManager.renderPass);
 	physicalDeviceManager.CreateCommandPool(logicalDeviceManager.device);
 	graphicsPipelineManager.CreateVertexBuffer(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
+	graphicsPipelineManager.CreateIndexBuffer(logicalDeviceManager.device, physicalDeviceManager.physicalDevice);
+	graphicsPipelineManager.CreateUniformBuffers(logicalDeviceManager.device, physicalDeviceManager.physicalDevice, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
+	graphicsPipelineManager.CreateDescriptorPool(logicalDeviceManager.device, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
+	graphicsPipelineManager.CreateDescriptorSets(logicalDeviceManager.device,physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
 	physicalDeviceManager.CreateCommandBuffers(logicalDeviceManager.device);
 	physicalDeviceManager.CreateSyncObjects(logicalDeviceManager.device);
 
@@ -45,6 +50,8 @@ void App::DrawFrame()
 	vkResetCommandBuffer(physicalDeviceManager.commandBuffers[physicalDeviceManager.currentFrame], 0);
 	physicalDeviceManager.RecordCommandBuffer(physicalDeviceManager.commandBuffers[physicalDeviceManager.currentFrame], imageIndex, graphicsPipelineManager);
 
+	graphicsPipelineManager.UpdateUniformBuffers(physicalDeviceManager.currentFrame);
+
 	VkSubmitInfo submitInfo{};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	VkSemaphore waitSemaphores[] = { physicalDeviceManager.imageAvailableSemaphores[physicalDeviceManager.currentFrame] };
@@ -59,7 +66,7 @@ void App::DrawFrame()
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = signalSemaphores;
 
-	if (vkQueueSubmit(logicalDeviceManager.graphicsQueue, 1, &submitInfo, physicalDeviceManager.inFlightFences[physicalDeviceManager.currentFrame]) != VK_SUCCESS) {
+	if (vkQueueSubmit(**logicalDeviceManager.graphicsQueue, 1, &submitInfo, physicalDeviceManager.inFlightFences[physicalDeviceManager.currentFrame]) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to submit draw command buffer!");
 	}
 
@@ -108,7 +115,12 @@ void App::Cleanup()
 	graphicsPipelineManager.CleanRenderPass(logicalDeviceManager.device);
 	physicalDeviceManager.CleanupImageViews(logicalDeviceManager.device);
 	physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
+	graphicsPipelineManager.CleanupUniformBuffers(logicalDeviceManager.device, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
+	graphicsPipelineManager.CleanupDescriptorSetLayout(logicalDeviceManager.device);
+	graphicsPipelineManager.CleanupIndexBuffer(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupVertexBuffer(logicalDeviceManager.device);
+	
+
 	logicalDeviceManager.Cleanup();
 	windowManager->Cleanup();
 	vulkanInstance->Cleanup();
