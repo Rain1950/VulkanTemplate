@@ -21,6 +21,7 @@ void App::InitVulkan() {
 	physicalDeviceManager.CreateFrameBuffers(logicalDeviceManager.device, graphicsPipelineManager.renderPass);
 	physicalDeviceManager.CreateCommandPool(logicalDeviceManager.device);
 	graphicsPipelineManager.CreateVertexBuffer(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
+	graphicsPipelineManager.CreateIndexBuffer(logicalDeviceManager.device, physicalDeviceManager.physicalDevice);
 	physicalDeviceManager.CreateCommandBuffers(logicalDeviceManager.device);
 	physicalDeviceManager.CreateSyncObjects(logicalDeviceManager.device);
 
@@ -108,6 +109,7 @@ void App::Cleanup()
 	graphicsPipelineManager.CleanRenderPass(logicalDeviceManager.device);
 	physicalDeviceManager.CleanupImageViews(logicalDeviceManager.device);
 	physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
+	graphicsPipelineManager.CleanupIndexBuffer(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupVertexBuffer(logicalDeviceManager.device);
 	logicalDeviceManager.Cleanup();
 	windowManager->Cleanup();
