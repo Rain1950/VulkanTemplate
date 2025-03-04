@@ -17,7 +17,7 @@ std::vector<char> FileLoader::ReadShaderFile(const std::string& filename)
 	return buffer;
 }
 
-void FileLoader::LoadTextureImage(VkDevice& device, std::string textureFilePath)
+TextureImageData FileLoader::ReadTextureImage(VkDevice& device, std::string textureFilePath)
 {
 	if (textureFilePath.empty()) {
 		throw std::runtime_error("Empty texture file path, failed to load texture image");
@@ -32,11 +32,20 @@ void FileLoader::LoadTextureImage(VkDevice& device, std::string textureFilePath)
 		throw std::runtime_error("Failed to load texture image");
 	}
 
-	VkBuffer stagingBuffer;
-	VkDeviceMemory stagingBufferMemory;
+	TextureImageData data{};
+	data.height = height;
+	data.width = width;
+	data.pixels = pixels;
+	return data;
+
 
 	
 
 	
+}
+
+void FileLoader::CloseTextureImage(stbi_uc* pixels)
+{
+	stbi_image_free(pixels);
 }
 
