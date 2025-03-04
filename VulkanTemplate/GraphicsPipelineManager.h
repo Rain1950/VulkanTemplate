@@ -91,10 +91,10 @@ public:
 	void CreateGraphicsPipeline(VkDevice& device);
 	VkShaderModule CreateShaderModule(const std::vector<char>& code, VkDevice& device);
 	void CreateRenderPass(VkFormat swapChainImageFormat, VkDevice& device);
-	uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, VkPhysicalDevice& physicalDevice);
+	static uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, VkPhysicalDevice& physicalDevice);
 	void CreateVertexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	void CreateIndexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice);
-	void CreateBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice,VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,VkBuffer& buffer, VkDeviceMemory& bufferMemory);
+	static void CreateBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice,VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 	void CopyBuffer(VkDevice& device, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 	void CreateDescriptorSetLayout(VkDevice& device);
 	void CreateUniformBuffers(VkDevice& device, VkPhysicalDevice& physicalDevice, int MAX_FRAMES_IN_FLIGHT);

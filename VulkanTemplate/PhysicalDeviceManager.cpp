@@ -21,7 +21,7 @@ PhysicalDeviceManager::PhysicalDeviceManager(std::shared_ptr<VulkanInstance> Vul
 	*commandPool = new VkCommandPool{};
 	swapChainExtent = new VkExtent2D;
 };
- 
+
 
 void PhysicalDeviceManager::PickPhysicalDevice() {
 	uint32_t deviceCount = 0;
@@ -31,7 +31,7 @@ void PhysicalDeviceManager::PickPhysicalDevice() {
 	}
 
 	std::vector<VkPhysicalDevice> devices(deviceCount);
-
+	
 	vkEnumeratePhysicalDevices(vulkanInstance->instance, &deviceCount, devices.data());
 	
 	for (const auto& device : devices) {
