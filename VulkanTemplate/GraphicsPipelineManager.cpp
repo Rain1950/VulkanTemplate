@@ -64,7 +64,7 @@ void GraphicsPipelineManager::CreateRenderPass(VkFormat swapChainImageFormat, Vk
 	
 }
 
-uint32_t GraphicsPipelineManager::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, VkPhysicalDevice& physicalDevice) {
+ uint32_t GraphicsPipelineManager::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, VkPhysicalDevice& physicalDevice) {
 	VkPhysicalDeviceMemoryProperties memProperties;
 	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
 
@@ -142,7 +142,7 @@ void GraphicsPipelineManager::CreateIndexBuffer(VkDevice& device, VkPhysicalDevi
 	vkFreeMemory(device, stagingBufferMemory, nullptr);
 }
 
-void GraphicsPipelineManager::CreateBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory)
+ void GraphicsPipelineManager::CreateBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory)
 {
 	VkBufferCreateInfo bufferInfo{};
 	bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -159,7 +159,7 @@ void GraphicsPipelineManager::CreateBuffer(VkDevice& device, VkPhysicalDevice& p
 	VkMemoryAllocateInfo allocInfo{};
 	allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 	allocInfo.allocationSize = memRequirements.size;
-	allocInfo.memoryTypeIndex = FindMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, physicalDevice);
+	allocInfo.memoryTypeIndex = GraphicsPipelineManager::FindMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, physicalDevice);
 
 	if (vkAllocateMemory(device, &allocInfo, nullptr, &bufferMemory) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to allocate  buffer memory!");
@@ -346,8 +346,8 @@ GraphicsPipelineManager::GraphicsPipelineManager(VkCommandPool** CommandPool, Vk
 
 void GraphicsPipelineManager::CreateGraphicsPipeline(VkDevice& device)
 {
-	auto vertShaderCode = ReadFile("shaders/vert.spv");
-	auto fragShaderCode = ReadFile("shaders/frag.spv");
+	auto vertShaderCode = FileLoader::ReadShaderFile("shaders/vert.spv");
+	auto fragShaderCode = FileLoader::ReadShaderFile("shaders/frag.spv");
 	VkShaderModule vertShaderModule = CreateShaderModule(vertShaderCode,device);
 	VkShaderModule fragShaderModule = CreateShaderModule(fragShaderCode,device);
 

@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <set>
 
+
 LogicalDeviceManager::LogicalDeviceManager()
 {
 	graphicsQueue = new VkQueue*;

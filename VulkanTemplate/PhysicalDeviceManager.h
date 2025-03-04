@@ -20,7 +20,7 @@ public:
 	};
 
 	struct SwapChainSupportDetails {
-		VkSurfaceCapabilitiesKHR capabilities;
+		VkSurfaceCapabilitiesKHR capabilities{};
 		std::vector<VkSurfaceFormatKHR> formats;
 		std::vector<VkPresentModeKHR> presentModes;
 
@@ -36,14 +36,14 @@ public:
 	std::shared_ptr<WindowManager> windowManager;
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 	VkPhysicalDeviceFeatures deviceFeatures{};
-	VkSwapchainKHR swapChain;
+	VkSwapchainKHR swapChain{};
 	std::vector<VkImage> swapChainImages;
 	std::vector<VkImageView> swapChainImageViews;
 	std::vector<VkFramebuffer> swapChainFrameBuffers;
 
 	const int MAX_FRAMES_IN_FLIGHT = 2;
 	uint32_t currentFrame = 0;
-	VkFormat swapChainImageFormat;
+	VkFormat swapChainImageFormat{};
 	VkExtent2D* swapChainExtent;
 	VkCommandPool** commandPool;
 	
