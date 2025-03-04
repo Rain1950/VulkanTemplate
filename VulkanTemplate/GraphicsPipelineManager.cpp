@@ -305,6 +305,13 @@ void GraphicsPipelineManager::CreateDescriptorSets(VkDevice& device,int count)
 
 }
 
+void GraphicsPipelineManager::CreateTextureImage(VkDevice& device)
+{
+	TextureImageData data{};
+	data = FileLoader::ReadTextureImage(device, "textures/texture.jpg");
+	FileLoader::CloseTextureImage(data.pixels);
+}
+
 
 void GraphicsPipelineManager::CleanupUniformBuffers(VkDevice& device, int MAX_FRAMES_IN_FLIGHT) {
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
