@@ -36,7 +36,7 @@ TextureImageData FileLoader::ReadTextureImage(VkDevice& device, std::string text
 	data.height = height;
 	data.width = width;
 	data.pixels = pixels;
-	return data;
+	return data;	
 
 
 	
