@@ -21,7 +21,7 @@ void App::InitVulkan() {
 	graphicsPipelineManager.CreateGraphicsPipeline(logicalDeviceManager.device);
 	physicalDeviceManager.CreateFrameBuffers(logicalDeviceManager.device, graphicsPipelineManager.renderPass);
 	physicalDeviceManager.CreateCommandPool(logicalDeviceManager.device);
-	graphicsPipelineManager.CreateTextureImage(logicalDeviceManager.device);
+	graphicsPipelineManager.CreateTextureImage(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateVertexBuffer(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateIndexBuffer(logicalDeviceManager.device, physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateUniformBuffers(logicalDeviceManager.device, physicalDeviceManager.physicalDevice, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);

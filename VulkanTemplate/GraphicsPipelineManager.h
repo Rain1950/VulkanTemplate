@@ -101,7 +101,9 @@ public:
 	void UpdateUniformBuffers(uint32_t currentImage);
 	void CreateDescriptorPool(VkDevice& device,int count);
 	void CreateDescriptorSets(VkDevice& device, int count);
-	void CreateTextureImage(VkDevice& device);
+	void CreateImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory, VkDevice& device, VkPhysicalDevice& physicalDevice);
+	void CreateTextureImage(VkDevice& device, VkPhysicalDevice& physicalDevice);
+
 	
 
 	
