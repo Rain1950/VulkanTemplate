@@ -21,7 +21,10 @@ void App::InitVulkan() {
 	graphicsPipelineManager.CreateGraphicsPipeline(logicalDeviceManager.device);
 	physicalDeviceManager.CreateFrameBuffers(logicalDeviceManager.device, graphicsPipelineManager.renderPass);
 	physicalDeviceManager.CreateCommandPool(logicalDeviceManager.device);
+
 	graphicsPipelineManager.CreateTextureImage(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
+	graphicsPipelineManager.CreateTextureImageView(logicalDeviceManager.device);
+	graphicsPipelineManager.CreateTextureSampler(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateVertexBuffer(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateIndexBuffer(logicalDeviceManager.device, physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateUniformBuffers(logicalDeviceManager.device, physicalDeviceManager.physicalDevice, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
@@ -116,6 +119,8 @@ void App::Cleanup()
 	graphicsPipelineManager.CleanRenderPass(logicalDeviceManager.device);
 	physicalDeviceManager.CleanupImageViews(logicalDeviceManager.device);
 	physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
+	graphicsPipelineManager.CleanupTextureSampler(logicalDeviceManager.device);
+	graphicsPipelineManager.CleanupTextureView(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupTextureImage(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupUniformBuffers(logicalDeviceManager.device, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
 	graphicsPipelineManager.CleanupDescriptorSetLayout(logicalDeviceManager.device);

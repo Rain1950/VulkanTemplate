@@ -4,9 +4,9 @@
 
 class LogicalDeviceManager {
 public:
-	VkDevice device;
-	VkQueue** graphicsQueue;
-	VkQueue presentQueue;
+	VkDevice device{};
+	VkQueue** graphicsQueue{};
+	VkQueue presentQueue{};
 	LogicalDeviceManager();
 	
 	void CreateLogicalDevice(PhysicalDeviceManager* physicalDeviceManager, ValidationLayersManager* validationLayersManager);

@@ -35,7 +35,7 @@ public:
 	std::shared_ptr<VulkanInstance> vulkanInstance;
 	std::shared_ptr<WindowManager> windowManager;
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-	VkPhysicalDeviceFeatures deviceFeatures{};
+	VkPhysicalDeviceFeatures deviceFeatures{ .samplerAnisotropy = VK_TRUE };
 	VkSwapchainKHR swapChain{};
 	std::vector<VkImage> swapChainImages;
 	std::vector<VkImageView> swapChainImageViews;

@@ -84,6 +84,9 @@ public:
 	std::vector<VkDescriptorSet> descriptorSets{};
 	VkImage textureImage{};
 	VkDeviceMemory textureImageMemory{};
+	VkImageView textureImageView{};
+	VkSampler textureSampler{};
+	
 
 
 
@@ -108,11 +111,13 @@ public:
 	void EndSingleTimeCommands(VkCommandBuffer commandBuffer, VkDevice& device);
 	void TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, VkDevice& device);
 	void CopyBufferToImage(VkDevice& device, VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
+	void CreateTextureImageView(VkDevice& device);
+	static VkImageView CreateImageView(VkDevice& device, VkImage image, VkFormat forrmat);
+	void CreateTextureSampler(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	
 
 
-	
-
+	void CleanupTextureSampler(VkDevice& device);
 	void CleanupUniformBuffers(VkDevice& device, int MAX_FRAMES_IN_FLIGHT);
 	void CleanGraphicsPipeline(VkDevice& device);
 	void CleanPipelineLayout(VkDevice& device);
@@ -121,6 +126,8 @@ public:
 	void CleanupIndexBuffer(VkDevice& device);
 	void CleanupDescriptorSetLayout(VkDevice& device);
 	void CleanupTextureImage(VkDevice& device);
+	void CleanupTextureView(VkDevice& device);
+
 
 
 };
