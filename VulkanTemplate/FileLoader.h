@@ -11,6 +11,19 @@
 		int height;
 		int texChannels;
 		stbi_uc* pixels;
+		VkDeviceSize imageSize;
+
+		TextureImageData(int Width, int Height, int TexChannels, stbi_uc* Pixels) : 
+			width{ Width }, 
+			height{ Height },
+			texChannels{ TexChannels }, 
+			pixels{Pixels}
+		{
+			
+			imageSize = width * height * 4; // 4 for rgba byte size
+		}
+
+		TextureImageData() {};
 	};
  class FileLoader {
 

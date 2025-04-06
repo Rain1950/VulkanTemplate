@@ -31,11 +31,12 @@ TextureImageData FileLoader::ReadTextureImage(VkDevice& device, std::string text
 	if (!pixels) {
 		throw std::runtime_error("Failed to load texture image");
 	}
+	
 
-	TextureImageData data{};
-	data.height = height;
-	data.width = width;
-	data.pixels = pixels;
+	TextureImageData data{width,height,texChannels,pixels};
+	
+
+	
 	return data;	
 
 

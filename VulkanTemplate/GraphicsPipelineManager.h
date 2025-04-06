@@ -83,6 +83,8 @@ public:
 	VkDescriptorPool descriptorPool;
 	std::vector<VkDescriptorSet> descriptorSets;
 
+	VkImage textureImage;
+	VkDeviceMemory textureImageMemory;
 
 
 
@@ -101,8 +103,14 @@ public:
 	void UpdateUniformBuffers(uint32_t currentImage);
 	void CreateDescriptorPool(VkDevice& device,int count);
 	void CreateDescriptorSets(VkDevice& device, int count);
-	void CreateTextureImage(VkDevice& device);
+	void CreateImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory, VkDevice& device, VkPhysicalDevice& physicalDevice);
+	void CreateTextureImage(VkDevice& device, VkPhysicalDevice& physicalDevice);
+	VkCommandBuffer BeginSingleTimeCommands(VkDevice& device);
+	void EndSingleTimeCommands(VkCommandBuffer commandBuffer, VkDevice& device);
+	void TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, VkDevice& device);
+	void CopyBufferToImage(VkDevice& device, VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 	
+
 
 	
 
@@ -113,6 +121,7 @@ public:
 	void CleanupVertexBuffer(VkDevice& device);
 	void CleanupIndexBuffer(VkDevice& device);
 	void CleanupDescriptorSetLayout(VkDevice& device);
+	void CleanupTextureImage(VkDevice& device);
 
 
 };
