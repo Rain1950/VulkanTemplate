@@ -67,24 +67,23 @@ public:
 	VkRenderPass renderPass{};
 	VkPipelineLayout pipelineLayout{};
 	VkPipeline graphicsPipeline{};
-	VkBuffer vertexBuffer;
-	VkDeviceMemory vertexBufferMemory;
-	VkBuffer indexBuffer;
-	VkDeviceMemory indexBufferMemory;
-	std::vector<VkBuffer> uniformBuffers;
-	std::vector<VkDeviceMemory> uniformBuffersMemory;
-	std::vector<void*> uniformBuffersMapped;
+	VkBuffer vertexBuffer{};
+	VkDeviceMemory vertexBufferMemory{};
+	VkBuffer indexBuffer{};
+	VkDeviceMemory indexBufferMemory{};
+	std::vector<VkBuffer> uniformBuffers{};
+	std::vector<VkDeviceMemory> uniformBuffersMemory{};
+	std::vector<void*> uniformBuffersMapped{};
 
 
-	VkCommandPool** commandPool;
-	VkExtent2D* swapChainExtent;
-	VkQueue** graphicsQueue;
-	VkDescriptorSetLayout descriptorSetLayout;
-	VkDescriptorPool descriptorPool;
-	std::vector<VkDescriptorSet> descriptorSets;
-
-	VkImage textureImage;
-	VkDeviceMemory textureImageMemory;
+	VkCommandPool** commandPool{};
+	VkExtent2D* swapChainExtent{};
+	VkQueue** graphicsQueue{};
+	VkDescriptorSetLayout descriptorSetLayout{};
+	VkDescriptorPool descriptorPool{};
+	std::vector<VkDescriptorSet> descriptorSets{};
+	VkImage textureImage{};
+	VkDeviceMemory textureImageMemory{};
 
 
 
