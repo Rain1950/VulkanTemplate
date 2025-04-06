@@ -27,9 +27,9 @@ void App::InitVulkan() {
 	graphicsPipelineManager.CreateTextureSampler(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateVertexBuffer(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateIndexBuffer(logicalDeviceManager.device, physicalDeviceManager.physicalDevice);
-	graphicsPipelineManager.CreateUniformBuffers(logicalDeviceManager.device, physicalDeviceManager.physicalDevice, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
-	graphicsPipelineManager.CreateDescriptorPool(logicalDeviceManager.device, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
-	graphicsPipelineManager.CreateDescriptorSets(logicalDeviceManager.device,physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
+	graphicsPipelineManager.CreateUniformBuffers(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
+	graphicsPipelineManager.CreateDescriptorPool(logicalDeviceManager.device);
+	graphicsPipelineManager.CreateDescriptorSets(logicalDeviceManager.device);
 	physicalDeviceManager.CreateCommandBuffers(logicalDeviceManager.device);
 	physicalDeviceManager.CreateSyncObjects(logicalDeviceManager.device);
 
@@ -93,7 +93,7 @@ void App::DrawFrame()
 		throw std::runtime_error("Failed to present swap chain image");
 	}
 
-	physicalDeviceManager.currentFrame = (physicalDeviceManager.currentFrame + 1) % physicalDeviceManager.MAX_FRAMES_IN_FLIGHT;
+	physicalDeviceManager.currentFrame = (physicalDeviceManager.currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 
 
 
@@ -122,7 +122,7 @@ void App::Cleanup()
 	graphicsPipelineManager.CleanupTextureSampler(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupTextureView(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupTextureImage(logicalDeviceManager.device);
-	graphicsPipelineManager.CleanupUniformBuffers(logicalDeviceManager.device, physicalDeviceManager.MAX_FRAMES_IN_FLIGHT);
+	graphicsPipelineManager.CleanupUniformBuffers(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupDescriptorSetLayout(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupIndexBuffer(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupVertexBuffer(logicalDeviceManager.device);

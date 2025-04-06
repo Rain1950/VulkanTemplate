@@ -15,7 +15,8 @@ public:
 	struct Vertex {
 		glm::vec2 pos;
 		glm::vec3 color;
-		
+		glm::vec2 texCoord;
+
 		static VkVertexInputBindingDescription GetBindingDescription() {
 			VkVertexInputBindingDescription bindingDescription{};
 			bindingDescription.binding = 0;
@@ -26,8 +27,8 @@ public:
 
 		}
 
-		static std::array<VkVertexInputAttributeDescription, 2> GetAttributeDescriptions() {
-			std::array<VkVertexInputAttributeDescription, 2> attributeDescriptions{};
+		static std::array<VkVertexInputAttributeDescription, 3> GetAttributeDescriptions() {
+			std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions{};
 			attributeDescriptions[0].binding = 0;
 			attributeDescriptions[0].location = 0;
 			attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
@@ -39,17 +40,23 @@ public:
 			attributeDescriptions[1].offset = offsetof(Vertex, color);
 
 
+			attributeDescriptions[2].binding = 0;
+			attributeDescriptions[2].location = 2;
+			attributeDescriptions[2].format = VK_FORMAT_R32G32_SFLOAT;
+			attributeDescriptions[2].offset = offsetof(Vertex, texCoord);
+
 			return attributeDescriptions;
 
 		}
+	
 	};
 
 
 	const std::vector<Vertex> vertices = {
-	{{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-	{{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
-	{{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
-	{{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
+	 {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+	{{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
+	{{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
+	{{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}}
 	};
 
 	const std::vector<uint16_t> indices{
@@ -101,10 +108,10 @@ public:
 	static void CreateBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice,VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 	void CopyBuffer(VkDevice& device, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 	void CreateDescriptorSetLayout(VkDevice& device);
-	void CreateUniformBuffers(VkDevice& device, VkPhysicalDevice& physicalDevice, int MAX_FRAMES_IN_FLIGHT);
+	void CreateUniformBuffers(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	void UpdateUniformBuffers(uint32_t currentImage);
-	void CreateDescriptorPool(VkDevice& device,int count);
-	void CreateDescriptorSets(VkDevice& device, int count);
+	void CreateDescriptorPool(VkDevice& device);
+	void CreateDescriptorSets(VkDevice& device);
 	void CreateImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory, VkDevice& device, VkPhysicalDevice& physicalDevice);
 	void CreateTextureImage(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	VkCommandBuffer BeginSingleTimeCommands(VkDevice& device);
@@ -118,10 +125,10 @@ public:
 
 
 	void CleanupTextureSampler(VkDevice& device);
-	void CleanupUniformBuffers(VkDevice& device, int MAX_FRAMES_IN_FLIGHT);
 	void CleanGraphicsPipeline(VkDevice& device);
 	void CleanPipelineLayout(VkDevice& device);
 	void CleanRenderPass(VkDevice& device);
+	void CleanupUniformBuffers(VkDevice& device);
 	void CleanupVertexBuffer(VkDevice& device);
 	void CleanupIndexBuffer(VkDevice& device);
 	void CleanupDescriptorSetLayout(VkDevice& device);

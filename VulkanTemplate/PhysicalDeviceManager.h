@@ -8,6 +8,8 @@
 #include <vector>
 #include "GraphicsPipelineManager.h"
 
+
+#define MAX_FRAMES_IN_FLIGHT  2
 class PhysicalDeviceManager {
 	
 public:
@@ -41,7 +43,6 @@ public:
 	std::vector<VkImageView> swapChainImageViews;
 	std::vector<VkFramebuffer> swapChainFrameBuffers;
 
-	const int MAX_FRAMES_IN_FLIGHT = 2;
 	uint32_t currentFrame = 0;
 	VkFormat swapChainImageFormat{};
 	VkExtent2D* swapChainExtent;
