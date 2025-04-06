@@ -8,6 +8,8 @@
 #include <vector>
 #include "GraphicsPipelineManager.h"
 
+
+#define MAX_FRAMES_IN_FLIGHT  2
 class PhysicalDeviceManager {
 	
 public:
@@ -35,13 +37,12 @@ public:
 	std::shared_ptr<VulkanInstance> vulkanInstance;
 	std::shared_ptr<WindowManager> windowManager;
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-	VkPhysicalDeviceFeatures deviceFeatures{};
+	VkPhysicalDeviceFeatures deviceFeatures{ .samplerAnisotropy = VK_TRUE };
 	VkSwapchainKHR swapChain{};
 	std::vector<VkImage> swapChainImages;
 	std::vector<VkImageView> swapChainImageViews;
 	std::vector<VkFramebuffer> swapChainFrameBuffers;
 
-	const int MAX_FRAMES_IN_FLIGHT = 2;
 	uint32_t currentFrame = 0;
 	VkFormat swapChainImageFormat{};
 	VkExtent2D* swapChainExtent;

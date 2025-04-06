@@ -7,11 +7,11 @@
 #include <string>
 #include <stb_image.h>
 	struct TextureImageData {
-		int width;
-		int height;
-		int texChannels;
-		stbi_uc* pixels;
-		VkDeviceSize imageSize;
+		int width{};
+		int height{};
+		int texChannels{};
+		stbi_uc* pixels = nullptr;
+		VkDeviceSize imageSize{};
 
 		TextureImageData(int Width, int Height, int TexChannels, stbi_uc* Pixels) : 
 			width{ Width }, 
