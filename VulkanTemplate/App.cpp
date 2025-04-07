@@ -16,12 +16,12 @@ void App::InitVulkan() {
 	logicalDeviceManager.CreateLogicalDevice(&physicalDeviceManager, &validationLayersManager);
 	physicalDeviceManager.CreateSwapChain(logicalDeviceManager.device);
 	physicalDeviceManager.CreateImageViews(logicalDeviceManager.device);
-	graphicsPipelineManager.CreateRenderPass(physicalDeviceManager.swapChainImageFormat, logicalDeviceManager.device);
+	graphicsPipelineManager.CreateRenderPass(physicalDeviceManager.swapChainImageFormat, logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateDescriptorSetLayout(logicalDeviceManager.device);
 	graphicsPipelineManager.CreateGraphicsPipeline(logicalDeviceManager.device);
-	physicalDeviceManager.CreateFrameBuffers(logicalDeviceManager.device, graphicsPipelineManager.renderPass);
 	physicalDeviceManager.CreateCommandPool(logicalDeviceManager.device);
-
+	graphicsPipelineManager.CreateDepthResources(physicalDeviceManager.physicalDevice,logicalDeviceManager.device);
+	physicalDeviceManager.CreateFrameBuffers(logicalDeviceManager.device, graphicsPipelineManager.renderPass,graphicsPipelineManager.depthImageView);
 	graphicsPipelineManager.CreateTextureImage(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateTextureImageView(logicalDeviceManager.device);
 	graphicsPipelineManager.CreateTextureSampler(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
@@ -42,7 +42,7 @@ void App::DrawFrame()
 	uint32_t imageIndex;
 	VkResult result = vkAcquireNextImageKHR(logicalDeviceManager.device, physicalDeviceManager.swapChain, UINT64_MAX, physicalDeviceManager.imageAvailableSemaphores[physicalDeviceManager.currentFrame], VK_NULL_HANDLE, &imageIndex);
 	if (result == VK_ERROR_OUT_OF_DATE_KHR) {
-		physicalDeviceManager.RecreateSwapChain(logicalDeviceManager.device, graphicsPipelineManager.renderPass);
+		physicalDeviceManager.RecreateSwapChain(logicalDeviceManager.device, graphicsPipelineManager);
 		return;
 	}
 	else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
@@ -87,7 +87,7 @@ void App::DrawFrame()
 
 	if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || physicalDeviceManager.frameBufferResized) {
 		physicalDeviceManager.frameBufferResized = false;
-		physicalDeviceManager.RecreateSwapChain(logicalDeviceManager.device, graphicsPipelineManager.renderPass);
+		physicalDeviceManager.RecreateSwapChain(logicalDeviceManager.device, graphicsPipelineManager);
 	}
 	else if (result != VK_SUCCESS) {
 		throw std::runtime_error("Failed to present swap chain image");
@@ -118,7 +118,7 @@ void App::Cleanup()
 	graphicsPipelineManager.CleanPipelineLayout(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanRenderPass(logicalDeviceManager.device);
 	physicalDeviceManager.CleanupImageViews(logicalDeviceManager.device);
-	physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain);
+	physicalDeviceManager.CleanupSwapChain(logicalDeviceManager.device, physicalDeviceManager.swapChain,graphicsPipelineManager);
 	graphicsPipelineManager.CleanupTextureSampler(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupTextureView(logicalDeviceManager.device);
 	graphicsPipelineManager.CleanupTextureImage(logicalDeviceManager.device);

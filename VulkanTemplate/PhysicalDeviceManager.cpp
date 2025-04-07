@@ -139,8 +139,12 @@ void PhysicalDeviceManager::CreateSwapChain(VkDevice& device)
 	*swapChainExtent = extent;
 }
 
-void PhysicalDeviceManager::CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain)
+void PhysicalDeviceManager::CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain, GraphicsPipelineManager& graphicsPipelineManager)
 {
+	vkDestroyImageView(device, graphicsPipelineManager.depthImageView, nullptr);
+	vkDestroyImage(device, graphicsPipelineManager.depthImage,nullptr);
+	vkFreeMemory(device, graphicsPipelineManager.depthImageMemory, nullptr);
+
 	vkDestroySwapchainKHR(device, swapChain, nullptr);
 }
 
@@ -149,7 +153,7 @@ void PhysicalDeviceManager::CreateImageViews(VkDevice& device)
 	swapChainImageViews.resize(swapChainImages.size());
 	for(int i = 0; i < swapChainImages.size();i++){
 	
-		swapChainImageViews[i] = GraphicsPipelineManager::CreateImageView(device,swapChainImages[i], swapChainImageFormat);
+		swapChainImageViews[i] = GraphicsPipelineManager::CreateImageView(device,swapChainImages[i], swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT);
 	}
 }
 
@@ -159,19 +163,22 @@ void PhysicalDeviceManager::CleanupImageViews(VkDevice& device) {
 	}
 }
 
-void PhysicalDeviceManager::CreateFrameBuffers(VkDevice& device, VkRenderPass& renderPass)
+void PhysicalDeviceManager::CreateFrameBuffers(VkDevice& device, VkRenderPass& renderPass, VkImageView& depthImageView)
 { 
 	swapChainFrameBuffers.resize(swapChainImageViews.size());
 	for (size_t i = 0; i < swapChainImageViews.size(); i++) {
-		VkImageView attachments[] = {
-			swapChainImageViews[i]
+		
+		std::array<VkImageView, 2> attachments = {
+			swapChainImageViews[i],
+			depthImageView
 		};
+
 
 		VkFramebufferCreateInfo frameBufferInfo{};
 		frameBufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
 		frameBufferInfo.renderPass = renderPass;
-		frameBufferInfo.attachmentCount = 1;
-		frameBufferInfo.pAttachments = attachments;
+		frameBufferInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
+		frameBufferInfo.pAttachments = attachments.data();
 		frameBufferInfo.width = swapChainExtent->width;
 		frameBufferInfo.height = swapChainExtent->height;
 		frameBufferInfo.layers = 1;
@@ -221,6 +228,10 @@ void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, u
 		throw std::runtime_error("failed to begin recording command buffer!");
 	}
 
+	std::array<VkClearValue, 2> clearValues{};
+	clearValues[0].color = { {0.0f,0.0f,0.0f,1.0f} };
+	clearValues[1].depthStencil = { 1.0f,0 };
+
 	VkRenderPassBeginInfo renderPassInfo{};
 	renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 	renderPassInfo.renderPass = graphicsPipelineManager.renderPass;
@@ -228,9 +239,8 @@ void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, u
 	renderPassInfo.renderArea.offset = { 0, 0 };
 	renderPassInfo.renderArea.extent = *swapChainExtent;
 
-	VkClearValue clearColor = { {{0.0f, 0.0f, 0.0f, 1.0f}} };
-	renderPassInfo.clearValueCount = 1;
-	renderPassInfo.pClearValues = &clearColor;
+	renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
+	renderPassInfo.pClearValues = clearValues.data();
 
 	vkCmdBeginRenderPass(commandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
@@ -295,7 +305,7 @@ void PhysicalDeviceManager::CreateSyncObjects(VkDevice& device)
 	}
 }
 
-void PhysicalDeviceManager::RecreateSwapChain(VkDevice& device,VkRenderPass& renderPass)
+void PhysicalDeviceManager::RecreateSwapChain(VkDevice& device,GraphicsPipelineManager& graphicsPipelineManager)
 {
 
 	int width = 0, height = 0;
@@ -309,11 +319,32 @@ void PhysicalDeviceManager::RecreateSwapChain(VkDevice& device,VkRenderPass& ren
 	
 	CleanupFrameBuffers(device);
 	CleanupImageViews(device);
-	CleanupSwapChain(device, swapChain);
+	CleanupSwapChain(device, swapChain,graphicsPipelineManager);
 
 	CreateSwapChain(device);
 	CreateImageViews(device);
-	CreateFrameBuffers(device, renderPass);
+	graphicsPipelineManager.CreateDepthResources(physicalDevice, device);
+	CreateFrameBuffers(device, graphicsPipelineManager.renderPass,graphicsPipelineManager.depthImageView);
+
+}
+
+VkFormat PhysicalDeviceManager::FindSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features, VkPhysicalDevice& physicalDevice)
+{
+		for (VkFormat format : candidates) {
+			VkFormatProperties props;
+			vkGetPhysicalDeviceFormatProperties(physicalDevice, format, &props);
+
+			if (tiling == VK_IMAGE_TILING_LINEAR && (props.linearTilingFeatures & features) == features) {
+				return format;
+			}
+			else if (tiling == VK_IMAGE_TILING_OPTIMAL && (props.optimalTilingFeatures & features) == features) {
+				return format;
+			}
+
+			throw std::runtime_error("Failed to find supported format!");
+		}
+
+		
 
 }
 

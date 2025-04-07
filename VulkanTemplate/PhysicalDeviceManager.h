@@ -62,21 +62,21 @@ public:
 	VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 	VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 	void CreateSwapChain(VkDevice& device);
+	void CreateFrameBuffers(VkDevice& device, VkRenderPass& renderPass, VkImageView& depthImageView);
 
 	void CreateImageViews(VkDevice& device);
-	void CreateFrameBuffers(VkDevice& device, VkRenderPass& renderPass);
 	void CreateCommandPool(VkDevice& device);
 	void CreateCommandBuffers(VkDevice& device);
 	void RecordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, GraphicsPipelineManager& graphicsPipelineManager);
 	void CreateSyncObjects(VkDevice& device);
-	void RecreateSwapChain(VkDevice& device, VkRenderPass& renderPass);
-
-
+	void RecreateSwapChain(VkDevice& device, GraphicsPipelineManager& graphicsPipelineManager);
+	static VkFormat FindSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features, VkPhysicalDevice& physicalDevice);
+	
 
 	void CleanupSyncObjects(VkDevice& device);
 	void CleanupCommandPool(VkDevice& device);
 	void CleanupImageViews(VkDevice& device);
-	void CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain);
+	void CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain, GraphicsPipelineManager& graphicsPipelineManager);
 	void CleanupFrameBuffers(VkDevice& device);
 private:
 	bool IsDeviceSuitable(VkPhysicalDevice device);
