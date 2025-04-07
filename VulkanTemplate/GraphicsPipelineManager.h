@@ -6,6 +6,7 @@
 #include <array>
 #include "GraphicsPipelineManager.h"
 #define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <chrono>
 #include <gtc/matrix_transform.hpp>
 
@@ -13,7 +14,7 @@ class GraphicsPipelineManager {
 public:
 
 	struct Vertex {
-		glm::vec2 pos;
+		glm::vec3 pos;
 		glm::vec3 color;
 		glm::vec2 texCoord;
 
@@ -31,7 +32,7 @@ public:
 			std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions{};
 			attributeDescriptions[0].binding = 0;
 			attributeDescriptions[0].location = 0;
-			attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
+			attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
 			attributeDescriptions[0].offset = offsetof(Vertex, pos);
 
 			attributeDescriptions[1].binding = 0;
@@ -53,14 +54,20 @@ public:
 
 
 	const std::vector<Vertex> vertices = {
-	 {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
-	{{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-	{{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
-	{{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}}
+ {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+	{{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+	{{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+	{{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}},
+
+	{{-0.5f, -0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+	{{0.5f, -0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+	{{0.5f, 0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+	{{-0.5f, 0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f}}
 	};
 
 	const std::vector<uint16_t> indices{
-		0,1,2,2,3,0
+			0, 1, 2, 2, 3, 0,
+			4, 5, 6, 6, 7, 4
 	};
 
 	struct UniformBufferObject {
@@ -94,6 +101,9 @@ public:
 	VkImageView textureImageView{};
 	VkSampler textureSampler{};
 	
+	VkImage depthImage{};
+	VkDeviceMemory depthImageMemory{};
+	VkImageView depthImageView{};
 
 
 
@@ -101,7 +111,7 @@ public:
 	
 	void CreateGraphicsPipeline(VkDevice& device);
 	VkShaderModule CreateShaderModule(const std::vector<char>& code, VkDevice& device);
-	void CreateRenderPass(VkFormat swapChainImageFormat, VkDevice& device);
+	void CreateRenderPass(VkFormat swapChainImageFormat, VkDevice& device, VkPhysicalDevice& phyiscalDevice);
 	static uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, VkPhysicalDevice& physicalDevice);
 	void CreateVertexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	void CreateIndexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice);
@@ -119,8 +129,11 @@ public:
 	void TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, VkDevice& device);
 	void CopyBufferToImage(VkDevice& device, VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 	void CreateTextureImageView(VkDevice& device);
-	static VkImageView CreateImageView(VkDevice& device, VkImage image, VkFormat forrmat);
+	static VkImageView CreateImageView(VkDevice& device, VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
+
 	void CreateTextureSampler(VkDevice& device, VkPhysicalDevice& physicalDevice);
+	void CreateDepthResources(VkPhysicalDevice& physicalDevice, VkDevice& device);
+	VkFormat FindDepthFormat(VkPhysicalDevice& physicalDevice);
 	
 
 
@@ -135,6 +148,7 @@ public:
 	void CleanupTextureImage(VkDevice& device);
 	void CleanupTextureView(VkDevice& device);
 
-
+	private:
+		bool HasStencilComponent(VkFormat format);
 
 };
