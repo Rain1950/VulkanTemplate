@@ -6,6 +6,9 @@
 #include <vulkan/vulkan.h>
 #include <string>
 #include <stb_image.h>
+#include "App.h"
+#include "GraphicsPipelineManager.h"
+
 	struct TextureImageData {
 		int width{};
 		int height{};
@@ -32,4 +35,5 @@ public:
 	static std::vector<char> ReadShaderFile(const std::string& filename);
 	static TextureImageData ReadTextureImage(VkDevice& device,std::string textureFilePath);
 	static void CloseTextureImage(stbi_uc* pixels);
+	static void LoadModel(std::vector<GraphicsPipelineManager::Vertex>& vertices, std::vector<uint32_t>& indices);
 };

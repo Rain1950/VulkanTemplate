@@ -12,6 +12,8 @@
 
 class App {
 public:
+	 inline static const std::string MODEL_PATH = "models/hamster.obj";
+	 inline static const std::string MODEL_TEXTURE = "textures/hamster.png";
 	std::shared_ptr<WindowManager> windowManager;
 	std::shared_ptr<VulkanInstance> vulkanInstance;
 	PhysicalDeviceManager physicalDeviceManager;

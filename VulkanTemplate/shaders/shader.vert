@@ -7,6 +7,7 @@ layout(binding = 0) uniform UniformBufferObject{
 	mat4 model;
 	mat4 view;
 	mat4 proj;
+	float time;
 } ubo;
 
 
@@ -22,7 +23,9 @@ layout(location = 1) out vec2 fragTexCoord;
 
 
 void main(){
-	gl_Position = ubo.proj* ubo.view * ubo.model *   vec4(inPosition,1.0);
+	gl_Position = ubo.proj* ubo.view * ubo.model *   vec4(inPosition ,1.0);
+	gl_Position.y += sin(ubo.time*10 + inPosition.y*100)/10;
+
 	fragColor = inColor;
 	fragTexCoord = inTexCoord;
 

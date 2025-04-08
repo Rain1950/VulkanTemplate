@@ -6,6 +6,9 @@
 #include <stdexcept>
 #include <limits>
 #include "PhysicalDeviceManager.h"
+#include "App.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include  <euler_angles.hpp>
 
 VkShaderModule GraphicsPipelineManager::CreateShaderModule(const std::vector<char>& code,VkDevice& device) {
 	VkShaderModuleCreateInfo createInfo{};
@@ -246,11 +249,17 @@ void GraphicsPipelineManager::UpdateUniformBuffers(uint32_t currentImage)
 	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 	
 	UniformBufferObject ubo{};
-	ubo.model = glm::rotate(glm::mat4(1.0f), time/5  * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	//ubo.model = glm::rotate(glm::mat4(1.0f), time/5  * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	ubo.model = glm::rotate(glm::mat4(1.0f),  glm::radians(90.0f * time ), glm::vec3(0.0f, 0.0f, 1.0f));
+	ubo.model *= glm::rotate(glm::mat4(1.0f),  glm::radians(-270.0f ), glm::vec3(1.0f, 0.0f, 0.0f));
+	//ubo.model = glm::angleAxis(90.0f, glm::vec3(0, 0, 1));
+	float scale = 20.0f;
+	ubo.model = glm::scale(ubo.model, glm::vec3(1,1,1) * scale );
+
 	ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f , 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	ubo.proj = glm::perspective(glm::radians(45.0f ), swapChainExtent->width / (float)swapChainExtent->height, 0.1f, 10.0f);
 	ubo.proj[1][1] *= -1;
-
+	ubo.time = time;
 	memcpy(uniformBuffersMapped[currentImage], &ubo, sizeof(ubo));
 
 }
@@ -365,7 +374,7 @@ void GraphicsPipelineManager::CreateImage(uint32_t width, uint32_t height, VkFor
 void GraphicsPipelineManager::CreateTextureImage(VkDevice& device,VkPhysicalDevice& physicalDevice)
 {
 	TextureImageData data{};
-	data = FileLoader::ReadTextureImage(device, "textures/texture.jpg");
+	data = FileLoader::ReadTextureImage(device, App::MODEL_TEXTURE.c_str());
 
 	VkBuffer stagingBuffer;
 	VkDeviceMemory stagingBufferMemory;
