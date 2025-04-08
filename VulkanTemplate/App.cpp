@@ -1,5 +1,5 @@
 #include "App.h"
-
+#include "FileLoader.h"
 
 void App::Run() {
 	windowManager->InitWindow();
@@ -25,6 +25,7 @@ void App::InitVulkan() {
 	graphicsPipelineManager.CreateTextureImage(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateTextureImageView(logicalDeviceManager.device);
 	graphicsPipelineManager.CreateTextureSampler(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
+	FileLoader::LoadModel(graphicsPipelineManager.vertices, graphicsPipelineManager.indices);
 	graphicsPipelineManager.CreateVertexBuffer(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateIndexBuffer(logicalDeviceManager.device, physicalDeviceManager.physicalDevice);
 	graphicsPipelineManager.CreateUniformBuffers(logicalDeviceManager.device,physicalDeviceManager.physicalDevice);
@@ -101,9 +102,18 @@ void App::DrawFrame()
 
 void App::MainLoop()
 {
+
+	auto startTime = std::chrono::high_resolution_clock::now();
+	int targetFPS = 60;
 	while (!glfwWindowShouldClose(windowManager->window)) {
 		glfwPollEvents();
-		DrawFrame();
+		auto currentTime = std::chrono::high_resolution_clock::now();
+		float time = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - startTime).count();
+		if (time > 1000/targetFPS) {
+			time = 0;
+			startTime = std::chrono::high_resolution_clock::now();
+			DrawFrame();
+		}
 	}
 	vkDeviceWaitIdle(logicalDeviceManager.device);
 
