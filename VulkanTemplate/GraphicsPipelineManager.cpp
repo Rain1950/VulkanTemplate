@@ -250,13 +250,13 @@ void GraphicsPipelineManager::UpdateUniformBuffers(uint32_t currentImage)
 	
 	UniformBufferObject ubo{};
 	//ubo.model = glm::rotate(glm::mat4(1.0f), time/5  * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	ubo.model = glm::rotate(glm::mat4(1.0f),  glm::radians(90.0f * time ), glm::vec3(0.0f, 0.0f, 1.0f));
+	ubo.model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f * time), glm::vec3(0.0f, 0.0f, 1.0f));
 	ubo.model *= glm::rotate(glm::mat4(1.0f),  glm::radians(-270.0f ), glm::vec3(1.0f, 0.0f, 0.0f));
 	//ubo.model = glm::angleAxis(90.0f, glm::vec3(0, 0, 1));
-	float scale = 20.0f;
+	float scale = 10.0f;
 	ubo.model = glm::scale(ubo.model, glm::vec3(1,1,1) * scale );
 
-	ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f , 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	ubo.view = glm::lookAt(glm::vec3(1.5f + sin(time*2)/2, 1.5f + sin(time*2)/2, 1.5f + sin(time*2)/2), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	ubo.proj = glm::perspective(glm::radians(45.0f ), swapChainExtent->width / (float)swapChainExtent->height, 0.1f, 10.0f);
 	ubo.proj[1][1] *= -1;
 	ubo.time = time;

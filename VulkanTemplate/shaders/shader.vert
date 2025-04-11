@@ -24,9 +24,10 @@ layout(location = 1) out vec2 fragTexCoord;
 
 void main(){
 	gl_Position = ubo.proj* ubo.view * ubo.model *   vec4(inPosition ,1.0);
-	gl_Position.y += sin(ubo.time*10 + inPosition.y*100)/10;
-
+	gl_Position.y += sin(ubo.time*10 + inPosition.y*100)/20;
+	
 	fragColor = inColor;
+	//fragColor = vec3(clamp(inColor.x  + sin(ubo.time)*50 + 25,1,255),clamp(inColor.y  + sin(ubo.time + 2)*50 ,1,255),clamp(inColor.z  + sin(ubo.time+0.5f)*50 +40  ,1,255));
 	fragTexCoord = inTexCoord;
 
 }
