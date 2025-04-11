@@ -4,6 +4,8 @@
 #include <stb_image.h>
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
+#include <unordered_map>
+
 std::vector<char> FileLoader::ReadShaderFile(const std::string& filename)
 {
 	std::ifstream file(filename, std::ios::ate | std::ios::binary);
@@ -53,6 +55,7 @@ void FileLoader::CloseTextureImage(stbi_uc* pixels)
 
 void FileLoader::LoadModel(std::vector<GraphicsPipelineManager::Vertex>& vertices, std::vector<uint32_t>& indices)
 {
+	std::unordered_map<GraphicsPipelineManager::Vertex, uint32_t> uniqueVertices{};
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
@@ -80,8 +83,12 @@ void FileLoader::LoadModel(std::vector<GraphicsPipelineManager::Vertex>& vertice
 			vertex.color = { 1.0f,1.0f,1.0f };
 
 
-			vertices.push_back(vertex);
-			indices.push_back(indices.size());
+			if (uniqueVertices.count(vertex) == 0) {
+				uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
+				vertices.push_back(vertex);
+			}
+
+			indices.push_back(uniqueVertices[vertex]);
 
 			
 		}

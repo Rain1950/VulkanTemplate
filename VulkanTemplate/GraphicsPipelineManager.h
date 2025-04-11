@@ -9,6 +9,11 @@
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <chrono>
 #include <gtc/matrix_transform.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <gtx/hash.hpp>
+
+
+
 
 class GraphicsPipelineManager {
 public:
@@ -49,8 +54,15 @@ public:
 			return attributeDescriptions;
 
 		}
-	
+		
+		bool operator==(const Vertex& other) const {
+			return pos == other.pos && color == other.color && texCoord == other.texCoord;
+		}
+
+		
 	};
+
+
 
 
 	std::vector<Vertex> vertices;
@@ -138,3 +150,13 @@ public:
 		bool HasStencilComponent(VkFormat format);
 
 };
+
+namespace std {
+	template<> struct hash<GraphicsPipelineManager::Vertex> {
+		size_t operator()(GraphicsPipelineManager::Vertex const& vertex) const {
+			return ((hash<glm::vec3>()(vertex.pos) ^
+				(hash<glm::vec3>()(vertex.color) << 1)) >> 1) ^
+				(hash<glm::vec2>()(vertex.texCoord) << 1);
+		}
+	};
+}
