@@ -8,6 +8,7 @@
 #include "PhysicalDeviceManager.h"
 #include "App.h"
 #define GLM_ENABLE_EXPERIMENTAL
+#define GLM_FORCE_CXX17
 #include  <euler_angles.hpp>
 
 VkShaderModule GraphicsPipelineManager::CreateShaderModule(const std::vector<char>& code,VkDevice& device) {
