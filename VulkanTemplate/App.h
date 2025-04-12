@@ -12,8 +12,8 @@
 
 class App {
 public:
-	 inline static const std::string MODEL_PATH = "models/roll.obj";
-	 inline static const std::string MODEL_TEXTURE = "textures/roll.png";
+	 inline static const std::string MODEL_PATH = "models/viking_room.obj";
+	 inline static const std::string MODEL_TEXTURE = "textures/viking_room.png";
 	std::shared_ptr<WindowManager> windowManager;
 	std::shared_ptr<VulkanInstance> vulkanInstance;
 	PhysicalDeviceManager physicalDeviceManager;

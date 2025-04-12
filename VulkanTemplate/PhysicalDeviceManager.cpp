@@ -153,7 +153,7 @@ void PhysicalDeviceManager::CreateImageViews(VkDevice& device)
 	swapChainImageViews.resize(swapChainImages.size());
 	for(int i = 0; i < swapChainImages.size();i++){
 	
-		swapChainImageViews[i] = GraphicsPipelineManager::CreateImageView(device,swapChainImages[i], swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT);
+		swapChainImageViews[i] = GraphicsPipelineManager::CreateImageView(device,swapChainImages[i], swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT,1);
 	}
 }
 

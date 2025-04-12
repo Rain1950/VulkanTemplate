@@ -22,6 +22,7 @@ public:
 		glm::vec3 pos;
 		glm::vec3 color;
 		glm::vec2 texCoord;
+		glm::vec3 normal;
 
 		static VkVertexInputBindingDescription GetBindingDescription() {
 			VkVertexInputBindingDescription bindingDescription{};
@@ -33,8 +34,8 @@ public:
 
 		}
 
-		static std::array<VkVertexInputAttributeDescription, 3> GetAttributeDescriptions() {
-			std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions{};
+		static std::array<VkVertexInputAttributeDescription, 4> GetAttributeDescriptions() {
+			std::array<VkVertexInputAttributeDescription, 4> attributeDescriptions{};
 			attributeDescriptions[0].binding = 0;
 			attributeDescriptions[0].location = 0;
 			attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
@@ -51,12 +52,19 @@ public:
 			attributeDescriptions[2].format = VK_FORMAT_R32G32_SFLOAT;
 			attributeDescriptions[2].offset = offsetof(Vertex, texCoord);
 
+			attributeDescriptions[3].binding = 0;
+			attributeDescriptions[3].location = 3;
+			attributeDescriptions[3].format = VK_FORMAT_R32G32B32_SFLOAT;
+			attributeDescriptions[3].offset = offsetof(Vertex, normal);
+
+
+
 			return attributeDescriptions;
 
 		}
 		
 		bool operator==(const Vertex& other) const {
-			return pos == other.pos && color == other.color && texCoord == other.texCoord;
+			return pos == other.pos && color == other.color && texCoord == other.texCoord && normal == other.normal;
 		}
 
 		
@@ -67,6 +75,7 @@ public:
 
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
+	std::vector<uint32_t> normals;
 
 	struct UniformBufferObject {
 		glm::mat4 model;
@@ -94,6 +103,7 @@ public:
 	VkDescriptorSetLayout descriptorSetLayout{};
 	VkDescriptorPool descriptorPool{};
 	std::vector<VkDescriptorSet> descriptorSets{};
+	uint32_t mipLevels{};
 	VkImage textureImage{};
 	VkDeviceMemory textureImageMemory{};
 	VkImageView textureImageView{};
@@ -120,19 +130,19 @@ public:
 	void UpdateUniformBuffers(uint32_t currentImage);
 	void CreateDescriptorPool(VkDevice& device);
 	void CreateDescriptorSets(VkDevice& device);
-	void CreateImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory, VkDevice& device, VkPhysicalDevice& physicalDevice);
+	void CreateImage(uint32_t width, uint32_t height,uint32_t mipLevels,VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory, VkDevice& device, VkPhysicalDevice& physicalDevice);
 	void CreateTextureImage(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	VkCommandBuffer BeginSingleTimeCommands(VkDevice& device);
 	void EndSingleTimeCommands(VkCommandBuffer commandBuffer, VkDevice& device);
-	void TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, VkDevice& device);
+	void TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, VkDevice& device, uint32_t mipLevels);
 	void CopyBufferToImage(VkDevice& device, VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 	void CreateTextureImageView(VkDevice& device);
-	static VkImageView CreateImageView(VkDevice& device, VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
-
+	static VkImageView CreateImageView(VkDevice& device, VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t mipLevels);
 	void CreateTextureSampler(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	void CreateDepthResources(VkPhysicalDevice& physicalDevice, VkDevice& device);
 	VkFormat FindDepthFormat(VkPhysicalDevice& physicalDevice);
-	
+	void GenerateMipMaps(VkDevice& device, VkPhysicalDevice& physicalDevice, VkFormat imageFormat, VkImage image, int32_t textWidth, int32_t texHeight, uint32_t mipLevels);
+
 
 
 	void CleanupTextureSampler(VkDevice& device);

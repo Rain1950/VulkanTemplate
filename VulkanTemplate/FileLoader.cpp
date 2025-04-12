@@ -75,6 +75,14 @@ void FileLoader::LoadModel(std::vector<GraphicsPipelineManager::Vertex>& vertice
 				attrib.vertices[3 * index.vertex_index + 2],
 			};
 
+			vertex.normal = {
+					attrib.vertices[3 * index.vertex_index + 0],
+					attrib.vertices[3 * index.vertex_index + 1],
+					attrib.vertices[3 * index.vertex_index + 2],
+			};
+		
+
+
 			vertex.texCoord = {
 				attrib.texcoords[2 * index.texcoord_index + 0],
 				1 - attrib.texcoords[2 * index.texcoord_index + 1] // flip it because of obj format vertical cooridnate being inverse of vulkan
@@ -86,6 +94,7 @@ void FileLoader::LoadModel(std::vector<GraphicsPipelineManager::Vertex>& vertice
 			if (uniqueVertices.count(vertex) == 0) {
 				uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
 				vertices.push_back(vertex);
+
 			}
 
 			indices.push_back(uniqueVertices[vertex]);
