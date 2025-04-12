@@ -28,7 +28,7 @@ layout(location = 3) out mat4 nm;
 
 void main(){
 	gl_Position = ubo.proj* ubo.view * ubo.model *   vec4(inPosition ,1.0);
-	gl_Position.y += sin(ubo.time*10 + inPosition.y*100)/20;
+	//gl_Position.y += sin(ubo.time*10 + inPosition.y*100)/20;
 	nm = transpose(inverse(ubo.model));
 	normal = inNormal;
 	fragColor = inColor;

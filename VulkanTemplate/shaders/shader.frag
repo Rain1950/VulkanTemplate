@@ -13,5 +13,7 @@ layout(binding = 1) uniform sampler2D texSampler;
 
 void main(){
 	vec3 objectColor = fragColor *  texture( texSampler,fragTexCoord ).rgb;
-	outColor = vec4(nm * vec4(normal * 100, 0.0));
+	// outColor = vec4(nm * vec4(normal * 100, 0.0));   display normals;
+
+	outColor =  vec4( objectColor,1.0);
 }

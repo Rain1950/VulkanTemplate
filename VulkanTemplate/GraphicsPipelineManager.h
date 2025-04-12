@@ -103,6 +103,7 @@ public:
 	VkDescriptorSetLayout descriptorSetLayout{};
 	VkDescriptorPool descriptorPool{};
 	std::vector<VkDescriptorSet> descriptorSets{};
+	uint32_t mipLevels{};
 	VkImage textureImage{};
 	VkDeviceMemory textureImageMemory{};
 	VkImageView textureImageView{};
@@ -129,19 +130,19 @@ public:
 	void UpdateUniformBuffers(uint32_t currentImage);
 	void CreateDescriptorPool(VkDevice& device);
 	void CreateDescriptorSets(VkDevice& device);
-	void CreateImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory, VkDevice& device, VkPhysicalDevice& physicalDevice);
+	void CreateImage(uint32_t width, uint32_t height,uint32_t mipLevels,VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory, VkDevice& device, VkPhysicalDevice& physicalDevice);
 	void CreateTextureImage(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	VkCommandBuffer BeginSingleTimeCommands(VkDevice& device);
 	void EndSingleTimeCommands(VkCommandBuffer commandBuffer, VkDevice& device);
-	void TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, VkDevice& device);
+	void TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, VkDevice& device, uint32_t mipLevels);
 	void CopyBufferToImage(VkDevice& device, VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 	void CreateTextureImageView(VkDevice& device);
-	static VkImageView CreateImageView(VkDevice& device, VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
-
+	static VkImageView CreateImageView(VkDevice& device, VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t mipLevels);
 	void CreateTextureSampler(VkDevice& device, VkPhysicalDevice& physicalDevice);
 	void CreateDepthResources(VkPhysicalDevice& physicalDevice, VkDevice& device);
 	VkFormat FindDepthFormat(VkPhysicalDevice& physicalDevice);
-	
+	void GenerateMipMaps(VkDevice& device, VkPhysicalDevice& physicalDevice, VkFormat imageFormat, VkImage image, int32_t textWidth, int32_t texHeight, uint32_t mipLevels);
+
 
 
 	void CleanupTextureSampler(VkDevice& device);
