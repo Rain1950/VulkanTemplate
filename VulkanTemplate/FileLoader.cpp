@@ -5,6 +5,7 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 #include <unordered_map>
+#include "Vertex.h"
 
 std::vector<char> FileLoader::ReadShaderFile(const std::string& filename)
 {
@@ -28,24 +29,24 @@ TextureImageData FileLoader::ReadTextureImage(VkDevice& device, std::string text
 
 	int width, height, texChannels;
 	stbi_uc* pixels = stbi_load(textureFilePath.data(), &width, &height, &texChannels, STBI_rgb_alpha);
-	
+
 	VkDeviceSize imageSize = width * height * 4;// 4 for rgba size
 
 	if (!pixels) {
 		throw std::runtime_error("Failed to load texture image");
 	}
-	
-
-	TextureImageData data{width,height,texChannels,pixels};
-	
-
-	
-	return data;	
 
 
-	
+	TextureImageData data{ width,height,texChannels,pixels };
 
-	
+
+
+	return data;
+
+
+
+
+
 }
 
 void FileLoader::CloseTextureImage(stbi_uc* pixels)
@@ -53,9 +54,9 @@ void FileLoader::CloseTextureImage(stbi_uc* pixels)
 	stbi_image_free(pixels);
 }
 
-void FileLoader::LoadModel(std::vector<GraphicsPipeline::Vertex>& vertices, std::vector<uint32_t>& indices)
+void FileLoader::LoadModel(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices)
 {
-	std::unordered_map<GraphicsPipeline::Vertex, uint32_t> uniqueVertices{};
+	std::unordered_map<Vertex, uint32_t> uniqueVertices{};
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
@@ -67,7 +68,7 @@ void FileLoader::LoadModel(std::vector<GraphicsPipeline::Vertex>& vertices, std:
 
 	for (const auto& shape : shapes) {
 		for (const auto& index : shape.mesh.indices) {
-			GraphicsPipeline::Vertex vertex{};
+			Vertex vertex{};
 
 			vertex.pos = {
 				attrib.vertices[3 * index.vertex_index + 0],
@@ -80,7 +81,7 @@ void FileLoader::LoadModel(std::vector<GraphicsPipeline::Vertex>& vertices, std:
 					attrib.vertices[3 * index.vertex_index + 1],
 					attrib.vertices[3 * index.vertex_index + 2],
 			};
-		
+
 
 
 			vertex.texCoord = {
@@ -99,7 +100,7 @@ void FileLoader::LoadModel(std::vector<GraphicsPipeline::Vertex>& vertices, std:
 
 			indices.push_back(uniqueVertices[vertex]);
 
-			
+
 		}
 	}
 }

@@ -7,8 +7,8 @@
 class Window {
 	public:
 		std::shared_ptr<VulkanInstance> vulkanInstance;
-		GLFWwindow* window = {};
-		VkSurfaceKHR surface;
+		GLFWwindow* window{};
+		VkSurfaceKHR surface = VK_NULL_HANDLE;
 		~Window();
 		Window(std::shared_ptr<VulkanInstance> VulkanInstance);
 		void CreateSurface();

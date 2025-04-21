@@ -780,7 +780,6 @@ bool GraphicsPipeline::HasStencilComponent(VkFormat format)
 }
 
 
-//GraphicsPipelineManager::GraphicsPipelineManager( PhysicalDeviceManager* PhysicalDeviceManager, LogicalDeviceManager* LogicalDeviceManager) :  physicalDeviceManager{ PhysicalDeviceManager }, logicalDeviceManager{LogicalDeviceManager} {};
 
 
 
