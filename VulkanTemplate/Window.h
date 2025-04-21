@@ -3,14 +3,14 @@
 #include <vulkan/vulkan.h>
 #include "VulkanInstance.h"
 #include <memory>
-#include "GraphicsPipelineManager.h"
-class WindowManager {
+#include "GraphicsPipeline.h"
+class Window {
 	public:
 		std::shared_ptr<VulkanInstance> vulkanInstance;
 		GLFWwindow* window = {};
 		VkSurfaceKHR surface;
-		~WindowManager();
-		WindowManager(std::shared_ptr<VulkanInstance> VulkanInstance);
+		~Window();
+		Window(std::shared_ptr<VulkanInstance> VulkanInstance);
 		void CreateSurface();
 		static void FrameBufferResizeCallback(GLFWwindow* window, int width, int height);
 		void InitWindow();

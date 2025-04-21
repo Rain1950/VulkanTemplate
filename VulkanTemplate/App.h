@@ -3,31 +3,31 @@
 #include <iostream>
 #define GLFW_INCLUDE_VULKAN
 #include <glfw/glfw3.h>
-#include "WindowManager.h"
+#include "Window.h"
 #include "VulkanInstance.h"
-#include "PhysicalDeviceManager.h"
-#include "LogicalDeviceManager.h"
+#include "PhysicalDevice.h"
+#include "LogicalDevice.h"
 #include <memory>
-#include "GraphicsPipelineManager.h"
+#include "GraphicsPipeline.h"
 
 class App {
 public:
-	 inline static const std::string MODEL_PATH = "models/viking_room.obj";
-	 inline static const std::string MODEL_TEXTURE = "textures/viking_room.png";
-	std::shared_ptr<WindowManager> windowManager;
+	 inline static const std::string MODEL_PATH = "models/sphere.obj";
+	 inline static const std::string MODEL_TEXTURE = "textures/hamster.png";
+	std::shared_ptr<Window> window;
 	std::shared_ptr<VulkanInstance> vulkanInstance;
-	PhysicalDeviceManager physicalDeviceManager;
-	LogicalDeviceManager logicalDeviceManager;
-	ValidationLayersManager validationLayersManager;
-	GraphicsPipelineManager graphicsPipelineManager;
+	PhysicalDevice physicalDevice;
+	LogicalDevice logicalDevice;
+	ValidationLayers validationLayers;
+	GraphicsPipeline graphicsPipeline;
 
-	App(std::shared_ptr<WindowManager> WindowManager, std::shared_ptr<VulkanInstance> VulkanInstace, PhysicalDeviceManager PhysicalDeviceManager, LogicalDeviceManager LogicalDeviceManager, ValidationLayersManager ValidationLayersManager, GraphicsPipelineManager GraphicsPipelineManager) :
-		windowManager{ WindowManager },
+	App(std::shared_ptr<Window> Window, std::shared_ptr<VulkanInstance> VulkanInstace, PhysicalDevice PhysicalDevice, LogicalDevice LogicalDevice, ValidationLayers ValidationLayers, GraphicsPipeline GraphicsPipeline) :
+		window{ Window },
 		vulkanInstance{ VulkanInstace },
-		physicalDeviceManager{ PhysicalDeviceManager },
-		logicalDeviceManager{ LogicalDeviceManager },
-		validationLayersManager{ ValidationLayersManager },
-		graphicsPipelineManager{ GraphicsPipelineManager }
+		physicalDevice{ PhysicalDevice },
+		logicalDevice{ LogicalDevice },
+		validationLayers{ ValidationLayers },
+		graphicsPipeline{ GraphicsPipeline }
 	{
 	};
 

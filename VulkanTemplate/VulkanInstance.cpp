@@ -6,10 +6,10 @@
 #include <vector>
 #include <iostream>
 #include "VulkanInstance.h"
-#include "ValidationLayersManager.h"
+#include "ValidationLayers.h"
 
 
-VulkanInstance::VulkanInstance(ValidationLayersManager ValidationLayersManager) : validationLayersManager{ ValidationLayersManager }{};
+VulkanInstance::VulkanInstance(ValidationLayers ValidationLayers) : validationLayers{ ValidationLayers }{};
 
 
 	void VulkanInstance::Cleanup() {
@@ -18,7 +18,7 @@ VulkanInstance::VulkanInstance(ValidationLayersManager ValidationLayersManager) 
 
 	void  VulkanInstance::CreateInstance() {
 
-		if (validationLayersManager.enableValidationLayers && !validationLayersManager.CheckValidationLayerSupport()) {
+		if (validationLayers.enableValidationLayers && !validationLayers.CheckValidationLayerSupport()) {
 			throw std::runtime_error("Validation layers requested, but not available!");
 		}
 
@@ -35,9 +35,9 @@ VulkanInstance::VulkanInstance(ValidationLayersManager ValidationLayersManager) 
 		VkInstanceCreateInfo createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 		createInfo.pApplicationInfo = &appInfo;
-		if (validationLayersManager.enableValidationLayers) {
-			createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayersManager.validationLayers.size());
-			createInfo.ppEnabledLayerNames = validationLayersManager.validationLayers.data();
+		if (validationLayers.enableValidationLayers) {
+			createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.validationLayers.size());
+			createInfo.ppEnabledLayerNames = validationLayers.validationLayers.data();
 		}
 		else {
 			createInfo.enabledLayerCount = 0;

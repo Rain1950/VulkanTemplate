@@ -1,18 +1,18 @@
 #include <vulkan/vulkan.h>
-#include "LogicalDeviceManager.h"
-#include "PhysicalDeviceManager.h"
+#include "LogicalDevice.h"
+#include "PhysicalDevice.h"
 #include <stdexcept>
 #include <set>
 
 
-LogicalDeviceManager::LogicalDeviceManager()
+LogicalDevice::LogicalDevice()
 {
 	graphicsQueue = new VkQueue*;
 	*graphicsQueue = new VkQueue;
 }
 
-void LogicalDeviceManager::CreateLogicalDevice(PhysicalDeviceManager* physicalDeviceManager, ValidationLayersManager* validationLayersManager) {
-	PhysicalDeviceManager::QueueFamilyIndices indices = physicalDeviceManager->FindQueueFamilies(physicalDeviceManager->physicalDevice);
+void LogicalDevice::CreateLogicalDevice(PhysicalDevice* physicalDevice, ValidationLayers* validationLayers) {
+	PhysicalDevice::QueueFamilyIndices indices = physicalDevice->FindQueueFamilies(physicalDevice->physicalDevice);
 
 	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
 	std::set<uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(),indices.presentFamily.value() };
@@ -34,22 +34,22 @@ void LogicalDeviceManager::CreateLogicalDevice(PhysicalDeviceManager* physicalDe
 	createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	createInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
 	createInfo.pQueueCreateInfos= queueCreateInfos.data();
-	createInfo.pEnabledFeatures = &physicalDeviceManager->deviceFeatures;
-	createInfo.enabledExtensionCount = static_cast<uint32_t>(physicalDeviceManager->deviceExtensions.size());
-	createInfo.ppEnabledExtensionNames = physicalDeviceManager->deviceExtensions.data();
+	createInfo.pEnabledFeatures = &physicalDevice->deviceFeatures;
+	createInfo.enabledExtensionCount = static_cast<uint32_t>(physicalDevice->deviceExtensions.size());
+	createInfo.ppEnabledExtensionNames = physicalDevice->deviceExtensions.data();
 
 
 
 
-	if (validationLayersManager->enableValidationLayers) {
-		createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayersManager->validationLayers.size());
-		createInfo.ppEnabledLayerNames = validationLayersManager->validationLayers.data();
+	if (validationLayers->enableValidationLayers) {
+		createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers->validationLayers.size());
+		createInfo.ppEnabledLayerNames = validationLayers->validationLayers.data();
 	}
 	else {
 		createInfo.enabledLayerCount = 0;
 	}
 
-	if (vkCreateDevice(physicalDeviceManager->physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) {
+	if (vkCreateDevice(physicalDevice->physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create logical device");
 	}
 
@@ -59,7 +59,7 @@ void LogicalDeviceManager::CreateLogicalDevice(PhysicalDeviceManager* physicalDe
 	
 }
 
-void LogicalDeviceManager::Cleanup()
+void LogicalDevice::Cleanup()
 {
 	vkDestroyDevice(device, nullptr);
 }

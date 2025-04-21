@@ -1,5 +1,5 @@
 #include "FileLoader.h"
-#include "GraphicsPipelineManager.h"
+#include "GraphicsPipeline.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #define TINYOBJLOADER_IMPLEMENTATION
@@ -53,9 +53,9 @@ void FileLoader::CloseTextureImage(stbi_uc* pixels)
 	stbi_image_free(pixels);
 }
 
-void FileLoader::LoadModel(std::vector<GraphicsPipelineManager::Vertex>& vertices, std::vector<uint32_t>& indices)
+void FileLoader::LoadModel(std::vector<GraphicsPipeline::Vertex>& vertices, std::vector<uint32_t>& indices)
 {
-	std::unordered_map<GraphicsPipelineManager::Vertex, uint32_t> uniqueVertices{};
+	std::unordered_map<GraphicsPipeline::Vertex, uint32_t> uniqueVertices{};
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
@@ -67,7 +67,7 @@ void FileLoader::LoadModel(std::vector<GraphicsPipelineManager::Vertex>& vertice
 
 	for (const auto& shape : shapes) {
 		for (const auto& index : shape.mesh.indices) {
-			GraphicsPipelineManager::Vertex vertex{};
+			GraphicsPipeline::Vertex vertex{};
 
 			vertex.pos = {
 				attrib.vertices[3 * index.vertex_index + 0],

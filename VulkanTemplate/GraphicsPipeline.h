@@ -4,7 +4,7 @@
 #include <vulkan/vulkan.h>
 #include <glm.hpp>
 #include <array>
-#include "GraphicsPipelineManager.h"
+#include "GraphicsPipeline.h"
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <chrono>
@@ -15,7 +15,7 @@
 
 
 
-class GraphicsPipelineManager {
+class GraphicsPipeline {
 public:
 
 	struct Vertex {
@@ -115,7 +115,7 @@ public:
 
 
 
-	GraphicsPipelineManager(VkCommandPool** CommandPool, VkExtent2D* SwapChainExtent, VkQueue** GraphicsQueue);
+	GraphicsPipeline(VkCommandPool** CommandPool, VkExtent2D* SwapChainExtent, VkQueue** GraphicsQueue);
 	
 	void CreateGraphicsPipeline(VkDevice& device);
 	VkShaderModule CreateShaderModule(const std::vector<char>& code, VkDevice& device);
@@ -162,8 +162,8 @@ public:
 };
 
 namespace std {
-	template<> struct hash<GraphicsPipelineManager::Vertex> {
-		size_t operator()(GraphicsPipelineManager::Vertex const& vertex) const {
+	template<> struct hash<GraphicsPipeline::Vertex> {
+		size_t operator()(GraphicsPipeline::Vertex const& vertex) const {
 			return ((hash<glm::vec3>()(vertex.pos) ^
 				(hash<glm::vec3>()(vertex.color) << 1)) >> 1) ^
 				(hash<glm::vec2>()(vertex.texCoord) << 1);

@@ -1,10 +1,10 @@
 
-#include "ValidationLayersManager.h"
+#include "ValidationLayers.h"
 #include <vulkan/vulkan.h>
 #include <vector>
 using namespace std;
 
-bool ValidationLayersManager::CheckValidationLayerSupport() {
+bool ValidationLayers::CheckValidationLayerSupport() {
 	uint32_t layerCount;
 	vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 

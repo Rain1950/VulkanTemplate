@@ -4,7 +4,7 @@
 #include <vulkan/vulkan.h>
 #include <vector>
 
-class ValidationLayersManager {
+class ValidationLayers {
 	
 public:
 	const std::vector<const char*> validationLayers = {

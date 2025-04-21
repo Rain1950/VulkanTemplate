@@ -1,17 +1,17 @@
 
 
 #include <vulkan/vulkan.h>
-#include "GraphicsPipelineManager.h"
+#include "GraphicsPipeline.h"
 #include "FileLoader.h"
 #include <stdexcept>
 #include <limits>
-#include "PhysicalDeviceManager.h"
+#include "PhysicalDevice.h"
 #include "App.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #define GLM_FORCE_CXX17
 #include  <euler_angles.hpp>
 
-VkShaderModule GraphicsPipelineManager::CreateShaderModule(const std::vector<char>& code, VkDevice& device) {
+VkShaderModule GraphicsPipeline::CreateShaderModule(const std::vector<char>& code, VkDevice& device) {
 	VkShaderModuleCreateInfo createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 	createInfo.codeSize = code.size();
@@ -24,7 +24,7 @@ VkShaderModule GraphicsPipelineManager::CreateShaderModule(const std::vector<cha
 	return shaderModule;
 }
 
-void GraphicsPipelineManager::CreateRenderPass(VkFormat swapChainImageFormat, VkDevice& device, VkPhysicalDevice& physicalDevice)
+void GraphicsPipeline::CreateRenderPass(VkFormat swapChainImageFormat, VkDevice& device, VkPhysicalDevice& physicalDevice)
 {
 	VkAttachmentDescription colorAttachment{};
 	colorAttachment.format = swapChainImageFormat;
@@ -86,7 +86,7 @@ void GraphicsPipelineManager::CreateRenderPass(VkFormat swapChainImageFormat, Vk
 
 }
 
-uint32_t GraphicsPipelineManager::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, VkPhysicalDevice& physicalDevice) {
+uint32_t GraphicsPipeline::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, VkPhysicalDevice& physicalDevice) {
 	VkPhysicalDeviceMemoryProperties memProperties;
 	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
 
@@ -97,7 +97,7 @@ uint32_t GraphicsPipelineManager::FindMemoryType(uint32_t typeFilter, VkMemoryPr
 
 }
 
-void GraphicsPipelineManager::CreateVertexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice)
+void GraphicsPipeline::CreateVertexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice)
 {
 	VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
 
@@ -131,7 +131,7 @@ void GraphicsPipelineManager::CreateVertexBuffer(VkDevice& device, VkPhysicalDev
 
 }
 
-void GraphicsPipelineManager::CreateIndexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice)
+void GraphicsPipeline::CreateIndexBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice)
 {
 	VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
 
@@ -164,7 +164,7 @@ void GraphicsPipelineManager::CreateIndexBuffer(VkDevice& device, VkPhysicalDevi
 	vkFreeMemory(device, stagingBufferMemory, nullptr);
 }
 
-void GraphicsPipelineManager::CreateBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory)
+void GraphicsPipeline::CreateBuffer(VkDevice& device, VkPhysicalDevice& physicalDevice, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory)
 {
 	VkBufferCreateInfo bufferInfo{};
 	bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -181,7 +181,7 @@ void GraphicsPipelineManager::CreateBuffer(VkDevice& device, VkPhysicalDevice& p
 	VkMemoryAllocateInfo allocInfo{};
 	allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 	allocInfo.allocationSize = memRequirements.size;
-	allocInfo.memoryTypeIndex = GraphicsPipelineManager::FindMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, physicalDevice);
+	allocInfo.memoryTypeIndex = GraphicsPipeline::FindMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, physicalDevice);
 
 	if (vkAllocateMemory(device, &allocInfo, nullptr, &bufferMemory) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to allocate  buffer memory!");
@@ -190,7 +190,7 @@ void GraphicsPipelineManager::CreateBuffer(VkDevice& device, VkPhysicalDevice& p
 	vkBindBufferMemory(device, buffer, bufferMemory, 0);
 }
 
-void GraphicsPipelineManager::CopyBuffer(VkDevice& device, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size)
+void GraphicsPipeline::CopyBuffer(VkDevice& device, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size)
 {
 	VkCommandBuffer commandBuffer = BeginSingleTimeCommands(device);
 	VkBufferCopy copyRegion{};
@@ -200,7 +200,7 @@ void GraphicsPipelineManager::CopyBuffer(VkDevice& device, VkBuffer srcBuffer, V
 
 }
 
-void GraphicsPipelineManager::CreateDescriptorSetLayout(VkDevice& device)
+void GraphicsPipeline::CreateDescriptorSetLayout(VkDevice& device)
 {
 	VkDescriptorSetLayoutBinding uboLayoutBinding{};
 	uboLayoutBinding.binding = 0;
@@ -226,7 +226,7 @@ void GraphicsPipelineManager::CreateDescriptorSetLayout(VkDevice& device)
 	}
 }
 
-void GraphicsPipelineManager::CreateUniformBuffers(VkDevice& device, VkPhysicalDevice& physicalDevice)
+void GraphicsPipeline::CreateUniformBuffers(VkDevice& device, VkPhysicalDevice& physicalDevice)
 {
 	VkDeviceSize bufferSize = sizeof(UniformBufferObject);
 	uniformBuffers.resize(MAX_FRAMES_IN_FLIGHT);
@@ -243,30 +243,30 @@ void GraphicsPipelineManager::CreateUniformBuffers(VkDevice& device, VkPhysicalD
 
 }
 
-void GraphicsPipelineManager::UpdateUniformBuffers(uint32_t currentImage)
+void GraphicsPipeline::UpdateUniformBuffers(uint32_t currentImage)
 {
 	static auto startTime = std::chrono::high_resolution_clock::now();
 	auto currentTime = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
 	UniformBufferObject ubo{};
-	//ubo.model = glm::rotate(glm::mat4(1.0f), time/5  * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	ubo.model = glm::rotate(glm::mat4(1.0f), time/5  * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	//ubo.model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f * time), glm::vec3(0.0f, 0.0f, 1.0f));
 	
-	ubo.model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	ubo.model *= glm::rotate(glm::mat4(1.0f), glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	//ubo.model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	ubo.model *= glm::rotate(glm::mat4(1.0f), glm::radians(-270.0f), glm::vec3(1.0f, 0.0f, 1.0f));
 	//ubo.model = glm::angleAxis(90.0f, glm::vec3(0, 0, 1));
-	float scale = 1.0f;
+	float scale = 0.7f;
 	ubo.model = glm::scale(ubo.model, glm::vec3(1, 1, 1) * scale);
 
-	ubo.view = glm::lookAt(glm::vec3(1.5f, 1.5f, 1.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	ubo.view = glm::lookAt(glm::vec3(1.5f, 1.5f, 1.5f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent->width / (float)swapChainExtent->height, 0.1f, 10.0f);
 	ubo.proj[1][1] *= -1;
 	ubo.time = time;
 	memcpy(uniformBuffersMapped[currentImage], &ubo, sizeof(ubo));
 
 }
-void GraphicsPipelineManager::CreateDescriptorPool(VkDevice& device)
+void GraphicsPipeline::CreateDescriptorPool(VkDevice& device)
 {
 
 	std::array<VkDescriptorPoolSize, 2> poolSizes{};
@@ -287,7 +287,7 @@ void GraphicsPipelineManager::CreateDescriptorPool(VkDevice& device)
 	}
 }
 
-void GraphicsPipelineManager::CreateDescriptorSets(VkDevice& device)
+void GraphicsPipeline::CreateDescriptorSets(VkDevice& device)
 {
 
 	std::vector<VkDescriptorSetLayout> layouts(MAX_FRAMES_IN_FLIGHT, descriptorSetLayout);
@@ -341,7 +341,7 @@ void GraphicsPipelineManager::CreateDescriptorSets(VkDevice& device)
 
 }
 
-void GraphicsPipelineManager::CreateImage(uint32_t width, uint32_t height, uint32_t mipLevels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory, VkDevice& device, VkPhysicalDevice& physicalDevice) {
+void GraphicsPipeline::CreateImage(uint32_t width, uint32_t height, uint32_t mipLevels, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory, VkDevice& device, VkPhysicalDevice& physicalDevice) {
 	VkImageCreateInfo imageInfo{};
 	imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
 	imageInfo.imageType = VK_IMAGE_TYPE_2D;
@@ -374,7 +374,7 @@ void GraphicsPipelineManager::CreateImage(uint32_t width, uint32_t height, uint3
 	vkBindImageMemory(device, image, imageMemory, 0);
 }
 
-void GraphicsPipelineManager::CreateTextureImage(VkDevice& device, VkPhysicalDevice& physicalDevice)
+void GraphicsPipeline::CreateTextureImage(VkDevice& device, VkPhysicalDevice& physicalDevice)
 {
 	TextureImageData data{};
 	data = FileLoader::ReadTextureImage(device, App::MODEL_TEXTURE.c_str());
@@ -417,7 +417,7 @@ void GraphicsPipelineManager::CreateTextureImage(VkDevice& device, VkPhysicalDev
 
 
 }
-VkCommandBuffer GraphicsPipelineManager::BeginSingleTimeCommands(VkDevice& device)
+VkCommandBuffer GraphicsPipeline::BeginSingleTimeCommands(VkDevice& device)
 {
 	VkCommandBufferAllocateInfo allocInfo{};
 	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -438,7 +438,7 @@ VkCommandBuffer GraphicsPipelineManager::BeginSingleTimeCommands(VkDevice& devic
 }
 
 //End and submit one time commands
-void GraphicsPipelineManager::EndSingleTimeCommands(VkCommandBuffer commandBuffer, VkDevice& device)
+void GraphicsPipeline::EndSingleTimeCommands(VkCommandBuffer commandBuffer, VkDevice& device)
 {
 	vkEndCommandBuffer(commandBuffer);
 	VkSubmitInfo submitInfo{};
@@ -453,7 +453,7 @@ void GraphicsPipelineManager::EndSingleTimeCommands(VkCommandBuffer commandBuffe
 
 }
 
-void GraphicsPipelineManager::TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, VkDevice& device, uint32_t mipLevels)
+void GraphicsPipeline::TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, VkDevice& device, uint32_t mipLevels)
 {
 	VkCommandBuffer commandBuffer = BeginSingleTimeCommands(device);
 
@@ -511,7 +511,7 @@ void GraphicsPipelineManager::TransitionImageLayout(VkImage image, VkFormat form
 
 }
 
-void GraphicsPipelineManager::CopyBufferToImage(VkDevice& device, VkBuffer buffer, VkImage image, uint32_t width, uint32_t height)
+void GraphicsPipeline::CopyBufferToImage(VkDevice& device, VkBuffer buffer, VkImage image, uint32_t width, uint32_t height)
 {
 	VkCommandBuffer commandBuffer = BeginSingleTimeCommands(device);
 	VkBufferImageCopy region{};
@@ -543,12 +543,12 @@ void GraphicsPipelineManager::CopyBufferToImage(VkDevice& device, VkBuffer buffe
 
 }
 
-void GraphicsPipelineManager::CreateTextureImageView(VkDevice& device)
+void GraphicsPipeline::CreateTextureImageView(VkDevice& device)
 {
 	textureImageView = CreateImageView(device, textureImage, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_ASPECT_COLOR_BIT, mipLevels);
 }
 
-VkImageView GraphicsPipelineManager::CreateImageView(VkDevice& device, VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t mipLevels)
+VkImageView GraphicsPipeline::CreateImageView(VkDevice& device, VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t mipLevels)
 {
 
 	VkImageViewCreateInfo viewInfo{};
@@ -571,7 +571,7 @@ VkImageView GraphicsPipelineManager::CreateImageView(VkDevice& device, VkImage i
 	return imageView;
 }
 
-void GraphicsPipelineManager::CreateTextureSampler(VkDevice& device, VkPhysicalDevice& physicalDevice)
+void GraphicsPipeline::CreateTextureSampler(VkDevice& device, VkPhysicalDevice& physicalDevice)
 {
 	VkSamplerCreateInfo samplerInfo{};
 	samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -604,7 +604,7 @@ void GraphicsPipelineManager::CreateTextureSampler(VkDevice& device, VkPhysicalD
 
 }
 
-void GraphicsPipelineManager::CreateDepthResources(VkPhysicalDevice& physicalDevice, VkDevice& device)
+void GraphicsPipeline::CreateDepthResources(VkPhysicalDevice& physicalDevice, VkDevice& device)
 {
 	VkFormat depthFormat = FindDepthFormat(physicalDevice);
 
@@ -615,9 +615,9 @@ void GraphicsPipelineManager::CreateDepthResources(VkPhysicalDevice& physicalDev
 
 }
 
-VkFormat GraphicsPipelineManager::FindDepthFormat(VkPhysicalDevice& physicalDevice)
+VkFormat GraphicsPipeline::FindDepthFormat(VkPhysicalDevice& physicalDevice)
 {
-	return PhysicalDeviceManager::FindSupportedFormat(
+	return PhysicalDevice::FindSupportedFormat(
 		{ VK_FORMAT_D32_SFLOAT,VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
 		VK_IMAGE_TILING_OPTIMAL,
 		VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT,
@@ -625,7 +625,7 @@ VkFormat GraphicsPipelineManager::FindDepthFormat(VkPhysicalDevice& physicalDevi
 	);
 }
 
-void GraphicsPipelineManager::GenerateMipMaps(VkDevice& device, VkPhysicalDevice& physicalDevice, VkFormat imageFormat, VkImage image, int32_t textWidth, int32_t texHeight, uint32_t mipLevels)
+void GraphicsPipeline::GenerateMipMaps(VkDevice& device, VkPhysicalDevice& physicalDevice, VkFormat imageFormat, VkImage image, int32_t textWidth, int32_t texHeight, uint32_t mipLevels)
 {
 
 	VkFormatProperties formatProperties;
@@ -727,7 +727,7 @@ void GraphicsPipelineManager::GenerateMipMaps(VkDevice& device, VkPhysicalDevice
 }
 
 
-void GraphicsPipelineManager::CleanupTextureSampler(VkDevice& device) {
+void GraphicsPipeline::CleanupTextureSampler(VkDevice& device) {
 	vkDestroySampler(device, textureSampler, nullptr);
 }
 
@@ -737,7 +737,7 @@ void GraphicsPipelineManager::CleanupTextureSampler(VkDevice& device) {
 
 
 
-void GraphicsPipelineManager::CleanupUniformBuffers(VkDevice& device) {
+void GraphicsPipeline::CleanupUniformBuffers(VkDevice& device) {
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
 		vkDestroyBuffer(device, uniformBuffers[i], nullptr);
 		vkFreeMemory(device, uniformBuffersMemory[i], nullptr);
@@ -746,35 +746,35 @@ void GraphicsPipelineManager::CleanupUniformBuffers(VkDevice& device) {
 
 }
 
-void GraphicsPipelineManager::CleanupVertexBuffer(VkDevice& device) {
+void GraphicsPipeline::CleanupVertexBuffer(VkDevice& device) {
 	vkDestroyBuffer(device, vertexBuffer, nullptr);
 	vkFreeMemory(device, vertexBufferMemory, nullptr);
 
 }
-void GraphicsPipelineManager::CleanupIndexBuffer(VkDevice& device) {
+void GraphicsPipeline::CleanupIndexBuffer(VkDevice& device) {
 	vkDestroyBuffer(device, indexBuffer, nullptr);
 	vkFreeMemory(device, indexBufferMemory, nullptr);
 
 }
 
-void GraphicsPipelineManager::CleanupDescriptorSetLayout(VkDevice& device)
+void GraphicsPipeline::CleanupDescriptorSetLayout(VkDevice& device)
 {
 	vkDestroyDescriptorPool(device, descriptorPool, nullptr);
 	vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
 }
 
-void GraphicsPipelineManager::CleanupTextureImage(VkDevice& device)
+void GraphicsPipeline::CleanupTextureImage(VkDevice& device)
 {
 
 	vkDestroyImage(device, textureImage, nullptr);
 	vkFreeMemory(device, textureImageMemory, nullptr);
 }
 
-void GraphicsPipelineManager::CleanupTextureView(VkDevice& device) {
+void GraphicsPipeline::CleanupTextureView(VkDevice& device) {
 	vkDestroyImageView(device, textureImageView, nullptr);
 }
 
-bool GraphicsPipelineManager::HasStencilComponent(VkFormat format)
+bool GraphicsPipeline::HasStencilComponent(VkFormat format)
 {
 	return format == VK_FORMAT_D32_SFLOAT_S8_UINT || format == VK_FORMAT_D24_UNORM_S8_UINT;
 }
@@ -785,14 +785,14 @@ bool GraphicsPipelineManager::HasStencilComponent(VkFormat format)
 
 
 
-GraphicsPipelineManager::GraphicsPipelineManager(VkCommandPool** CommandPool, VkExtent2D* SwapChainExtent, VkQueue** GraphicsQueue) :
+GraphicsPipeline::GraphicsPipeline(VkCommandPool** CommandPool, VkExtent2D* SwapChainExtent, VkQueue** GraphicsQueue) :
 	commandPool{ CommandPool },
 	swapChainExtent{ SwapChainExtent },
 	graphicsQueue{ GraphicsQueue }
 {
 };
 
-void GraphicsPipelineManager::CreateGraphicsPipeline(VkDevice& device)
+void GraphicsPipeline::CreateGraphicsPipeline(VkDevice& device)
 {
 	auto vertShaderCode = FileLoader::ReadShaderFile("shaders/vert.spv");
 	auto fragShaderCode = FileLoader::ReadShaderFile("shaders/frag.spv");
@@ -934,16 +934,16 @@ void GraphicsPipelineManager::CreateGraphicsPipeline(VkDevice& device)
 	vkDestroyShaderModule(device, vertShaderModule, nullptr);
 }
 
-void GraphicsPipelineManager::CleanGraphicsPipeline(VkDevice& device)
+void GraphicsPipeline::CleanGraphicsPipeline(VkDevice& device)
 {
 	vkDestroyPipeline(device, graphicsPipeline, nullptr);
 }
 
-void GraphicsPipelineManager::CleanPipelineLayout(VkDevice& device) {
+void GraphicsPipeline::CleanPipelineLayout(VkDevice& device) {
 	vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
 }
 
-void GraphicsPipelineManager::CleanRenderPass(VkDevice& device) {
+void GraphicsPipeline::CleanRenderPass(VkDevice& device) {
 	vkDestroyRenderPass(device, renderPass, nullptr);
 }
 

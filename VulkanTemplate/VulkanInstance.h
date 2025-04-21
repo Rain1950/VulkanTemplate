@@ -1,14 +1,14 @@
 #pragma once
 #include <Vulkan/vulkan.h>
-#include "ValidationLayersManager.h"
+#include "ValidationLayers.h"
 class VulkanInstance {
 
 public:
 	VkInstance instance{};
-	ValidationLayersManager validationLayersManager;
+	ValidationLayers validationLayers;
 
 	void CreateInstance();
 	void CheckExtensions();
 	void Cleanup();
-	VulkanInstance(ValidationLayersManager ValidationLayersManager);
+	VulkanInstance(ValidationLayers ValidationLayers);
 };

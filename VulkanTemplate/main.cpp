@@ -3,32 +3,32 @@
 #include <iostream>
 #define GLFW_INCLUDE_VULKAN
 #include <glfw/glfw3.h>
-#include "WindowManager.h"
+#include "Window.h"
 #include "VulkanInstance.h"
-#include "PhysicalDeviceManager.h"
-#include "LogicalDeviceManager.h"
+#include "PhysicalDevice.h"
+#include "LogicalDevice.h"
 #include <memory>
-#include "GraphicsPipelineManager.h"
+#include "GraphicsPipeline.h"
 #include "App.h"
 
 
 
 int main() {
 	
-	ValidationLayersManager validationLayersManager{};
-	std::shared_ptr<VulkanInstance> vulkanInstance( new VulkanInstance(validationLayersManager));
+	ValidationLayers validationLayers{};
+	std::shared_ptr<VulkanInstance> vulkanInstance( new VulkanInstance(validationLayers));
 
-	std::shared_ptr<WindowManager> windowManager(new WindowManager{vulkanInstance});
-	PhysicalDeviceManager physicalDeviceManager{vulkanInstance,windowManager};
-	LogicalDeviceManager logicalDeviceManager{};
-	GraphicsPipelineManager graphicsPipelineManager{ 
-		physicalDeviceManager.commandPool,
-		physicalDeviceManager.swapChainExtent,
-		logicalDeviceManager.graphicsQueue
+	std::shared_ptr<Window> window(new Window{vulkanInstance});
+	PhysicalDevice physicalDevice{vulkanInstance,window};
+	LogicalDevice logicalDevice{};
+	GraphicsPipeline graphicsPipeline{ 
+		physicalDevice.commandPool,
+		physicalDevice.swapChainExtent,
+		logicalDevice.graphicsQueue
 	};
 	
 
-	App app(windowManager,vulkanInstance,physicalDeviceManager,logicalDeviceManager,validationLayersManager,graphicsPipelineManager);
+	App app(window,vulkanInstance,physicalDevice,logicalDevice,validationLayers,graphicsPipeline);
 	
 
 	try {

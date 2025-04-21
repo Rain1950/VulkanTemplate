@@ -4,13 +4,13 @@
 #include "VulkanInstance.h"
 #include <memory>
 #include <optional>
-#include "WindowManager.h"
+#include "Window.h"
 #include <vector>
-#include "GraphicsPipelineManager.h"
+#include "GraphicsPipeline.h"
 
 
 #define MAX_FRAMES_IN_FLIGHT  2
-class PhysicalDeviceManager {
+class PhysicalDevice {
 	
 public:
 	struct QueueFamilyIndices {
@@ -35,7 +35,7 @@ public:
 
 
 	std::shared_ptr<VulkanInstance> vulkanInstance;
-	std::shared_ptr<WindowManager> windowManager;
+	std::shared_ptr<Window> window;
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 	VkPhysicalDeviceFeatures deviceFeatures{ .samplerAnisotropy = VK_TRUE };
 	VkSwapchainKHR swapChain{};
@@ -54,7 +54,7 @@ public:
 	std::vector<VkFence> inFlightFences;
 	bool frameBufferResized = false;
 
-	PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance,std::shared_ptr<WindowManager> WindowManager);
+	PhysicalDevice(std::shared_ptr<VulkanInstance> VulkanInstance,std::shared_ptr<Window> Window);
 	QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
 	SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device);
 	void PickPhysicalDevice();
@@ -67,16 +67,16 @@ public:
 	void CreateImageViews(VkDevice& device);
 	void CreateCommandPool(VkDevice& device);
 	void CreateCommandBuffers(VkDevice& device);
-	void RecordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, GraphicsPipelineManager& graphicsPipelineManager);
+	void RecordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, GraphicsPipeline& graphicsPipeline);
 	void CreateSyncObjects(VkDevice& device);
-	void RecreateSwapChain(VkDevice& device, GraphicsPipelineManager& graphicsPipelineManager);
+	void RecreateSwapChain(VkDevice& device, GraphicsPipeline& graphicsPipeline);
 	static VkFormat FindSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features, VkPhysicalDevice& physicalDevice);
 	
 
 	void CleanupSyncObjects(VkDevice& device);
 	void CleanupCommandPool(VkDevice& device);
 	void CleanupImageViews(VkDevice& device);
-	void CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain, GraphicsPipelineManager& graphicsPipelineManager);
+	void CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain, GraphicsPipeline& graphicsPipeline);
 	void CleanupFrameBuffers(VkDevice& device);
 private:
 	bool IsDeviceSuitable(VkPhysicalDevice device);

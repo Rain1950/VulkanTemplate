@@ -18,19 +18,19 @@
     <ClCompile Include="main.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="WindowManager.cpp">
+    <ClCompile Include="Window.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="VulkanInstance.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="ValidationLayersManager.cpp">
+    <ClCompile Include="ValidationLayers.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicalDeviceManager.cpp">
+    <ClCompile Include="PhysicalDevice.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="LogicalDeviceManager.cpp">
+    <ClCompile Include="LogicalDevice.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="FileLoader.cpp">
@@ -39,27 +39,27 @@
     <ClCompile Include="App.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsPipelineManager.cpp">
+    <ClCompile Include="GraphicsPipeline.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WindowManager.h">
+    <ClInclude Include="Window.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="VulkanInstance.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="ValidationLayersManager.h">
+    <ClInclude Include="ValidationLayers.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicalDeviceManager.h">
+    <ClInclude Include="PhysicalDevice.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="LogicalDeviceManager.h">
+    <ClInclude Include="LogicalDevice.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsPipelineManager.h">
+    <ClInclude Include="GraphicsPipeline.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="FileLoader.h">

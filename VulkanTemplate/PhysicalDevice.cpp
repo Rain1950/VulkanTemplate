@@ -1,29 +1,29 @@
 
-#include "PhysicalDeviceManager.h"
+#include "PhysicalDevice.h"
 #include <vulkan/vulkan.h>
 #include "VulkanInstance.h"
 #include <stdexcept>
 #include <optional>
 #include <vector>
-#include "WindowManager.h"
+#include "Window.h"
 #include <set>
 #include <GLFW/glfw3.h>
 #include <cstdint>
 #include <algorithm>
 #include <limits>
 #include <iostream>
-#include "GraphicsPipelineManager.h"
+#include "GraphicsPipeline.h"
 
-PhysicalDeviceManager::PhysicalDeviceManager(std::shared_ptr<VulkanInstance> VulkanInstance, std::shared_ptr<WindowManager> WindowManager) : 
+PhysicalDevice::PhysicalDevice(std::shared_ptr<VulkanInstance> VulkanInstance, std::shared_ptr<Window> Window) : 
 	vulkanInstance{ VulkanInstance }, 
-	windowManager{ WindowManager } {
+	window{ Window } {
 	commandPool = new VkCommandPool*;
 	*commandPool = new VkCommandPool{};
 	swapChainExtent = new VkExtent2D;
 };
 
 
-void PhysicalDeviceManager::PickPhysicalDevice() {
+void PhysicalDevice::PickPhysicalDevice() {
 	uint32_t deviceCount = 0;
 	vkEnumeratePhysicalDevices(vulkanInstance->instance, &deviceCount, nullptr);
 	if (deviceCount == 0) {
@@ -47,7 +47,7 @@ void PhysicalDeviceManager::PickPhysicalDevice() {
 	
 }
 
-VkSurfaceFormatKHR PhysicalDeviceManager::ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
+VkSurfaceFormatKHR PhysicalDevice::ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
 {
 	for (const auto& format : availableFormats) {
 		if (format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR && format.format == VK_FORMAT_B8G8R8A8_SRGB) return format;
@@ -56,7 +56,7 @@ VkSurfaceFormatKHR PhysicalDeviceManager::ChooseSwapSurfaceFormat(const std::vec
 	return availableFormats[0];
 }
 
-VkPresentModeKHR   PhysicalDeviceManager::ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes) {
+VkPresentModeKHR   PhysicalDevice::ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes) {
 	for (const auto& availablePresentMode : availablePresentModes) {
 		if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) return availablePresentMode;
 	}
@@ -64,14 +64,14 @@ VkPresentModeKHR   PhysicalDeviceManager::ChooseSwapPresentMode(const std::vecto
 	return VK_PRESENT_MODE_FIFO_KHR;
 }
 
-VkExtent2D PhysicalDeviceManager::ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities)
+VkExtent2D PhysicalDevice::ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities)
 {
 	if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
 		return capabilities.currentExtent;
 	}
 	else {
 		int width, height;
-		glfwGetFramebufferSize(windowManager->window, &width, &height);
+		glfwGetFramebufferSize(window->window, &width, &height);
 
 		VkExtent2D actualExtent = {
 				static_cast<uint32_t>(width),
@@ -85,7 +85,7 @@ VkExtent2D PhysicalDeviceManager::ChooseSwapExtent(const VkSurfaceCapabilitiesKH
 
 }
 
-void PhysicalDeviceManager::CreateSwapChain(VkDevice& device)
+void PhysicalDevice::CreateSwapChain(VkDevice& device)
 {
 	SwapChainSupportDetails swapChainSupport = QuerySwapChainSupport(physicalDevice);
 
@@ -101,7 +101,7 @@ void PhysicalDeviceManager::CreateSwapChain(VkDevice& device)
 	}
 	VkSwapchainCreateInfoKHR createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-	createInfo.surface = windowManager->surface;
+	createInfo.surface = window->surface;
 	createInfo.minImageCount = imageCount;
 	createInfo.imageFormat = surfaceFormat.format;
 	createInfo.imageColorSpace = surfaceFormat.colorSpace;
@@ -139,31 +139,31 @@ void PhysicalDeviceManager::CreateSwapChain(VkDevice& device)
 	*swapChainExtent = extent;
 }
 
-void PhysicalDeviceManager::CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain, GraphicsPipelineManager& graphicsPipelineManager)
+void PhysicalDevice::CleanupSwapChain(VkDevice& device, VkSwapchainKHR swapChain, GraphicsPipeline& graphicsPipeline)
 {
-	vkDestroyImageView(device, graphicsPipelineManager.depthImageView, nullptr);
-	vkDestroyImage(device, graphicsPipelineManager.depthImage,nullptr);
-	vkFreeMemory(device, graphicsPipelineManager.depthImageMemory, nullptr);
+	vkDestroyImageView(device, graphicsPipeline.depthImageView, nullptr);
+	vkDestroyImage(device, graphicsPipeline.depthImage,nullptr);
+	vkFreeMemory(device, graphicsPipeline.depthImageMemory, nullptr);
 
 	vkDestroySwapchainKHR(device, swapChain, nullptr);
 }
 
-void PhysicalDeviceManager::CreateImageViews(VkDevice& device)
+void PhysicalDevice::CreateImageViews(VkDevice& device)
 {
 	swapChainImageViews.resize(swapChainImages.size());
 	for(int i = 0; i < swapChainImages.size();i++){
 	
-		swapChainImageViews[i] = GraphicsPipelineManager::CreateImageView(device,swapChainImages[i], swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT,1);
+		swapChainImageViews[i] = GraphicsPipeline::CreateImageView(device,swapChainImages[i], swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT,1);
 	}
 }
 
-void PhysicalDeviceManager::CleanupImageViews(VkDevice& device) {
+void PhysicalDevice::CleanupImageViews(VkDevice& device) {
 	for (auto imageView : swapChainImageViews) {
 		vkDestroyImageView(device, imageView, nullptr);
 	}
 }
 
-void PhysicalDeviceManager::CreateFrameBuffers(VkDevice& device, VkRenderPass& renderPass, VkImageView& depthImageView)
+void PhysicalDevice::CreateFrameBuffers(VkDevice& device, VkRenderPass& renderPass, VkImageView& depthImageView)
 { 
 	swapChainFrameBuffers.resize(swapChainImageViews.size());
 	for (size_t i = 0; i < swapChainImageViews.size(); i++) {
@@ -189,7 +189,7 @@ void PhysicalDeviceManager::CreateFrameBuffers(VkDevice& device, VkRenderPass& r
 	}
 }
 
-void PhysicalDeviceManager::CreateCommandPool(VkDevice& device)
+void PhysicalDevice::CreateCommandPool(VkDevice& device)
 {
 	QueueFamilyIndices indices = FindQueueFamilies(physicalDevice);
 	VkCommandPoolCreateInfo poolInfo{};
@@ -205,7 +205,7 @@ void PhysicalDeviceManager::CreateCommandPool(VkDevice& device)
 	
 }
 
-void PhysicalDeviceManager::CreateCommandBuffers(VkDevice& device)
+void PhysicalDevice::CreateCommandBuffers(VkDevice& device)
 {
 	commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
 
@@ -220,7 +220,7 @@ void PhysicalDeviceManager::CreateCommandBuffers(VkDevice& device)
 	}
 }
 
-void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex,GraphicsPipelineManager& graphicsPipelineManager) {
+void PhysicalDevice::RecordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex,GraphicsPipeline& graphicsPipeline) {
 	VkCommandBufferBeginInfo beginInfo{};
 	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
@@ -234,7 +234,7 @@ void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, u
 
 	VkRenderPassBeginInfo renderPassInfo{};
 	renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-	renderPassInfo.renderPass = graphicsPipelineManager.renderPass;
+	renderPassInfo.renderPass = graphicsPipeline.renderPass;
 	renderPassInfo.framebuffer = swapChainFrameBuffers[imageIndex];
 	renderPassInfo.renderArea.offset = { 0, 0 };
 	renderPassInfo.renderArea.extent = *swapChainExtent;
@@ -244,11 +244,11 @@ void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, u
 
 	vkCmdBeginRenderPass(commandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,graphicsPipelineManager.graphicsPipeline);
-	VkBuffer vertexBuffers[] = { graphicsPipelineManager.vertexBuffer };
+	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,graphicsPipeline.graphicsPipeline);
+	VkBuffer vertexBuffers[] = { graphicsPipeline.vertexBuffer };
 	VkDeviceSize offsets[] = { 0 };
 	vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
-	vkCmdBindIndexBuffer(commandBuffer, graphicsPipelineManager.indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+	vkCmdBindIndexBuffer(commandBuffer, graphicsPipeline.indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 	VkViewport viewport{};
 	viewport.x = 0.0f;
@@ -265,14 +265,14 @@ void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, u
 	vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
 	vkCmdBindDescriptorSets(commandBuffer,
-		VK_PIPELINE_BIND_POINT_GRAPHICS,graphicsPipelineManager.pipelineLayout,
+		VK_PIPELINE_BIND_POINT_GRAPHICS,graphicsPipeline.pipelineLayout,
 		0,
 		1,
-		&graphicsPipelineManager.descriptorSets[currentFrame],
+		&graphicsPipeline.descriptorSets[currentFrame],
 		0,
 		nullptr);
 
-	vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(graphicsPipelineManager.indices.size()), 1, 0, 0, 0);
+	vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(graphicsPipeline.indices.size()), 1, 0, 0, 0);
 
 	vkCmdEndRenderPass(commandBuffer);
 
@@ -281,7 +281,7 @@ void PhysicalDeviceManager::RecordCommandBuffer(VkCommandBuffer commandBuffer, u
 	}
 }
 
-void PhysicalDeviceManager::CreateSyncObjects(VkDevice& device)
+void PhysicalDevice::CreateSyncObjects(VkDevice& device)
 {
 
 	imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
@@ -305,13 +305,13 @@ void PhysicalDeviceManager::CreateSyncObjects(VkDevice& device)
 	}
 }
 
-void PhysicalDeviceManager::RecreateSwapChain(VkDevice& device,GraphicsPipelineManager& graphicsPipelineManager)
+void PhysicalDevice::RecreateSwapChain(VkDevice& device,GraphicsPipeline& graphicsPipeline)
 {
 
 	int width = 0, height = 0;
-	glfwGetFramebufferSize(windowManager->window, &width, &height);
+	glfwGetFramebufferSize(window->window, &width, &height);
 	while (width == 0 || height == 0) {
-		glfwGetFramebufferSize(windowManager->window, &width, &height);
+		glfwGetFramebufferSize(window->window, &width, &height);
 		glfwWaitEvents();
 	}
 
@@ -319,16 +319,16 @@ void PhysicalDeviceManager::RecreateSwapChain(VkDevice& device,GraphicsPipelineM
 	
 	CleanupFrameBuffers(device);
 	CleanupImageViews(device);
-	CleanupSwapChain(device, swapChain,graphicsPipelineManager);
+	CleanupSwapChain(device, swapChain,graphicsPipeline);
 
 	CreateSwapChain(device);
 	CreateImageViews(device);
-	graphicsPipelineManager.CreateDepthResources(physicalDevice, device);
-	CreateFrameBuffers(device, graphicsPipelineManager.renderPass,graphicsPipelineManager.depthImageView);
+	graphicsPipeline.CreateDepthResources(physicalDevice, device);
+	CreateFrameBuffers(device, graphicsPipeline.renderPass,graphicsPipeline.depthImageView);
 
 }
 
-VkFormat PhysicalDeviceManager::FindSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features, VkPhysicalDevice& physicalDevice)
+VkFormat PhysicalDevice::FindSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features, VkPhysicalDevice& physicalDevice)
 {
 		for (VkFormat format : candidates) {
 			VkFormatProperties props;
@@ -348,7 +348,7 @@ VkFormat PhysicalDeviceManager::FindSupportedFormat(const std::vector<VkFormat>&
 
 }
 
-void PhysicalDeviceManager::CleanupSyncObjects(VkDevice& device){
+void PhysicalDevice::CleanupSyncObjects(VkDevice& device){
 	for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
 		vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
 		vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
@@ -357,41 +357,41 @@ void PhysicalDeviceManager::CleanupSyncObjects(VkDevice& device){
 }
 
 
-void PhysicalDeviceManager::CleanupCommandPool(VkDevice& device) {
+void PhysicalDevice::CleanupCommandPool(VkDevice& device) {
 	vkDestroyCommandPool(device, **commandPool, nullptr);
 }
 
 
-void PhysicalDeviceManager::CleanupFrameBuffers(VkDevice& device)
+void PhysicalDevice::CleanupFrameBuffers(VkDevice& device)
 {
 	for (auto framebuffer : swapChainFrameBuffers) {
 		vkDestroyFramebuffer(device, framebuffer, nullptr);
 	}
 }
 
-PhysicalDeviceManager::SwapChainSupportDetails PhysicalDeviceManager::QuerySwapChainSupport(VkPhysicalDevice device)
+PhysicalDevice::SwapChainSupportDetails PhysicalDevice::QuerySwapChainSupport(VkPhysicalDevice device)
 {
 	SwapChainSupportDetails details;
 
-	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, windowManager->surface, &details.capabilities);
+	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, window->surface, &details.capabilities);
 	uint32_t formatCount;
-	vkGetPhysicalDeviceSurfaceFormatsKHR(device, windowManager->surface, &formatCount,nullptr); // query number
+	vkGetPhysicalDeviceSurfaceFormatsKHR(device, window->surface, &formatCount,nullptr); // query number
 
 	if (formatCount != 0) {
 		details.formats.resize(formatCount);
-		vkGetPhysicalDeviceSurfaceFormatsKHR(device, windowManager->surface, &formatCount, details.formats.data());
+		vkGetPhysicalDeviceSurfaceFormatsKHR(device, window->surface, &formatCount, details.formats.data());
 	}
 
 	uint32_t presentModeCount;
-	vkGetPhysicalDeviceSurfacePresentModesKHR(device, windowManager->surface, &presentModeCount, nullptr);
+	vkGetPhysicalDeviceSurfacePresentModesKHR(device, window->surface, &presentModeCount, nullptr);
 	if (presentModeCount != 0) {
 		details.presentModes.resize(presentModeCount);
-		vkGetPhysicalDeviceSurfacePresentModesKHR(device, windowManager->surface, &presentModeCount, details.presentModes.data());
+		vkGetPhysicalDeviceSurfacePresentModesKHR(device, window->surface, &presentModeCount, details.presentModes.data());
 	}
 	return details;
 }
 
-PhysicalDeviceManager::QueueFamilyIndices PhysicalDeviceManager::FindQueueFamilies(VkPhysicalDevice device) {
+PhysicalDevice::QueueFamilyIndices PhysicalDevice::FindQueueFamilies(VkPhysicalDevice device) {
 	QueueFamilyIndices indices;
 	uint32_t queueFamilyCount = 0;
 	vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
@@ -406,7 +406,7 @@ PhysicalDeviceManager::QueueFamilyIndices PhysicalDeviceManager::FindQueueFamili
 			indices.graphicsFamily = i;
 		}
 		VkBool32 presentSupport = false;
-		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, windowManager->surface, &presentSupport);
+		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, window->surface, &presentSupport);
 		if (presentSupport) {
 			indices.presentFamily = i;
 		}
@@ -420,7 +420,7 @@ PhysicalDeviceManager::QueueFamilyIndices PhysicalDeviceManager::FindQueueFamili
 }
 
 
-bool PhysicalDeviceManager::IsDeviceSuitable(VkPhysicalDevice device) {
+bool PhysicalDevice::IsDeviceSuitable(VkPhysicalDevice device) {
 	QueueFamilyIndices indices = FindQueueFamilies(device);
 	bool swapChainAdequate = false;
 	bool extensionsSupported = CheckDeviceExtensionSupport(device);
@@ -437,7 +437,7 @@ bool PhysicalDeviceManager::IsDeviceSuitable(VkPhysicalDevice device) {
 	return indices.IsComplete() && extensionsSupported && swapChainAdequate && supportedFeatures.samplerAnisotropy;
 }
 
-bool PhysicalDeviceManager::CheckDeviceExtensionSupport(VkPhysicalDevice device) {
+bool PhysicalDevice::CheckDeviceExtensionSupport(VkPhysicalDevice device) {
 	uint32_t extensionCount;
 	vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
 
